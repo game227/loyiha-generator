@@ -63,22 +63,9 @@
 
   .box-header{
     text-align:center;
-    padding-bottom:20px;
-    margin-bottom:22px;
+    padding-bottom:16px;
+    margin-bottom:18px;
     border-bottom: 1px solid rgba(217,174,66,.25);
-  }
-  .badge-seal{
-    display:inline-flex; align-items:center; justify-content:center;
-    width:58px; height:58px;
-    border-radius:50%;
-    background: linear-gradient(160deg, var(--gold-1), var(--gold-2));
-    border:2px solid rgba(255,255,255,.25);
-    font-family:"Cinzel", serif;
-    font-weight:700;
-    font-size:22px;
-    color:#3a2c08;
-    margin-bottom:12px;
-    box-shadow: 0 8px 20px rgba(202,162,58,.4);
   }
   .title{
     font-family:"Cinzel", serif;
@@ -89,68 +76,14 @@
     -webkit-background-clip:text;
     background-clip:text;
     color:transparent;
-    margin:0 0 8px;
+    margin:0;
     text-wrap:balance;
   }
-  .tagline{
-    font-family:"Karla", sans-serif;
-    font-weight:600;
-    font-size:12.5px;
-    letter-spacing:.1em;
-    color: var(--ink-soft);
-    text-transform:uppercase;
-    margin:0;
-  }
 
-  .sec-label{
-    font-family:"Cinzel", serif;
-    font-weight:600;
-    font-size:11px;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    color: var(--ink-soft);
-    margin: 0 0 10px;
-  }
-  .deck-label{ text-align:center; margin-bottom:12px; }
-
-  /* ---- deck preview marquee ---- */
-  .marquee-wrap{
-    margin: 0 0 24px;
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-    overflow:hidden;
-    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-  }
-  .marquee-row{
-    display:flex;
-    width:max-content;
-    gap:8px;
-    animation: scrollLeft 40s linear infinite;
-  }
-  .marquee-row.dir-right{ animation-name: scrollRight; }
-  .marquee-row.dir-left{ animation-name: scrollLeft; }
   @keyframes scrollLeft{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
   @keyframes scrollRight{ from{ transform:translateX(-50%); } to{ transform:translateX(0); } }
-  .chip{
-    flex:none;
-    display:flex; align-items:center; gap:6px;
-    font-family:"Karla", sans-serif;
-    font-weight:600;
-    font-size:12.5px;
-    color: var(--ink);
-    background: var(--card-bg);
-    border:1px solid rgba(244,236,216,.15);
-    border-radius:10px;
-    padding:6px 12px;
-    white-space:nowrap;
-  }
-  .chip .dot{ width:8px; height:8px; border-radius:50%; flex:none; }
-  .chip.exist .dot{ background: var(--exist); }
-  .chip.idea .dot{ background: var(--idea); }
 
-  /* ---- top info: instructions / picked summary ---- */
+  /* ---- top info: picked summary (empty until a card is opened) ---- */
   .subtitle{
     color: var(--ink-soft);
     font-size: 14.5px;
@@ -169,20 +102,23 @@
   .subtitle .picked-desc{ display:block; color: var(--ink-soft); font-size:14.5px; line-height:1.65; }
 
   /* ---- result area ---- */
-  .stage{ position:relative; min-height: 200px; }
-  .idle-hint{
-    text-align:center;
-    font-family:"Cinzel", serif;
-    font-size:14px;
-    color: var(--ink-soft);
-    padding: 50px 16px;
-    border:1px dashed rgba(217,174,66,.3);
-    border-radius:16px;
+  .stage{ position:relative; min-height: 0; }
+
+  /* ---- cards: 4 rows scrolling across the whole page ---- */
+  .card-row{
+    position:fixed;
+    left:0;
+    width:max-content;
+    display:flex;
+    gap:22px;
+    animation: scrollLeft 32s linear infinite;
   }
+  .card-row.dir-right{ animation-name: scrollRight; }
+  .card-row.dir-left{ animation-name: scrollLeft; }
   .face-card{
-    position:absolute;
-    width:78px; height:109px;
-    margin-left:-39px; margin-top:-55px;
+    position:static;
+    flex:none;
+    width:70px; height:98px;
     border-radius:8px;
     border:4px solid var(--card-white);
     outline:1.5px solid rgba(0,0,0,.45);
@@ -193,15 +129,12 @@
     box-shadow: 0 10px 22px rgba(0,0,0,.5);
     display:flex; align-items:center; justify-content:center;
     font-family:"Cinzel", serif;
-    font-size:24px;
+    font-size:22px;
     color: var(--card-white);
     cursor:pointer;
     user-select:none;
     pointer-events:auto;
   }
-  @keyframes drift1{ 0%,100%{ transform:translate(0,0) rotate(0deg); } 50%{ transform:translate(14px,-10px) rotate(4deg); } }
-  @keyframes drift2{ 0%,100%{ transform:translate(0,0) rotate(0deg); } 50%{ transform:translate(-12px,12px) rotate(-5deg); } }
-  @keyframes drift3{ 0%,100%{ transform:translate(0,0) rotate(0deg); } 50%{ transform:translate(10px,10px) rotate(3deg); } }
 
   /* ---- drawn card: a real playing-card face ---- */
   .playing-card{
@@ -357,96 +290,10 @@
   .again-btn:active{ transform: translateY(2px); box-shadow: 0 5px 14px rgba(202,162,58,.35); }
   .again-btn:focus-visible{ outline:2px solid var(--sapphire); outline-offset:3px; }
 
-  .counter-badge{
-    display:table;
-    margin: 22px auto 0;
-    font-family:"Cinzel", serif;
-    font-weight:600;
-    font-size:12.5px;
-    letter-spacing:.05em;
-    color: var(--gold);
-    background: rgba(217,174,66,.1);
-    border:1px solid rgba(217,174,66,.35);
-    padding:6px 16px;
-    border-radius:999px;
-  }
-
-  .footer-plate{
-    text-align:center;
-    font-size:12px;
-    color: var(--ink-soft);
-    margin-top:18px;
-    padding:0 10px;
-  }
-
   @media (prefers-reduced-motion: reduce){
     .playing-card{ animation:none; opacity:1; transform:none; }
-    .marquee-row{ animation:none; }
-    .face-card{ animation:none !important; }
-    .ambient-card{ animation:none !important; }
+    .card-row{ animation:none; }
   }
-
-  /* ---- onboarding overlay ---- */
-  .onboard-overlay{
-    position:fixed; inset:0;
-    background: rgba(4,12,8,.72);
-    display:flex; align-items:center; justify-content:center;
-    padding:20px;
-    z-index:1000;
-  }
-  .onboard-overlay.hidden{ display:none; }
-  .onboard-modal{
-    background: linear-gradient(165deg, var(--paper-2), var(--paper));
-    border:2px solid rgba(217,174,66,.4);
-    border-radius:20px;
-    padding:28px 24px;
-    max-width:440px;
-    width:100%;
-    max-height:85vh;
-    overflow-y:auto;
-    box-shadow: 0 30px 70px rgba(0,0,0,.6);
-  }
-  .onboard-title{
-    font-family:"Cinzel", serif;
-    font-weight:700;
-    font-size:21px;
-    background: linear-gradient(180deg, var(--gold-1), var(--gold-2));
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-    margin:0 0 14px;
-  }
-  .onboard-text{ font-size:14.5px; line-height:1.65; color: var(--ink-soft); margin:0 0 22px; }
-  .onboard-actions{ display:flex; gap:10px; flex-wrap:wrap; }
-  .onboard-btn{
-    font-family:"Cinzel", serif;
-    font-weight:700;
-    font-size:13.5px;
-    padding:11px 22px;
-    border:none;
-    border-radius:999px;
-    cursor:pointer;
-    transition: transform .08s ease, box-shadow .08s ease;
-  }
-  .onboard-btn:active{ transform: translateY(2px); }
-  .onboard-btn:focus-visible{ outline:2px solid var(--sapphire); outline-offset:2px; }
-  .onboard-btn.primary{ background: linear-gradient(160deg, var(--gold-1), var(--gold-2)); color:#2a2007; box-shadow:0 8px 20px rgba(202,162,58,.35); }
-  .onboard-btn.secondary{ background: var(--card-bg); color: var(--ink); border:1px solid rgba(244,236,216,.2); }
-  .onboard-steps{ margin:0 0 20px; padding-left:20px; font-size:14px; line-height:1.75; color: var(--ink-soft); }
-  .onboard-steps li{ margin-bottom:7px; }
-  .onboard-try-label{
-    font-family:"Cinzel", serif;
-    font-weight:600;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    color: var(--ink-soft);
-    margin:0 0 12px;
-  }
-  .onboard-demo{ text-align:center; margin-bottom:22px; }
-  .demo-face{ position:static !important; margin:0 auto 12px !important; animation:none !important; }
-  .demo-result{ font-size:13.5px; line-height:1.6; color: var(--ink); }
-  .demo-note{ display:block; font-size:12px; color: var(--ink-soft); margin-top:6px; }
 </style>
 </head>
 <body>
@@ -454,25 +301,13 @@
 <div class="box">
 
   <div class="box-header">
-    <div class="badge-seal">◆</div>
     <h1 class="title">Loyiha Kolleksiyasi</h1>
-    <p class="tagline">Noyob IT g'oyalari to'plami</p>
   </div>
 
-  <div class="deck-label sec-label">To'plamdagi kartalar</div>
-  <div class="marquee-wrap" id="marqueeWrap"></div>
-
-  <p class="subtitle" id="topInfo">Sahifa bo'ylab aylanib yurgan kartalardan istalganini tanlang — u orqali o'zingiz uchun yangi loyihani kashf etasiz!</p>
+  <p class="subtitle" id="topInfo"></p>
 
   <div class="stage" id="stage"></div>
   <div class="below-card" id="belowCard"></div>
-
-  <div class="counter-badge" id="counter">TORTILGAN 000</div>
-  <div class="footer-plate">Har safar kartani ochganingizda yangi loyiha chiqadi — istagan vaqtingizda yana tortishingiz mumkin.</div>
-</div>
-
-<div class="onboard-overlay" id="onboardOverlay">
-  <div class="onboard-modal" id="onboardModal"></div>
 </div>
 
 <script>
@@ -588,29 +423,10 @@ const SUIT_FOR_TYPE = {
   idea: { symbol: "♠", color: "black" },
 };
 
-let count = 0;
 const stage = document.getElementById("stage");
-const counterEl = document.getElementById("counter");
 const topInfoEl = document.getElementById("topInfo");
 const belowCardEl = document.getElementById("belowCard");
-const DEFAULT_TOPINFO_HTML = topInfoEl.innerHTML;
-
-function buildDeckMarquee(){
-  const wrap = document.getElementById("marqueeWrap");
-  if(!wrap) return;
-  const rows = [[], [], [], []];
-  PROJECTS.forEach((p, i) => rows[i % 4].push(p));
-  const directions = ["right", "left", "right", "left"];
-  const speeds = [38, 44, 40, 46];
-
-  wrap.innerHTML = rows.map((rowProjects, i) => {
-    const chips = rowProjects.map(p =>
-      `<span class="chip ${p.type}"><span class="dot"></span>${p.name}</span>`
-    ).join("");
-    return `<div class="marquee-row dir-${directions[i]}" style="animation-duration:${speeds[i]}s">${chips}${chips}</div>`;
-  }).join("");
-}
-buildDeckMarquee();
+const globalField = document.getElementById("globalField");
 
 function aiQueryFor(p){
   if(p.type === "exist"){
@@ -626,36 +442,21 @@ function googleQueryFor(p){
   return `${p.name} - mavjud yechimlar va raqobatchilar tahlili`;
 }
 
-/* ---- idle state: face-down cards scattered across the whole page ---- */
-const globalField = document.getElementById("globalField");
-
-function layoutPositions(n){
-  const cols = Math.ceil(Math.sqrt(n * 1.6));
-  const rows = Math.ceil(n / cols);
-  const cellW = 100 / cols, cellH = 100 / rows;
-  const pts = [];
-  for(let i = 0; i < n; i++){
-    const col = i % cols, row = Math.floor(i / cols);
-    const jitterX = (Math.random() - 0.5) * cellW * 0.5;
-    const jitterY = (Math.random() - 0.5) * cellH * 0.5;
-    const left = Math.min(95, Math.max(5, col * cellW + cellW / 2 + jitterX));
-    const top = Math.min(92, Math.max(8, row * cellH + cellH / 2 + jitterY));
-    pts.push({ left, top });
-  }
-  return pts;
-}
+/* ---- idle state: 4 rows of face-down cards scrolling across the page ---- */
+const ROW_CONFIG = [
+  { dir: "right", top: 10, dur: 34 },
+  { dir: "left", top: 38, dur: 30 },
+  { dir: "right", top: 64, dur: 38 },
+  { dir: "left", top: 90, dur: 32 },
+];
 
 function renderIdleField(){
-  stage.innerHTML = `<div class="idle-hint">↑ Sahifada aylanib yurgan kartalardan birini tanlang</div>`;
+  stage.innerHTML = "";
   belowCardEl.innerHTML = "";
 
-  const N = 11;
-  const positions = layoutPositions(N);
-  globalField.innerHTML = positions.map((pos, i) => {
-    const driftN = (i % 3) + 1;
-    const dur = (7 + Math.random() * 4).toFixed(1);
-    const delay = (Math.random() * 3).toFixed(1);
-    return `<div class="face-card" style="left:${pos.left}%;top:${pos.top}%;animation-name:drift${driftN};animation-duration:${dur}s;animation-delay:${delay}s;">◆</div>`;
+  globalField.innerHTML = ROW_CONFIG.map(row => {
+    const cards = Array.from({ length: 7 }, () => `<div class="face-card">◆</div>`).join("");
+    return `<div class="card-row dir-${row.dir}" style="top:${row.top}%;animation-duration:${row.dur}s">${cards}${cards}</div>`;
   }).join("");
 
   globalField.querySelectorAll(".face-card").forEach(el => {
@@ -667,6 +468,9 @@ function renderIdleField(){
 }
 
 function pickFromField(pick, clickedEl){
+  globalField.querySelectorAll(".card-row").forEach(row => {
+    row.style.animationPlayState = "paused";
+  });
   globalField.querySelectorAll(".face-card").forEach(el => {
     if(el !== clickedEl){
       el.style.transition = "opacity .3s ease";
@@ -675,7 +479,6 @@ function pickFromField(pick, clickedEl){
     }
   });
   clickedEl.style.pointerEvents = "none";
-  clickedEl.style.animation = "none";
   clickedEl.style.transition = "opacity .25s ease, transform .25s ease";
   clickedEl.style.opacity = "0";
   clickedEl.style.transform = "scale(.7)";
@@ -719,9 +522,7 @@ function renderPicked(pick){
   const googleQuery = googleQueryFor(pick);
 
   belowCardEl.innerHTML = `
-    <div class="sec-label">Kerakli asboblar</div>
     <div class="tags">${pick.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
-    <div class="sec-label">Kalitlar</div>
     <div class="keys">
       <button class="key-toggle" type="button" data-target="keyAi">Kalit: AI'ga savol ber ›</button>
       <div class="key-content" id="keyAi" hidden>
@@ -741,15 +542,13 @@ function renderPicked(pick){
     <button class="again-btn" type="button" id="againBtn">Yana karta tort</button>
   `;
   document.getElementById("againBtn").addEventListener("click", () => {
-    topInfoEl.innerHTML = DEFAULT_TOPINFO_HTML;
+    topInfoEl.innerHTML = "";
     belowCardEl.innerHTML = "";
     renderIdleField();
   });
 }
 
 function landOnCard(pick){
-  count++;
-  counterEl.textContent = "TORTILGAN " + String(count).padStart(3, "0");
   renderPicked(pick);
 }
 
@@ -807,64 +606,6 @@ document.addEventListener("click", (e) => {
 });
 
 renderIdleField();
-
-/* ---- onboarding: shown every visit; branches only for "Tushunmadim" ---- */
-const onboardOverlay = document.getElementById("onboardOverlay");
-const onboardModal = document.getElementById("onboardModal");
-
-function closeOnboard(){
-  onboardOverlay.classList.add("hidden");
-}
-
-function renderOnboardStep1(){
-  onboardModal.innerHTML = `
-    <h2 class="onboard-title">Xush kelibsiz!</h2>
-    <p class="onboard-text">Bu — tasodifiy IT loyiha g'oyalari beruvchi kolleksiya kartalari o'yini. Butun sahifa bo'ylab aylanib yurgan yopiq kartalardan birini bosing — u sizga tasodifiy loyiha (mavjud yoki hali yaratilmagan g'oya) ochib beradi. Karta ochilgach, pastdagi tavsif, kerakli texnologiyalar va "Kalitlar" orqali AI va Google'dan to'liq ma'lumot so'rashingiz mumkin. Istalgan vaqtda "Yana karta tort" tugmasi bilan yangisini tanlaysiz.</p>
-    <div class="onboard-actions">
-      <button class="onboard-btn primary" id="understandBtn" type="button">Tushundim</button>
-      <button class="onboard-btn secondary" id="dontUnderstandBtn" type="button">Tushunmadim</button>
-    </div>
-  `;
-  document.getElementById("understandBtn").addEventListener("click", closeOnboard);
-  document.getElementById("dontUnderstandBtn").addEventListener("click", renderOnboardStep2);
-}
-
-function renderOnboardStep2(){
-  onboardModal.innerHTML = `
-    <h2 class="onboard-title">Qanday ishlatiladi?</h2>
-    <ol class="onboard-steps">
-      <li>Sahifa bo'ylab aylanib yurgan yopiq kartalardan birini bosing.</li>
-      <li>Karta ochiladi — loyiha nomi ko'rinadi.</li>
-      <li>Pastda tavsif, kerakli texnologiyalar va "Kalitlar" (AI/Google so'rovlari) chiqadi — ularni bosib to'liq ma'lumot oling.</li>
-      <li>"Yana karta tort" tugmasi bilan istalgan vaqtda yangi loyiha tanlaysiz.</li>
-    </ol>
-    <p class="onboard-try-label">Hoziroq sinab ko'ring</p>
-    <div class="onboard-demo">
-      <div class="face-card demo-face" id="demoFaceCard">◆</div>
-      <p class="demo-result" id="demoResult" hidden></p>
-    </div>
-    <div class="onboard-actions">
-      <button class="onboard-btn primary" id="toSiteBtn" type="button">Saytga o'tish</button>
-    </div>
-  `;
-  document.getElementById("toSiteBtn").addEventListener("click", closeOnboard);
-
-  const demoCard = document.getElementById("demoFaceCard");
-  const demoResult = document.getElementById("demoResult");
-  demoCard.addEventListener("click", () => {
-    const pick = PROJECTS[Math.floor(Math.random() * PROJECTS.length)];
-    const label = pick.type === "exist" ? "Mavjud loyiha" : "Yangi g'oya";
-    demoCard.style.opacity = ".35";
-    demoCard.style.pointerEvents = "none";
-    demoCard.textContent = "✓";
-    demoResult.hidden = false;
-    demoResult.innerHTML =
-      `<strong>${pick.name}</strong> — ${label} · Qiyinlik: ${pick.difficulty}` +
-      `<span class="demo-note">Bu — sinov, hisobga olinmaydi. Haqiqiy saytda xuddi shunday karta chiqadi.</span>`;
-  }, { once: true });
-}
-
-renderOnboardStep1();
 </script>
 </body>
 </html>
