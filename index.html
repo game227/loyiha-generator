@@ -6,23 +6,29 @@
 <title>Loyiha Generatori</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#F6E8C8;
-    --paper-2:#EFDCB0;
-    --card-bg:#FFFBF0;
-    --ink:#241C14;
-    --ink-soft:#6b5d47;
-    --red:#E8432E;
-    --blue:#2C5FC4;
-    --yellow:#F2A93B;
-    --exist:#3E8E4F;
-    --exist-bg:#DCEEDF;
-    --idea:#7B4FC7;
-    --idea-bg:#EAE0F7;
-    --query:#2C5FC4;
-    --query-bg:#DCE6F7;
+    /* deliberately single-theme: a lit collector's display case has no "day mode" */
+    --paper:#0b2318;
+    --paper-2:#123527;
+    --card-bg:#0f2c1f;
+    --ink:#f4ecd8;
+    --ink-soft:#b3c2ac;
+    --ruby:#c14a63;
+    --sapphire:#3f8fd6;
+    --gold:#d9ae42;
+    --exist:#4fd19c;
+    --exist-bg:rgba(79,209,156,.14);
+    --idea:#b98cf0;
+    --idea-bg:rgba(185,140,240,.14);
+    --query:#6fb0f2;
+    --query-bg:rgba(111,176,242,.12);
+    --gold-1:#f6e0a0; --gold-2:#caa23a; --gold-3:#8a6a1c;
+    --card-white:#fdfaf3;
+    --card-red:#b3212f;
+    --card-black:#1c1a17;
+    --cardback-red:#a4202c;
   }
 
   *{ box-sizing:border-box; }
@@ -32,95 +38,100 @@
     padding-block:32px;
     padding-inline:16px;
     background-color: var(--paper);
-    background-image: radial-gradient(rgba(36,28,20,.09) 1.2px, transparent 1.2px);
-    background-size: 14px 14px;
+    background-image:
+      radial-gradient(900px circle at 50% 0%, rgba(217,174,66,.08), transparent 60%),
+      radial-gradient(700px circle at 10% 90%, rgba(79,209,156,.06), transparent 60%),
+      radial-gradient(700px circle at 90% 90%, rgba(185,140,240,.06), transparent 60%);
     color: var(--ink);
-    font-family: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
+    font-family: "Karla", ui-sans-serif, system-ui, sans-serif;
   }
 
   .ambient-field{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
   .ambient-card{
     position:absolute;
-    width:60px; height:80px;
-    border-radius:9px;
-    border:3px solid var(--ink);
-    box-shadow:2px 2px 0 var(--ink);
-    opacity:.32;
+    width:52px; height:73px;
+    border-radius:6px;
+    border:3px solid var(--card-white);
+    outline:1px solid rgba(0,0,0,.4);
+    background-color: var(--cardback-red);
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255,255,255,.14) 0 2px, transparent 2px 7px),
+      repeating-linear-gradient(-45deg, rgba(255,255,255,.14) 0 2px, transparent 2px 7px);
+    box-shadow: 0 8px 18px rgba(0,0,0,.4);
+    opacity:.45;
     display:flex; align-items:center; justify-content:center;
-    font-family:"Baloo 2", sans-serif;
-    font-weight:800;
-    font-size:18px;
-    color:#fff;
+    font-family:"Cinzel", serif;
+    font-size:16px;
+    color: var(--card-white);
   }
-  .ambient-card:nth-child(4n+1){ background: var(--red); }
-  .ambient-card:nth-child(4n+2){ background: var(--blue); }
-  .ambient-card:nth-child(4n+3){ background: var(--idea); }
-  .ambient-card:nth-child(4n){ background: var(--yellow); color: var(--ink); }
 
   .box{
     position:relative;
     z-index:1;
     max-width: 680px;
     margin: 0 auto;
-    background: var(--card-bg);
-    border: 4px solid var(--ink);
+    background: linear-gradient(165deg, var(--paper-2), var(--paper));
+    border: 2px solid rgba(217,174,66,.35);
     border-radius: 22px;
-    padding: 22px;
-    box-shadow: 8px 8px 0 var(--ink);
+    padding: 26px;
+    box-shadow: 0 24px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.04);
   }
 
   .box-header{
     text-align:center;
-    padding-bottom:18px;
-    margin-bottom:20px;
-    border-bottom: 3px dashed var(--ink);
+    padding-bottom:20px;
+    margin-bottom:22px;
+    border-bottom: 1px solid rgba(217,174,66,.25);
   }
   .badge-seal{
     display:inline-flex; align-items:center; justify-content:center;
     width:58px; height:58px;
     border-radius:50%;
-    background: var(--yellow);
-    border:3px solid var(--ink);
-    font-family:"Baloo 2", sans-serif;
-    font-weight:800;
+    background: linear-gradient(160deg, var(--gold-1), var(--gold-2));
+    border:2px solid rgba(255,255,255,.25);
+    font-family:"Cinzel", serif;
+    font-weight:700;
     font-size:22px;
-    margin-bottom:10px;
-    transform: rotate(-6deg);
-    box-shadow: 3px 3px 0 var(--ink);
+    color:#3a2c08;
+    margin-bottom:12px;
+    box-shadow: 0 8px 20px rgba(202,162,58,.4);
   }
   .title{
-    font-family:"Baloo 2", sans-serif;
-    font-weight:800;
-    font-size: clamp(26px, 6vw, 38px);
-    color: var(--red);
-    text-shadow: -2px -2px 0 var(--ink), 2px -2px 0 var(--ink), -2px 2px 0 var(--ink), 2px 2px 0 var(--ink);
+    font-family:"Cinzel", serif;
+    font-weight:700;
+    font-size: clamp(24px, 5.5vw, 34px);
+    letter-spacing:.02em;
+    background: linear-gradient(180deg, var(--gold-1), var(--gold-2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
     margin:0 0 8px;
     text-wrap:balance;
   }
   .tagline{
-    font-family:"Baloo 2", sans-serif;
-    font-weight:700;
-    font-size:13px;
-    letter-spacing:.03em;
+    font-family:"Karla", sans-serif;
+    font-weight:600;
+    font-size:12.5px;
+    letter-spacing:.1em;
     color: var(--ink-soft);
     text-transform:uppercase;
     margin:0;
   }
 
   .sec-label{
-    font-family:"Baloo 2", sans-serif;
-    font-weight:700;
+    font-family:"Cinzel", serif;
+    font-weight:600;
     font-size:11px;
-    letter-spacing:.05em;
+    letter-spacing:.08em;
     text-transform:uppercase;
     color: var(--ink-soft);
-    margin: 0 0 8px;
+    margin: 0 0 10px;
   }
-  .deck-label{ text-align:center; margin-bottom:10px; }
+  .deck-label{ text-align:center; margin-bottom:12px; }
 
   /* ---- deck preview marquee ---- */
   .marquee-wrap{
-    margin: 0 0 22px;
+    margin: 0 0 24px;
     display:flex;
     flex-direction:column;
     gap:8px;
@@ -141,15 +152,14 @@
   .chip{
     flex:none;
     display:flex; align-items:center; gap:6px;
-    font-family:"Baloo 2", sans-serif;
-    font-weight:700;
+    font-family:"Karla", sans-serif;
+    font-weight:600;
     font-size:12.5px;
     color: var(--ink);
     background: var(--card-bg);
-    border:2px solid var(--ink);
+    border:1px solid rgba(244,236,216,.15);
     border-radius:10px;
     padding:6px 12px;
-    box-shadow: 2px 2px 0 var(--ink);
     white-space:nowrap;
   }
   .chip .dot{ width:8px; height:8px; border-radius:50%; flex:none; }
@@ -159,108 +169,128 @@
   /* ---- top info: instructions / picked summary ---- */
   .subtitle{
     color: var(--ink-soft);
-    font-size: 15px;
-    line-height: 1.6;
+    font-size: 14.5px;
+    line-height: 1.65;
     max-width: 56ch;
-    margin: 0 0 18px;
+    margin: 0 0 20px;
   }
   .subtitle .picked-banner{
     display:block;
-    font-family:"Baloo 2", sans-serif;
-    font-weight:800;
+    font-family:"Cinzel", serif;
+    font-weight:600;
     font-size:13px;
-    letter-spacing:.04em;
+    letter-spacing:.05em;
     margin-bottom:8px;
   }
-  .subtitle .picked-desc{ display:block; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  .subtitle .picked-desc{ display:block; color: var(--ink-soft); font-size:14.5px; line-height:1.65; }
 
   /* ---- face-down card field ---- */
   .stage{ position:relative; min-height: 340px; }
   .field-tray{
     position:absolute; inset:0;
-    border:3px dashed var(--ink);
-    border-radius:14px;
-    background: var(--paper-2);
+    border:1px dashed rgba(217,174,66,.3);
+    border-radius:16px;
+    background: rgba(0,0,0,.15);
     overflow:hidden;
   }
   .face-card{
     position:absolute;
-    width:74px; height:100px;
-    margin-left:-37px; margin-top:-50px;
-    border-radius:10px;
-    background: var(--red);
-    border:3px solid var(--ink);
-    box-shadow:3px 3px 0 var(--ink);
+    width:78px; height:109px;
+    margin-left:-39px; margin-top:-55px;
+    border-radius:8px;
+    border:4px solid var(--card-white);
+    outline:1.5px solid rgba(0,0,0,.45);
+    background-color: var(--cardback-red);
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255,255,255,.14) 0 2px, transparent 2px 7px),
+      repeating-linear-gradient(-45deg, rgba(255,255,255,.14) 0 2px, transparent 2px 7px);
+    box-shadow: 0 10px 22px rgba(0,0,0,.5);
     display:flex; align-items:center; justify-content:center;
-    font-family:"Baloo 2", sans-serif;
-    font-weight:800;
+    font-family:"Cinzel", serif;
     font-size:24px;
-    color:#fff;
+    color: var(--card-white);
     cursor:pointer;
     user-select:none;
   }
-  .face-card:nth-child(4n+2){ background: var(--blue); }
-  .face-card:nth-child(4n+3){ background: var(--idea); }
-  .face-card:nth-child(4n){ background: var(--yellow); color: var(--ink); }
   @keyframes drift1{ 0%,100%{ transform:translate(0,0) rotate(0deg); } 50%{ transform:translate(14px,-10px) rotate(4deg); } }
   @keyframes drift2{ 0%,100%{ transform:translate(0,0) rotate(0deg); } 50%{ transform:translate(-12px,12px) rotate(-5deg); } }
   @keyframes drift3{ 0%,100%{ transform:translate(0,0) rotate(0deg); } 50%{ transform:translate(10px,10px) rotate(3deg); } }
 
-  /* ---- drawn card (name + timer only) ---- */
-  .card{
+  /* ---- drawn card: a real playing-card face ---- */
+  .playing-card{
     position:relative;
-    background: var(--card-bg);
-    border: 3px solid var(--ink);
-    border-radius:16px;
-    box-shadow: 6px 6px 0 var(--ink);
-    overflow:hidden;
+    width:236px;
+    max-width:100%;
+    aspect-ratio: 5 / 7;
+    margin:0 auto;
+    background: var(--card-white);
+    border:2.5px solid var(--card-black);
+    border-radius:14px;
+    box-shadow: 0 18px 40px rgba(0,0,0,.55);
     opacity:0;
-    transform: translateY(10px) scale(.97) rotate(-1deg);
-    animation: cardIn .3s ease forwards;
+    transform: translateY(10px) scale(.97);
+    animation: cardIn .32s ease forwards;
   }
   @keyframes cardIn{ to{ opacity:1; transform:none; } }
-  .card-banner{
-    padding:10px;
-    background: var(--type-color);
-    border-bottom:3px solid var(--ink);
+  .pc-corner{
+    position:absolute;
+    display:flex; flex-direction:column; align-items:center;
+    line-height:1.05;
+    font-family:"Cinzel", serif;
   }
-  .card-body{ padding: 26px 20px 28px; text-align:center; }
-  .card h2{
-    font-family:"Baloo 2", sans-serif;
-    font-weight:800;
-    font-size:26px;
-    color: var(--ink);
-    margin:0;
-    text-wrap:balance;
+  .pc-corner.pc-top{ top:12px; left:12px; }
+  .pc-corner.pc-bottom{ bottom:12px; right:12px; transform:rotate(180deg); }
+  .pc-rank{ font-size:19px; font-weight:700; }
+  .pc-suit{ font-size:15px; margin-top:2px; }
+  .playing-card[data-suit="red"] .pc-rank,
+  .playing-card[data-suit="red"] .pc-suit,
+  .playing-card[data-suit="red"] .pc-watermark{ color: var(--card-red); }
+  .playing-card[data-suit="black"] .pc-rank,
+  .playing-card[data-suit="black"] .pc-suit,
+  .playing-card[data-suit="black"] .pc-watermark{ color: var(--card-black); }
+  .pc-center{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    padding: 42px 18px;
   }
-  /* ---- below-card: keys + draw again ---- */
-  .below-card{ margin-top:18px; }
-  .again-btn{
-    display:table;
-    margin:20px auto 0;
-    font-family:"Baloo 2", sans-serif;
-    font-weight:800;
-    font-size:15px;
-    color:#fff;
-    background: var(--red);
-    border:3px solid var(--ink);
-    border-radius:999px;
-    padding:14px 28px;
-    cursor:pointer;
-    box-shadow:5px 5px 0 var(--ink);
-    transition: transform .08s ease, box-shadow .08s ease;
+  .pc-watermark{
+    position:absolute; top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    font-size:110px;
+    opacity:.09;
+    line-height:1;
   }
-  .again-btn:active{ transform: translate(4px,4px); box-shadow:1px 1px 0 var(--ink); }
-  .again-btn:focus-visible{ outline:3px solid var(--blue); outline-offset:3px; }
-
-  .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
-  .tag{
-    font-family:"Nunito Sans", sans-serif;
+  .pc-name{
+    position:relative;
+    font-family:"Cinzel", serif;
     font-weight:700;
+    font-size:18px;
+    color: var(--card-black);
+    margin:0 0 8px;
+    line-height:1.25;
+  }
+  .pc-type-label{
+    position:relative;
+    font-family:"Karla", sans-serif;
+    font-weight:700;
+    font-size:10px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:#6b6558;
+  }
+
+  /* ---- below-card: keys + draw again ---- */
+  .below-card{ margin-top:20px; }
+
+  .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+  .tag{
+    font-family:"Karla", sans-serif;
+    font-weight:600;
     font-size:12px;
     color: var(--ink);
-    background: var(--paper-2);
-    border:2px solid var(--ink);
+    background: var(--card-bg);
+    border:1px solid rgba(244,236,216,.18);
     padding:4px 10px;
     border-radius:8px;
   }
@@ -268,83 +298,102 @@
   .keys{ display:flex; flex-direction:column; gap:8px; }
   .key-toggle{
     align-self:flex-start;
-    font-family:"Baloo 2", sans-serif;
+    font-family:"Karla", sans-serif;
     font-weight:700;
     font-size:12.5px;
-    color: var(--ink);
-    background: var(--yellow);
-    border:2px solid var(--ink);
-    border-radius:8px;
-    padding:8px 14px;
+    color:#0d2a3d;
+    background: linear-gradient(160deg, #9ccdf2, var(--sapphire));
+    border:none;
+    border-radius:9px;
+    padding:9px 15px;
     cursor:pointer;
-    box-shadow:2px 2px 0 var(--ink);
+    box-shadow: 0 6px 16px rgba(63,143,214,.3);
   }
-  .key-toggle.open{ background: var(--blue); color:#fff; }
+  .key-toggle.open{ background: linear-gradient(160deg, #cfe6fb, #7fb8e8); }
   .key-content{ margin: 8px 0 4px; }
   .key-content[hidden]{ display:none; }
   .query-console{
     display:flex; gap:10px; align-items:flex-start;
     background: var(--query-bg);
-    border:2px dashed var(--query);
+    border:1px solid rgba(111,176,242,.4);
     border-radius:12px;
     padding:12px;
   }
   .query-text{
     flex:1; margin:0;
-    font-family:"Nunito Sans", sans-serif;
-    font-weight:600;
+    font-family:"Karla", sans-serif;
+    font-weight:500;
     font-size:13.5px;
     line-height:1.55;
     color: var(--ink);
   }
   .copy-btn{
     flex:none;
-    font-family:"Baloo 2", sans-serif;
+    font-family:"Karla", sans-serif;
     font-weight:700;
     font-size:11px;
     letter-spacing:.02em;
     text-transform:uppercase;
-    color:#fff;
-    background: var(--blue);
-    border:2px solid var(--ink);
+    color:#0d2a3d;
+    background: var(--sapphire);
+    border:none;
     border-radius:8px;
     padding:8px 12px;
     cursor:pointer;
-    box-shadow: 3px 3px 0 var(--ink);
+    box-shadow: 0 4px 12px rgba(63,143,214,.35);
     transition: transform .08s ease, box-shadow .08s ease;
   }
-  .copy-btn:active{ transform: translate(3px,3px); box-shadow: 0 0 0 var(--ink); }
-  .copy-btn.copied{ background: var(--exist); }
-  .copy-btn:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
+  .copy-btn:active{ transform: translateY(2px); box-shadow: 0 2px 6px rgba(63,143,214,.3); }
+  .copy-btn.copied{ background: var(--exist); color:#0a2a1c; }
+  .copy-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
   @media (max-width:480px){
     .query-console{ flex-direction:column; }
     .copy-btn{ align-self:flex-end; }
   }
 
+  .again-btn{
+    display:table;
+    margin:22px auto 0;
+    font-family:"Cinzel", serif;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:.04em;
+    color:#2a2007;
+    background: linear-gradient(160deg, var(--gold-1), var(--gold-2));
+    border:none;
+    border-radius:999px;
+    padding:14px 30px;
+    cursor:pointer;
+    box-shadow: 0 10px 26px rgba(202,162,58,.4);
+    transition: transform .08s ease, box-shadow .08s ease;
+  }
+  .again-btn:active{ transform: translateY(2px); box-shadow: 0 5px 14px rgba(202,162,58,.35); }
+  .again-btn:focus-visible{ outline:2px solid var(--sapphire); outline-offset:3px; }
+
   .counter-badge{
     display:table;
     margin: 22px auto 0;
-    font-family:"Baloo 2", sans-serif;
-    font-weight:700;
-    font-size:14px;
-    color: var(--ink);
-    background: var(--yellow);
-    border:2.5px solid var(--ink);
+    font-family:"Cinzel", serif;
+    font-weight:600;
+    font-size:12.5px;
+    letter-spacing:.05em;
+    color: var(--gold);
+    background: rgba(217,174,66,.1);
+    border:1px solid rgba(217,174,66,.35);
     padding:6px 16px;
     border-radius:999px;
-    box-shadow: 3px 3px 0 var(--ink);
   }
 
   .footer-plate{
     text-align:center;
     font-size:12px;
     color: var(--ink-soft);
-    margin-top:16px;
+    margin-top:18px;
     padding:0 10px;
   }
 
   @media (prefers-reduced-motion: reduce){
-    .card{ animation:none; opacity:1; transform:none; }
+    .playing-card{ animation:none; opacity:1; transform:none; }
     .marquee-row{ animation:none; }
     .face-card{ animation:none !important; }
     .ambient-card{ animation:none !important; }
@@ -353,63 +402,64 @@
   /* ---- onboarding overlay ---- */
   .onboard-overlay{
     position:fixed; inset:0;
-    background: rgba(36,28,20,.6);
+    background: rgba(4,12,8,.72);
     display:flex; align-items:center; justify-content:center;
     padding:20px;
     z-index:1000;
   }
   .onboard-overlay.hidden{ display:none; }
   .onboard-modal{
-    background: var(--card-bg);
-    border:4px solid var(--ink);
-    border-radius:18px;
-    padding:26px 24px;
+    background: linear-gradient(165deg, var(--paper-2), var(--paper));
+    border:2px solid rgba(217,174,66,.4);
+    border-radius:20px;
+    padding:28px 24px;
     max-width:440px;
     width:100%;
     max-height:85vh;
     overflow-y:auto;
-    box-shadow:8px 8px 0 var(--ink);
+    box-shadow: 0 30px 70px rgba(0,0,0,.6);
   }
   .onboard-title{
-    font-family:"Baloo 2", sans-serif;
-    font-weight:800;
-    font-size:22px;
-    color: var(--red);
-    text-shadow: -1.5px -1.5px 0 var(--ink), 1.5px -1.5px 0 var(--ink), -1.5px 1.5px 0 var(--ink), 1.5px 1.5px 0 var(--ink);
-    margin:0 0 12px;
+    font-family:"Cinzel", serif;
+    font-weight:700;
+    font-size:21px;
+    background: linear-gradient(180deg, var(--gold-1), var(--gold-2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    margin:0 0 14px;
   }
-  .onboard-text{ font-size:14.5px; line-height:1.6; color: var(--ink-soft); margin:0 0 20px; }
+  .onboard-text{ font-size:14.5px; line-height:1.65; color: var(--ink-soft); margin:0 0 22px; }
   .onboard-actions{ display:flex; gap:10px; flex-wrap:wrap; }
   .onboard-btn{
-    font-family:"Baloo 2", sans-serif;
+    font-family:"Cinzel", serif;
     font-weight:700;
-    font-size:14px;
-    padding:10px 20px;
-    border:2.5px solid var(--ink);
-    border-radius:10px;
+    font-size:13.5px;
+    padding:11px 22px;
+    border:none;
+    border-radius:999px;
     cursor:pointer;
-    box-shadow:3px 3px 0 var(--ink);
     transition: transform .08s ease, box-shadow .08s ease;
   }
-  .onboard-btn:active{ transform: translate(3px,3px); box-shadow:0 0 0 var(--ink); }
-  .onboard-btn:focus-visible{ outline:2px solid var(--blue); outline-offset:2px; }
-  .onboard-btn.primary{ background: var(--exist); color:#fff; }
-  .onboard-btn.secondary{ background: var(--paper-2); color: var(--ink); }
-  .onboard-steps{ margin:0 0 18px; padding-left:20px; font-size:14px; line-height:1.7; color: var(--ink-soft); }
-  .onboard-steps li{ margin-bottom:6px; }
+  .onboard-btn:active{ transform: translateY(2px); }
+  .onboard-btn:focus-visible{ outline:2px solid var(--sapphire); outline-offset:2px; }
+  .onboard-btn.primary{ background: linear-gradient(160deg, var(--gold-1), var(--gold-2)); color:#2a2007; box-shadow:0 8px 20px rgba(202,162,58,.35); }
+  .onboard-btn.secondary{ background: var(--card-bg); color: var(--ink); border:1px solid rgba(244,236,216,.2); }
+  .onboard-steps{ margin:0 0 20px; padding-left:20px; font-size:14px; line-height:1.75; color: var(--ink-soft); }
+  .onboard-steps li{ margin-bottom:7px; }
   .onboard-try-label{
-    font-family:"Baloo 2", sans-serif;
-    font-weight:700;
-    font-size:12px;
+    font-family:"Cinzel", serif;
+    font-weight:600;
+    font-size:11px;
     text-transform:uppercase;
-    letter-spacing:.04em;
+    letter-spacing:.08em;
     color: var(--ink-soft);
-    margin:0 0 10px;
+    margin:0 0 12px;
   }
-  .onboard-demo{ text-align:center; margin-bottom:20px; }
+  .onboard-demo{ text-align:center; margin-bottom:22px; }
   .demo-face{ position:static !important; margin:0 auto 12px !important; animation:none !important; }
   .demo-result{ font-size:13.5px; line-height:1.6; color: var(--ink); }
-  .demo-note{ display:block; font-size:12px; color: var(--ink-soft); margin-top:4px; }
+  .demo-note{ display:block; font-size:12px; color: var(--ink-soft); margin-top:6px; }
 </style>
 </head>
 <body>
@@ -417,9 +467,9 @@
 <div class="box">
 
   <div class="box-header">
-    <div class="badge-seal">?</div>
-    <h1 class="title">LOYIHA O'YINI</h1>
-    <p class="tagline">Tasodifiy IT loyiha kartalari to'plami</p>
+    <div class="badge-seal">◆</div>
+    <h1 class="title">Loyiha Kolleksiyasi</h1>
+    <p class="tagline">Noyob IT g'oyalari to'plami</p>
   </div>
 
   <div class="deck-label sec-label">To'plamdagi kartalar</div>
@@ -545,7 +595,11 @@ const PROJECTS = [
   {name:"Ijara shartnomalarini tekshiruvchi tizim", type:"idea", difficulty:"Qiyin", desc:"Ko'chmas mulk ijarasidan oldin mulk hujjatlari va egasining haqiqiyligini tekshirib, firibgarlik xavfini kamaytiruvchi xizmat.", tags:["PropTech","Verification"]},
 ];
 
-const DIFF_LEVEL = { "Oson": 1, "O'rta": 2, "Qiyin": 3 };
+const RANK_FOR_DIFF = { "Oson": "7", "O'rta": "J", "Qiyin": "A" };
+const SUIT_FOR_TYPE = {
+  exist: { symbol: "♦", color: "red" },
+  idea: { symbol: "♠", color: "black" },
+};
 
 let count = 0;
 const stage = document.getElementById("stage");
@@ -583,7 +637,7 @@ function buildAmbientField(){
     const driftN = (i % 3) + 1;
     const dur = (9 + Math.random() * 5).toFixed(1);
     const delay = (Math.random() * 4).toFixed(1);
-    return `<div class="ambient-card" style="left:${s.left}%;top:${s.top}%;animation-name:drift${driftN};animation-duration:${dur}s;animation-delay:${delay}s;">?</div>`;
+    return `<div class="ambient-card" style="left:${s.left}%;top:${s.top}%;animation-name:drift${driftN};animation-duration:${dur}s;animation-delay:${delay}s;">◆</div>`;
   }).join("");
 }
 buildAmbientField();
@@ -600,12 +654,6 @@ function googleQueryFor(p){
     return `${p.name} how it works technical architecture tech stack`;
   }
   return `${p.name} - mavjud yechimlar va raqobatchilar tahlili`;
-}
-
-function starsFor(level){
-  let s = "";
-  for(let i=1;i<=3;i++){ s += i <= level ? "★" : "☆"; }
-  return s;
 }
 
 /* ---- idle state: a tray of face-down, gently drifting cards ---- */
@@ -632,7 +680,7 @@ function renderIdleField(){
     const driftN = (i % 3) + 1;
     const dur = (7 + Math.random() * 4).toFixed(1);
     const delay = (Math.random() * 3).toFixed(1);
-    return `<div class="face-card" style="left:${pos.left}%;top:${pos.top}%;animation-name:drift${driftN};animation-duration:${dur}s;animation-delay:${delay}s;">?</div>`;
+    return `<div class="face-card" style="left:${pos.left}%;top:${pos.top}%;animation-name:drift${driftN};animation-duration:${dur}s;animation-delay:${delay}s;">◆</div>`;
   }).join("");
   stage.innerHTML = `<div class="field-tray">${cards}</div>`;
   belowCardEl.innerHTML = "";
@@ -673,22 +721,32 @@ function pickFromField(pick, clickedEl){
   }, 90);
 }
 
-/* ---- picked state: minimal card + info split above/below it ---- */
+/* ---- picked state: minimal foil card + info split above/below it ---- */
 function renderPicked(pick){
   const isExist = pick.type === "exist";
   const typeVar = isExist ? "exist" : "idea";
-  const bigLabel = isExist ? "MAVJUD KARTA" : "YANGI KARTA";
-  const diffN = DIFF_LEVEL[pick.difficulty] || 1;
+  const bigLabel = isExist ? "MAVJUD LOYIHA" : "YANGI G'OYA";
+  const rank = RANK_FOR_DIFF[pick.difficulty] || "7";
+  const suit = SUIT_FOR_TYPE[pick.type] || SUIT_FOR_TYPE.exist;
 
   topInfoEl.innerHTML =
-    `<span class="picked-banner" style="color:var(--${typeVar})">${bigLabel} · ${starsFor(diffN)} ${pick.difficulty.toUpperCase()}</span>` +
+    `<span class="picked-banner" style="color:var(--${typeVar})">${bigLabel} · Qiyinlik: ${pick.difficulty}</span>` +
     `<span class="picked-desc">${pick.desc}</span>`;
 
   stage.innerHTML = `
-    <div class="card" style="--type-color:var(--${typeVar})">
-      <div class="card-banner"></div>
-      <div class="card-body">
-        <h2>${pick.name}</h2>
+    <div class="playing-card" data-suit="${suit.color}">
+      <div class="pc-corner pc-top">
+        <span class="pc-rank">${rank}</span>
+        <span class="pc-suit">${suit.symbol}</span>
+      </div>
+      <div class="pc-center">
+        <span class="pc-watermark">${suit.symbol}</span>
+        <h2 class="pc-name">${pick.name}</h2>
+        <span class="pc-type-label">${bigLabel}</span>
+      </div>
+      <div class="pc-corner pc-bottom">
+        <span class="pc-rank">${rank}</span>
+        <span class="pc-suit">${suit.symbol}</span>
       </div>
     </div>
   `;
@@ -797,7 +855,7 @@ function closeOnboard(){
 function renderOnboardStep1(){
   onboardModal.innerHTML = `
     <h2 class="onboard-title">Xush kelibsiz!</h2>
-    <p class="onboard-text">Bu — tasodifiy IT loyiha g'oyalari beruvchi karta o'yini. Yopiq kartalardan birini tanlang — u sizga tasodifiy loyiha (mavjud yoki hali yaratilmagan g'oya) ochib beradi. Karta ochilgach, pastdagi tavsif, kerakli texnologiyalar va "Kalitlar" orqali AI va Google'dan to'liq ma'lumot so'rashingiz mumkin. Istalgan vaqtda "Yana karta tort" tugmasi bilan yangisini tanlaysiz.</p>
+    <p class="onboard-text">Bu — tasodifiy IT loyiha g'oyalari beruvchi kolleksiya kartalari o'yini. Yopiq kartalardan birini tanlang — u sizga tasodifiy loyiha (mavjud yoki hali yaratilmagan g'oya) ochib beradi. Karta ochilgach, pastdagi tavsif, kerakli texnologiyalar va "Kalitlar" orqali AI va Google'dan to'liq ma'lumot so'rashingiz mumkin. Istalgan vaqtda "Yana karta tort" tugmasi bilan yangisini tanlaysiz.</p>
     <div class="onboard-actions">
       <button class="onboard-btn primary" id="understandBtn" type="button">Tushundim</button>
       <button class="onboard-btn secondary" id="dontUnderstandBtn" type="button">Tushunmadim</button>
@@ -818,7 +876,7 @@ function renderOnboardStep2(){
     </ol>
     <p class="onboard-try-label">Hoziroq sinab ko'ring</p>
     <div class="onboard-demo">
-      <div class="face-card demo-face" id="demoFaceCard">?</div>
+      <div class="face-card demo-face" id="demoFaceCard">◆</div>
       <p class="demo-result" id="demoResult" hidden></p>
     </div>
     <div class="onboard-actions">
@@ -831,14 +889,13 @@ function renderOnboardStep2(){
   const demoResult = document.getElementById("demoResult");
   demoCard.addEventListener("click", () => {
     const pick = PROJECTS[Math.floor(Math.random() * PROJECTS.length)];
-    const label = pick.type === "exist" ? "MAVJUD KARTA" : "YANGI KARTA";
-    const diffN = DIFF_LEVEL[pick.difficulty] || 1;
+    const label = pick.type === "exist" ? "Mavjud loyiha" : "Yangi g'oya";
     demoCard.style.opacity = ".35";
     demoCard.style.pointerEvents = "none";
     demoCard.textContent = "✓";
     demoResult.hidden = false;
     demoResult.innerHTML =
-      `<strong>${pick.name}</strong> — ${label} · ${starsFor(diffN)} ${pick.difficulty.toUpperCase()}` +
+      `<strong>${pick.name}</strong> — ${label} · Qiyinlik: ${pick.difficulty}` +
       `<span class="demo-note">Bu — sinov, hisobga olinmaydi. Haqiqiy saytda xuddi shunday karta chiqadi.</span>`;
   }, { once: true });
 }
