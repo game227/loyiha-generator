@@ -6,359 +6,335 @@
 <title>Loyiha Generatori</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* light = "cyanotype print" — pale drafting paper, navy ink */
-    --paper:#eef3f8;
-    --paper-2:#e2ebf3;
-    --ink:#17335a;
-    --ink-soft:#5b7a9e;
-    --line:#c2d2e2;
-    --line-strong:#9db3c9;
-    --sheet:#fbfdff;
-    --sheet-border:#b7c9db;
-    --exist:#1f7a5c;
-    --exist-bg:rgba(31,122,92,.10);
-    --idea:#b8460e;
-    --idea-bg:rgba(184,70,14,.10);
-    --query:#a3195b;
-    --query-bg:rgba(163,25,91,.08);
-    --stamp-shadow: 4px 4px 0 rgba(23,51,90,.10);
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      /* dark = the actual blueprint — deep navy, chalk-white lines */
-      --paper:#0e2440;
-      --paper-2:#123058;
-      --ink:#e9f1fb;
-      --ink-soft:#9fbbda;
-      --line:#25476e;
-      --line-strong:#38618f;
-      --sheet:#0f2a4d;
-      --sheet-border:#2f5883;
-      --exist:#5fd6ac;
-      --exist-bg:rgba(95,214,172,.14);
-      --idea:#ff9a5c;
-      --idea-bg:rgba(255,154,92,.14);
-      --query:#ff6fa5;
-      --query-bg:rgba(255,111,165,.14);
-      --stamp-shadow: 4px 4px 0 rgba(0,0,0,.35);
-    }
-  }
-  :root[data-theme="dark"]{
-    --paper:#0e2440;
-    --paper-2:#123058;
-    --ink:#e9f1fb;
-    --ink-soft:#9fbbda;
-    --line:#25476e;
-    --line-strong:#38618f;
-    --sheet:#0f2a4d;
-    --sheet-border:#2f5883;
-    --exist:#5fd6ac;
-    --exist-bg:rgba(95,214,172,.14);
-    --idea:#ff9a5c;
-    --idea-bg:rgba(255,154,92,.14);
-    --query:#ff6fa5;
-    --query-bg:rgba(255,111,165,.14);
-    --stamp-shadow: 4px 4px 0 rgba(0,0,0,.35);
+    /* deliberately single-theme: a lit arcade cabinet has no "light mode" */
+    --bg:#0a0a12;
+    --cabinet-1:#2a1a3a;
+    --cabinet-2:#150d20;
+    --screen-1:#0d1524;
+    --screen-2:#04060b;
+    --ink:#eaf0ff;
+    --ink-soft:#8b96b8;
+    --pink:#ff2e88;
+    --cyan:#2ee6ff;
+    --gold:#ffd23f;
+    --exist:#39ff6a;
+    --exist-glow:rgba(57,255,106,.55);
+    --idea:#ff8a3d;
+    --idea-glow:rgba(255,138,61,.55);
+    --metal:#2a3a5c;
   }
 
   *{ box-sizing:border-box; }
   body{
     margin:0;
-    background-color: var(--paper);
-    background-image:
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px),
-      linear-gradient(var(--line-strong) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line-strong) 1px, transparent 1px);
-    background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
-    background-position: -1px -1px;
-    color: var(--ink);
-    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
     min-height:100vh;
-    padding: 36px 16px 60px;
-  }
-  .mono{ font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
-
-  .wrap{ max-width: 680px; margin:0 auto; }
-
-  .sheet-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    border-bottom: 2px solid var(--ink);
-    padding-bottom: 10px;
-    margin-bottom: 30px;
-    flex-wrap:wrap;
-    gap:8px;
-  }
-  .sheet-id{
-    font-size: 11px;
-    letter-spacing: .12em;
-    color: var(--ink-soft);
-    text-transform: uppercase;
-  }
-  .sheet-scale{
-    font-size: 11px;
-    letter-spacing: .08em;
-    color: var(--ink-soft);
-    text-transform: uppercase;
+    padding-block:32px;
+    padding-inline:16px;
+    background-color: var(--bg);
+    background-image: repeating-conic-gradient(from 45deg, rgba(255,46,136,.05) 0deg 90deg, rgba(46,230,255,.05) 90deg 180deg);
+    background-size: 44px 44px;
+    color: var(--ink);
+    font-family: "Chakra Petch", ui-sans-serif, system-ui, sans-serif;
   }
 
-  h1{
-    font-family:"IBM Plex Mono", monospace;
-    font-size: clamp(24px, 5vw, 34px);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    margin: 0 0 8px;
-    text-wrap: balance;
+  .cabinet{
+    max-width: 680px;
+    margin: 0 auto;
+    border-radius: 26px;
+    padding: 18px;
+    background: linear-gradient(160deg, var(--cabinet-1), var(--cabinet-2));
+    box-shadow: 0 30px 80px rgba(0,0,0,.55), inset 0 2px 0 rgba(255,255,255,.06);
   }
-  h1 .lot{
-    color: var(--ink-soft);
-    font-weight: 500;
+
+  /* ---- marquee ---- */
+  .marquee{
+    border-radius: 14px;
+    padding: 14px 16px 16px;
+    background: linear-gradient(180deg, #150a1e, #0a0512);
+    border: 3px solid #3a2550;
+    text-align: center;
   }
+  .bulbs{ display:flex; justify-content:center; gap:6px; flex-wrap:wrap; }
+  .bulb{
+    width:7px; height:7px; border-radius:50%;
+    background: var(--gold); box-shadow: 0 0 6px var(--gold);
+    animation: twinkle 1.2s ease-in-out infinite;
+    animation-delay: calc(var(--i) * .09s);
+  }
+  .bulb:nth-child(3n+2){ background: var(--pink); box-shadow: 0 0 6px var(--pink); }
+  .bulb:nth-child(3n){ background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+  @keyframes twinkle{ 0%,100%{ opacity:.35; } 50%{ opacity:1; } }
+
+  .title{ display:flex; flex-direction:column; align-items:center; gap:6px; margin:10px 0; }
+  .title span{
+    font-family:"Press Start 2P", monospace;
+    font-size: clamp(16px, 5.5vw, 25px);
+    color:#fff8fc;
+    text-shadow: 0 0 6px var(--pink), 0 0 18px var(--pink);
+    letter-spacing:.02em;
+  }
+  .title span.accent{
+    color:#eafdff;
+    text-shadow: 0 0 6px var(--cyan), 0 0 18px var(--cyan);
+  }
+
+  /* ---- screen ---- */
+  .screen{
+    position:relative;
+    margin-top:14px;
+    border-radius:12px;
+    padding: 22px 18px 26px;
+    background: radial-gradient(120% 100% at 50% 0%, var(--screen-1), var(--screen-2));
+    border: 3px solid #1c2740;
+    box-shadow: inset 0 0 40px rgba(0,0,0,.6);
+    overflow:hidden;
+  }
+  .screen::before{
+    content:"";
+    position:absolute; inset:0;
+    pointer-events:none;
+    background: repeating-linear-gradient(rgba(255,255,255,.025) 0 1px, transparent 1px 3px);
+  }
+  .screw{
+    position:absolute; width:10px; height:10px; border-radius:50%;
+    background: radial-gradient(circle at 35% 35%, #9aa3b5, #23283a 70%);
+    z-index:2;
+  }
+  .screw::after{
+    content:""; position:absolute; left:50%; top:50%; width:65%; height:1.5px;
+    background:#10131c; transform:translate(-50%,-50%) rotate(40deg);
+  }
+  .screw.tl{ top:8px; left:8px; } .screw.tr{ top:8px; right:8px; }
+  .screw.bl{ bottom:8px; left:8px; } .screw.br{ bottom:8px; right:8px; }
+
   .subtitle{
+    position:relative; z-index:1;
     color: var(--ink-soft);
-    font-size: 15px;
-    line-height: 1.55;
+    font-size: 14.5px;
+    line-height:1.6;
     max-width: 56ch;
-    margin: 0 0 28px;
+    margin: 0 0 20px;
   }
 
-  .stage{ min-height: 320px; }
+  .stage{ position:relative; z-index:1; min-height: 300px; }
 
-  /* ---- spinning reel ---- */
-  .reel{
-    position: relative;
-    height: 130px;
-    overflow: hidden;
-    background: var(--sheet);
-    border: 1.5px dashed var(--sheet-border);
-    border-radius: 4px;
-    box-shadow: var(--stamp-shadow);
-  }
-  .reel-strip{ position:relative; }
-  .reel-item{
-    display:flex;
-    align-items:center;
-    justify-content:center;
+  .attract{
+    font-family:"Press Start 2P", monospace;
+    font-size: 12px;
+    line-height:2;
+    color: var(--gold);
     text-align:center;
-    padding: 0 22px;
-    font-family:"IBM Plex Mono", monospace;
-    font-weight:600;
+    text-shadow: 0 0 8px var(--gold);
+    padding: 56px 10px;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  /* ---- reel ---- */
+  .reel{
+    position:relative;
+    height:130px;
+    border-radius:8px;
+    overflow:hidden;
+    background:#03050a;
+    border:2px solid var(--metal);
+    box-shadow: inset 0 0 24px rgba(0,0,0,.75);
+  }
+  .reel-item{
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    padding:0 20px;
+    font-family:"Chakra Petch", sans-serif;
+    font-weight:700;
     font-size:15px;
-    line-height:1.35;
-    color: var(--ink-soft);
+    color: var(--cyan);
+    text-shadow: 0 0 8px rgba(46,230,255,.6);
   }
   .reel::after{
     content:"";
     position:absolute; inset:0;
     pointer-events:none;
     background:
-      linear-gradient(to bottom, var(--sheet), transparent 28%, transparent 72%, var(--sheet)),
-      linear-gradient(to right, var(--sheet), transparent 22%, transparent 78%, var(--sheet));
+      linear-gradient(to bottom, #03050a, transparent 26%, transparent 74%, #03050a),
+      linear-gradient(to right, #03050a, transparent 20%, transparent 80%, #03050a);
   }
 
   /* ---- result card ---- */
   .card{
-    position: relative;
-    background: var(--sheet);
-    border: 1.5px dashed var(--sheet-border);
-    border-radius: 4px;
-    padding: 26px 24px 0;
-    box-shadow: var(--stamp-shadow);
-    opacity: 0;
-    transform: translateY(8px);
-    animation: settle .32s ease forwards;
+    position:relative;
+    border-radius:10px;
+    padding: 20px 18px 6px;
+    background: linear-gradient(180deg, #0d1424, #060a13);
+    border: 2px solid var(--type-color);
+    box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset, 0 0 28px var(--type-glow);
+    opacity:0;
+    transform: translateY(10px) scale(.98);
+    animation: cardIn .3s ease forwards;
   }
-  @keyframes settle{ to{ opacity:1; transform:none; } }
-  @media (prefers-reduced-motion: reduce){
-    .card{ animation: none; opacity:1; transform:none; }
+  @keyframes cardIn{ to{ opacity:1; transform:none; } }
+
+  .stamp-big{
+    font-family:"Press Start 2P", monospace;
+    font-size:16px;
+    color: var(--type-color);
+    text-shadow: 0 0 10px var(--type-glow);
+    margin-bottom:4px;
   }
-
-  .crop{ position:absolute; width:14px; height:14px; }
-  .crop::before, .crop::after{ content:""; position:absolute; background: var(--line-strong); }
-  .crop::before{ width:100%; height:1.5px; top:0; }
-  .crop::after{ width:1.5px; height:100%; left:0; }
-  .crop.tl{ top:-1px; left:-1px; }
-  .crop.tr{ top:-1px; right:-1px; transform: scaleX(-1); }
-  .crop.bl{ bottom:-1px; left:-1px; transform: scaleY(-1); }
-  .crop.br{ bottom:-1px; right:-1px; transform: scale(-1,-1); }
-
+  .stamp-sub{
+    font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    color: var(--ink-soft);
+    margin-bottom:16px;
+  }
   .card h2{
-    font-size: 23px;
-    font-weight: 700;
-    margin: 0 0 12px;
-    letter-spacing: -0.01em;
-    text-wrap: balance;
+    font-weight:700; font-size:22px; color:var(--ink);
+    margin:0 0 10px; text-wrap:balance;
   }
   .card p.desc{
+    font-weight:400; font-size:15px; line-height:1.6;
     color: var(--ink-soft);
-    font-size: 15.5px;
-    line-height: 1.65;
-    margin: 0 0 22px;
-    max-width: 58ch;
+    margin:0 0 20px; max-width:58ch;
   }
-
-  .title-block{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    border-top: 1.5px solid var(--line-strong);
-    margin: 0 -24px;
-  }
-  .tb-cell{
-    padding: 12px 24px 14px;
-    border-right: 1.5px solid var(--line-strong);
-  }
-  .tb-cell:last-child{ border-right:none; }
-  .tb-cell.full{ grid-column: 1 / -1; border-right:none; border-top: 1.5px solid var(--line-strong); }
-  .tb-cell.full:first-child{ border-top:none; }
-  .tb-label{
-    font-family:"IBM Plex Mono", monospace;
-    font-size: 10px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
+  .sec-label{
+    font-family:"Press Start 2P", monospace;
+    font-size:9.5px;
     color: var(--ink-soft);
-    margin-bottom: 8px;
+    letter-spacing:.04em;
+    margin: 0 0 8px;
   }
-  .tb-value{ font-size: 14px; font-weight: 600; }
-  .stamp{
-    display:inline-block;
-    font-family:"IBM Plex Mono", monospace;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .06em;
-    padding: 3px 9px;
-    border: 1.5px solid currentColor;
-    border-radius: 3px;
-    transform: rotate(-2deg);
-  }
-  .stamp.exist{ color: var(--exist); background: var(--exist-bg); }
-  .stamp.idea{ color: var(--idea); background: var(--idea-bg); }
+  .diff-row{ display:flex; align-items:center; gap:8px; margin-bottom:18px; }
+  .pip{ width:13px; height:13px; border-radius:3px; background:#161c2c; border:1px solid #263252; }
+  .pip.on{ background: var(--gold); border-color: var(--gold); box-shadow:0 0 6px var(--gold); }
+  .diff-word{ font-weight:600; font-size:13px; color:var(--ink); text-transform:uppercase; letter-spacing:.05em; }
 
-  .tags{ display:flex; gap:6px; flex-wrap:wrap; }
+  .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
   .tag{
-    font-family:"IBM Plex Mono", monospace;
-    font-size: 11px;
-    color: var(--ink);
-    background: var(--paper-2);
-    border: 1px solid var(--line-strong);
-    padding: 3px 8px;
-    border-radius: 3px;
+    font-size:11.5px; font-weight:600; color:var(--ink);
+    background:#141b2e; border:1px solid #263252;
+    padding:4px 9px; border-radius:5px;
   }
 
-  .query-row{
-    display:flex;
-    gap:10px;
-    align-items:flex-start;
-    background: var(--query-bg);
-    border: 1px dashed var(--query);
-    border-radius: 4px;
-    padding: 10px 12px;
+  .query-block{ margin-bottom:16px; }
+  .query-console{
+    position:relative;
+    display:flex; gap:10px; align-items:flex-start;
+    background:#020509;
+    border:1px solid var(--cyan);
+    border-radius:6px;
+    padding:12px;
+    box-shadow: inset 0 0 14px rgba(46,230,255,.12), 0 0 10px rgba(46,230,255,.18);
   }
   .query-text{
-    flex:1;
-    margin:0;
-    font-family:"IBM Plex Mono", monospace;
-    font-size: 12.5px;
-    line-height: 1.55;
-    color: var(--ink);
+    flex:1; margin:0;
+    font-family:"VT323", monospace;
+    font-size:17px; line-height:1.45;
+    color:#8ff4ff;
+  }
+  .query-text::after{
+    content:"▮"; display:inline-block; margin-left:3px; color:#8ff4ff;
+    animation: blink .9s steps(1) infinite;
   }
   .copy-btn{
     flex:none;
-    font-family:"IBM Plex Mono", monospace;
-    font-size: 11px;
-    letter-spacing: .03em;
-    text-transform: uppercase;
-    color: var(--query);
-    background: transparent;
-    border: 1px solid var(--query);
-    padding: 6px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-    white-space: nowrap;
+    font-weight:700; font-size:11px; letter-spacing:.04em; text-transform:uppercase;
+    color:#04141a;
+    background: linear-gradient(180deg, var(--cyan), #12a3c2);
+    border:none; border-radius:5px;
+    padding:8px 12px;
+    cursor:pointer;
+    box-shadow: 0 3px 0 #0c6f85;
+    transition: transform .08s ease, box-shadow .08s ease;
   }
-  .copy-btn:hover{ background: var(--query-bg); }
-  .copy-btn.copied{ color: var(--exist); border-color: var(--exist); }
-  .copy-btn:focus-visible{ outline: 2px solid var(--idea); outline-offset: 2px; }
-  @media (max-width: 480px){
-    .query-row{ flex-direction:column; align-items:stretch; }
+  .copy-btn:active{ transform: translateY(3px); box-shadow: 0 0 0 #0c6f85; }
+  .copy-btn.copied{ background: linear-gradient(180deg, var(--exist), #1f9c46); box-shadow:0 3px 0 #12652c; color:#03170a; }
+  .copy-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+  @media (max-width:480px){
+    .query-console{ flex-direction:column; }
     .copy-btn{ align-self:flex-end; }
   }
 
-  .empty{
-    color: var(--ink-soft);
-    font-family:"IBM Plex Mono", monospace;
-    font-size: 14px;
-    text-align:center;
-    padding: 60px 20px;
-    border: 1.5px dashed var(--sheet-border);
-    border-radius: 4px;
-  }
+  .card-bottom-space{ height:14px; }
 
-  .actions{ display:flex; justify-content:center; margin-top: 28px; }
+  /* ---- controls ---- */
+  .controls{
+    position:relative; z-index:1;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    margin-top:24px;
+  }
+  .coin-hint{ font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); }
   .roll-btn{
-    font-family:"IBM Plex Mono", monospace;
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    color: var(--sheet);
-    background: var(--ink);
-    border: none;
-    padding: 15px 34px;
-    border-radius: 4px;
-    cursor: pointer;
-    box-shadow: var(--stamp-shadow);
-    transition: transform .1s ease;
+    font-family:"Press Start 2P", monospace;
+    font-size:14px;
+    color:#fff0f7;
+    background: radial-gradient(circle at 35% 30%, #ff5fa8, #c2116a 65%, #8a0a4b 100%);
+    border:none;
+    border-radius:999px;
+    padding:18px 32px;
+    cursor:pointer;
+    box-shadow: 0 6px 0 #6b0836, 0 10px 24px rgba(255,46,136,.4), inset 0 2px 4px rgba(255,255,255,.4);
+    transition: transform .08s ease, box-shadow .08s ease;
   }
-  .roll-btn:active{ transform: translate(2px, 2px); box-shadow: 2px 2px 0 rgba(0,0,0,.2); }
-  .roll-btn:focus-visible{ outline: 2px solid var(--query); outline-offset: 3px; }
-  .roll-btn:disabled{ opacity:.6; cursor:default; }
+  .roll-btn:active{ transform: translateY(4px); box-shadow: 0 2px 0 #6b0836, 0 4px 10px rgba(255,46,136,.3), inset 0 2px 4px rgba(255,255,255,.3); }
+  .roll-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
+  .roll-btn:disabled{ opacity:.55; cursor:default; }
 
-  .counter{
-    text-align:center;
-    font-family:"IBM Plex Mono", monospace;
-    color: var(--ink-soft);
-    font-size: 11px;
-    letter-spacing: .08em;
-    margin-top: 16px;
-    text-transform: uppercase;
+  .counter-lcd{
+    font-family:"VT323", monospace;
+    font-size:20px; letter-spacing:.12em;
+    color: var(--exist);
+    background:#04140a;
+    padding:6px 18px;
+    border-radius:6px;
+    border:1px solid #10331d;
+    text-shadow: 0 0 8px rgba(57,255,106,.7);
   }
 
-  footer{
+  .footer-plate{
     text-align:center;
+    font-size:11px;
     color: var(--ink-soft);
-    font-size: 12px;
-    margin-top: 50px;
-    border-top: 1px solid var(--line);
-    padding-top: 16px;
+    margin-top:16px;
+    padding: 0 10px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .bulb{ animation:none; opacity:1; }
+    .attract{ animation:none; opacity:1; }
+    .query-text::after{ animation:none; }
+    .card{ animation:none; opacity:1; transform:none; }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="cabinet">
 
-  <div class="sheet-header">
-    <span class="sheet-id mono">LOYIHA-GEN &nbsp;/&nbsp; VARAQ 02</span>
-    <span class="sheet-scale mono">MASSHTAB: 1:1</span>
+  <div class="marquee">
+    <div class="bulbs" id="bulbsTop"></div>
+    <div class="title">
+      <span>LOYIHA</span>
+      <span class="accent">GENERATOR</span>
+    </div>
+    <div class="bulbs" id="bulbsBottom"></div>
   </div>
 
-  <h1>Loyiha Generatori <span class="lot">v2</span></h1>
-  <p class="subtitle">Dunyoda mavjud bo'lgan mashhur IT loyihalar va hali hech kim qilmagan yangi g'oyalar orasidan baraban aylanib tasodifiy birini tanlaydi — har biriga AI'dan va Google'dan to'liq ma'lumot so'rash uchun tayyor so'rov bilan.</p>
+  <div class="screen">
+    <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
 
-  <div class="stage" id="stage">
-    <div class="empty">Pastdagi tugmani bosing — baraban aylanadi va birinchi loyiha chiqadi ↓</div>
+    <p class="subtitle">Mavjud IT loyihalar va hali hech kim yaratmagan g'oyalar aralashmasidan baraban tasodifiy birini uradi — har biriga AI va Google orqali chuqurroq bilib olish uchun tayyor "cheat-kod" bilan.</p>
+
+    <div class="stage" id="stage">
+      <div class="attract" id="attract">TUGMANI<br>BOSING!</div>
+    </div>
+
+    <div class="controls">
+      <div class="coin-hint">1 tanga = 1 aylanish</div>
+      <button class="roll-btn" id="rollBtn">AYLANTIR</button>
+      <div class="counter-lcd" id="counter">AYLANISH 000</div>
+    </div>
   </div>
 
-  <div class="actions">
-    <button class="roll-btn" id="rollBtn">Barabanni aylantir</button>
-  </div>
-  <div class="counter" id="counter">REV. 000</div>
-
-  <footer class="mono">Har bosishda baraban boshqa tomonga aylanadi va arxivdan tasodifiy bitta loyiha tanlanadi.</footer>
+  <div class="footer-plate">Har bosishda baraban boshqa tomonga aylanadi va arxivdan tasodifiy bitta loyiha chiqadi.</div>
 </div>
 
 <script>
@@ -474,11 +450,20 @@ const DIRS = {
   left:  { axis: "x", sign: "neg" },   // o'ngdan chapga
   right: { axis: "x", sign: "pos" },   // chapdan o'ngga
 };
+const DIFF_LEVEL = { "Oson": 1, "O'rta": 2, "Qiyin": 3 };
 
 let count = 0;
 const stage = document.getElementById("stage");
 const rollBtn = document.getElementById("rollBtn");
 const counterEl = document.getElementById("counter");
+
+function makeBulbs(el, n){
+  let html = "";
+  for(let i=0;i<n;i++){ html += `<span class="bulb" style="--i:${i}"></span>`; }
+  el.innerHTML = html;
+}
+makeBulbs(document.getElementById("bulbsTop"), 12);
+makeBulbs(document.getElementById("bulbsBottom"), 12);
 
 function aiQueryFor(p){
   if(p.type === "exist"){
@@ -494,56 +479,53 @@ function googleQueryFor(p){
   return `${p.name} - mavjud yechimlar va raqobatchilar tahlili`;
 }
 
-function cropMarks(){
-  return `<span class="crop tl"></span><span class="crop tr"></span><span class="crop bl"></span><span class="crop br"></span>`;
-}
-
 function renderCard(p){
   const isExist = p.type === "exist";
-  const stampClass = isExist ? "exist" : "idea";
-  const stampLabel = isExist ? "MAVJUD" : "YANGI G'OYA";
+  const typeVar = isExist ? "exist" : "idea";
+  const bigLabel = isExist ? "JACKPOT!" : "LEVEL UP!";
+  const subLabel = isExist ? "Mavjud loyiha" : "Yangi g'oya";
   const aiQuery = aiQueryFor(p);
   const googleQuery = googleQueryFor(p);
+  const diffN = DIFF_LEVEL[p.difficulty] || 1;
+  let pips = "";
+  for(let i=1;i<=3;i++){ pips += `<span class="pip ${i<=diffN ? "on":""}"></span>`; }
+
   stage.innerHTML = `
-    <div class="card" id="cardEl">
-      ${cropMarks()}
+    <div class="card" style="--type-color:var(--${typeVar});--type-glow:var(--${typeVar}-glow)">
+      <div class="stamp-big">${bigLabel}</div>
+      <div class="stamp-sub">${subLabel}</div>
       <h2>${p.name}</h2>
       <p class="desc">${p.desc}</p>
-      <div class="title-block">
-        <div class="tb-cell">
-          <div class="tb-label">Toifa</div>
-          <span class="stamp ${stampClass}">${stampLabel}</span>
-        </div>
-        <div class="tb-cell">
-          <div class="tb-label">Qiyinlik</div>
-          <div class="tb-value">${p.difficulty}</div>
-        </div>
-        <div class="tb-cell full">
-          <div class="tb-label">Texnologik stek</div>
-          <div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
-        </div>
-        <div class="tb-cell full">
-          <div class="tb-label">AI'dan so'rash uchun so'rov</div>
-          <div class="query-row">
-            <p class="query-text">${aiQuery}</p>
-            <button class="copy-btn" type="button">Nusxalash</button>
-          </div>
-        </div>
-        <div class="tb-cell full">
-          <div class="tb-label">Google qidiruvi</div>
-          <div class="query-row">
-            <p class="query-text">${googleQuery}</p>
-            <button class="copy-btn" type="button">Nusxalash</button>
-          </div>
+
+      <div class="sec-label">QIYINLIK DARAJASI</div>
+      <div class="diff-row">${pips}<span class="diff-word">${p.difficulty}</span></div>
+
+      <div class="sec-label">TEXNOLOGIK INVENTAR</div>
+      <div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
+
+      <div class="sec-label">AI UCHUN CHEAT-KOD</div>
+      <div class="query-block">
+        <div class="query-console">
+          <p class="query-text">${aiQuery}</p>
+          <button class="copy-btn" type="button">NUSXALASH</button>
         </div>
       </div>
+
+      <div class="sec-label">GOOGLE UCHUN CHEAT-KOD</div>
+      <div class="query-block">
+        <div class="query-console">
+          <p class="query-text">${googleQuery}</p>
+          <button class="copy-btn" type="button">NUSXALASH</button>
+        </div>
+      </div>
+      <div class="card-bottom-space"></div>
     </div>
   `;
 }
 
 function landOnCard(pick){
   count++;
-  counterEl.textContent = "REV. " + String(count).padStart(3, "0");
+  counterEl.textContent = "AYLANISH " + String(count).padStart(3, "0");
   renderCard(pick);
   rollBtn.disabled = false;
 }
@@ -563,7 +545,7 @@ function spin(dirKey, finalProject){
   const randoms = Array.from({ length: N - 1 }, () => PROJECTS[Math.floor(Math.random() * PROJECTS.length)]);
   const items = sign === "neg" ? [...randoms, finalProject] : [finalProject, ...randoms];
 
-  stage.innerHTML = `<div class="reel" id="reelBox">${cropMarks()}<div class="reel-strip" id="reelStrip"></div></div>`;
+  stage.innerHTML = `<div class="reel" id="reelBox"><div class="reel-strip" id="reelStrip"></div></div>`;
   const reelBox = document.getElementById("reelBox");
   const reelStrip = document.getElementById("reelStrip");
   const rect = reelBox.getBoundingClientRect();
@@ -606,7 +588,7 @@ function roll(){
 function copyText(text, btn){
   const original = btn.textContent;
   const finish = (ok) => {
-    btn.textContent = ok ? "Nusxalandi!" : "Nusxalab bo'lmadi";
+    btn.textContent = ok ? "OLINDI!" : "XATOLIK";
     btn.classList.toggle("copied", ok);
     setTimeout(() => {
       btn.textContent = original;
@@ -642,7 +624,7 @@ rollBtn.addEventListener("click", roll);
 stage.addEventListener("click", (e) => {
   const btn = e.target.closest(".copy-btn");
   if(!btn) return;
-  const row = btn.closest(".query-row");
+  const row = btn.closest(".query-console");
   const textEl = row && row.querySelector(".query-text");
   if(!textEl) return;
   copyText(textEl.textContent, btn);
