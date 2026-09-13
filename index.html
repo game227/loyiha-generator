@@ -34,8 +34,10 @@
     padding-block:32px;
     padding-inline:16px;
     background-color: var(--bg);
-    background-image: repeating-conic-gradient(from 45deg, rgba(255,46,136,.05) 0deg 90deg, rgba(46,230,255,.05) 90deg 180deg);
-    background-size: 44px 44px;
+    background-image:
+      radial-gradient(560px circle at 12% 8%, rgba(255,46,136,.16), transparent 62%),
+      radial-gradient(560px circle at 88% 92%, rgba(46,230,255,.13), transparent 62%),
+      radial-gradient(900px circle at 50% 35%, rgba(255,255,255,.035), transparent 70%);
     color: var(--ink);
     font-family: "Chakra Petch", ui-sans-serif, system-ui, sans-serif;
   }
@@ -328,7 +330,7 @@
     </div>
 
     <div class="controls">
-      <div class="coin-hint">1 tanga = 1 aylanish</div>
+      <div class="coin-hint" id="coinHint">1 tanga = 1 aylanish</div>
       <button class="roll-btn" id="rollBtn">AYLANTIR</button>
       <div class="counter-lcd" id="counter">AYLANISH 000</div>
     </div>
@@ -453,9 +455,73 @@ const DIRS = {
 const DIFF_LEVEL = { "Oson": 1, "O'rta": 2, "Qiyin": 3 };
 
 let count = 0;
+let countdownTimer = null;
 const stage = document.getElementById("stage");
 const rollBtn = document.getElementById("rollBtn");
 const counterEl = document.getElementById("counter");
+const coinHintEl = document.getElementById("coinHint");
+
+const LOCK_KEY = "loyiha-generator:lock";
+const COOLDOWN_HOURS = { "Oson": 4, "O'rta": 8, "Qiyin": 24 };
+
+function loadLockRaw(){
+  try{
+    const raw = localStorage.getItem(LOCK_KEY);
+    if(!raw) return null;
+    const data = JSON.parse(raw);
+    if(!data || typeof data.unlockAt !== "number" || !data.pick) return null;
+    if(data.unlockAt <= Date.now()){
+      localStorage.removeItem(LOCK_KEY);
+      return null;
+    }
+    return data;
+  }catch(e){
+    return null;
+  }
+}
+
+function saveLockRaw(pick, unlockAt){
+  try{
+    localStorage.setItem(LOCK_KEY, JSON.stringify({ pick, unlockAt }));
+  }catch(e){
+    /* storage unavailable — cooldown just won't survive a reload */
+  }
+}
+
+function clearLockRaw(){
+  try{ localStorage.removeItem(LOCK_KEY); }catch(e){}
+}
+
+function formatCountdown(ms){
+  const totalSec = Math.max(0, Math.ceil(ms / 1000));
+  const h = Math.floor(totalSec / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
+  const pad = n => String(n).padStart(2, "0");
+  return pad(h) + ":" + pad(m) + ":" + pad(s);
+}
+
+function startCountdown(unlockAt){
+  rollBtn.disabled = true;
+  rollBtn.textContent = "TANGA YO'Q";
+  if(countdownTimer) clearInterval(countdownTimer);
+
+  const tick = () => {
+    const remaining = unlockAt - Date.now();
+    if(remaining <= 0){
+      clearInterval(countdownTimer);
+      countdownTimer = null;
+      clearLockRaw();
+      rollBtn.disabled = false;
+      rollBtn.textContent = "AYLANTIR";
+      coinHintEl.textContent = "1 tanga = 1 aylanish";
+      return;
+    }
+    coinHintEl.textContent = "Keyingi tanga: " + formatCountdown(remaining);
+  };
+  tick();
+  countdownTimer = setInterval(tick, 1000);
+}
 
 function makeBulbs(el, n){
   let html = "";
@@ -527,7 +593,10 @@ function landOnCard(pick){
   count++;
   counterEl.textContent = "AYLANISH " + String(count).padStart(3, "0");
   renderCard(pick);
-  rollBtn.disabled = false;
+  const hours = COOLDOWN_HOURS[pick.difficulty] || 4;
+  const unlockAt = Date.now() + hours * 60 * 60 * 1000;
+  saveLockRaw(pick, unlockAt);
+  startCountdown(unlockAt);
 }
 
 function spin(dirKey, finalProject){
@@ -579,6 +648,7 @@ function spin(dirKey, finalProject){
 }
 
 function roll(){
+  if(loadLockRaw()) return;
   const pick = PROJECTS[Math.floor(Math.random() * PROJECTS.length)];
   const dirKeys = Object.keys(DIRS);
   const dir = dirKeys[Math.floor(Math.random() * dirKeys.length)];
@@ -629,6 +699,12 @@ stage.addEventListener("click", (e) => {
   if(!textEl) return;
   copyText(textEl.textContent, btn);
 });
+
+const existingLock = loadLockRaw();
+if(existingLock){
+  renderCard(existingLock.pick);
+  startCountdown(existingLock.unlockAt);
+}
 </script>
 </body>
 </html>
