@@ -9,7 +9,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* deliberately single-theme: a printed board-game box has no "dark mode" */
     --paper:#F6E8C8;
     --paper-2:#EFDCB0;
     --card-bg:#FFFBF0;
@@ -87,81 +86,106 @@
     margin:0;
   }
 
+  .sec-label{
+    font-family:"Baloo 2", sans-serif;
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 8px;
+  }
+  .deck-label{ text-align:center; margin-bottom:10px; }
+
+  /* ---- deck preview marquee ---- */
+  .marquee-wrap{
+    margin: 0 0 22px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    overflow:hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+  .marquee-row{
+    display:flex;
+    width:max-content;
+    gap:8px;
+    animation: scrollLeft 40s linear infinite;
+  }
+  .marquee-row.dir-right{ animation-name: scrollRight; }
+  .marquee-row.dir-left{ animation-name: scrollLeft; }
+  @keyframes scrollLeft{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+  @keyframes scrollRight{ from{ transform:translateX(-50%); } to{ transform:translateX(0); } }
+  .chip{
+    flex:none;
+    display:flex; align-items:center; gap:6px;
+    font-family:"Baloo 2", sans-serif;
+    font-weight:700;
+    font-size:12.5px;
+    color: var(--ink);
+    background: var(--card-bg);
+    border:2px solid var(--ink);
+    border-radius:10px;
+    padding:6px 12px;
+    box-shadow: 2px 2px 0 var(--ink);
+    white-space:nowrap;
+  }
+  .chip .dot{ width:8px; height:8px; border-radius:50%; flex:none; }
+  .chip.exist .dot{ background: var(--exist); }
+  .chip.idea .dot{ background: var(--idea); }
+
+  /* ---- top info: instructions / picked summary ---- */
   .subtitle{
     color: var(--ink-soft);
     font-size: 15px;
     line-height: 1.6;
     max-width: 56ch;
-    margin: 0 0 22px;
+    margin: 0 0 18px;
   }
-  .subtitle .lock-label{
-    display:block;
-    font-family:"Baloo 2", sans-serif;
-    font-weight:700;
-    font-size:11px;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    color: var(--ink-soft);
-    margin-bottom:4px;
-  }
-  .subtitle .lock-time{
+  .subtitle .picked-banner{
     display:block;
     font-family:"Baloo 2", sans-serif;
     font-weight:800;
-    font-size:32px;
-    color: var(--red);
+    font-size:13px;
+    letter-spacing:.04em;
     margin-bottom:8px;
   }
-  .subtitle .lock-reason{
-    display:block;
-    color: var(--ink-soft);
-    font-size:14.5px;
-    line-height:1.6;
-  }
+  .subtitle .picked-desc{ display:block; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
 
-  .stage{ min-height: 300px; }
-
-  .attract{
-    font-family:"Baloo 2", sans-serif;
-    font-weight:800;
-    font-size:19px;
-    line-height:1.7;
-    color: var(--ink);
-    text-align:center;
-    padding: 56px 20px;
+  /* ---- face-down card field ---- */
+  .stage{ position:relative; min-height: 340px; }
+  .field-tray{
+    position:absolute; inset:0;
     border:3px dashed var(--ink);
     border-radius:14px;
     background: var(--paper-2);
-  }
-
-  /* ---- card-draw window ---- */
-  .reel{
-    position:relative;
-    height:130px;
     overflow:hidden;
-    background: var(--paper-2);
+  }
+  .face-card{
+    position:absolute;
+    width:74px; height:100px;
+    margin-left:-37px; margin-top:-50px;
+    border-radius:10px;
+    background: var(--red);
     border:3px solid var(--ink);
-    border-radius:14px;
-    box-shadow: 4px 4px 0 var(--ink);
-  }
-  .reel-item{
-    display:flex; align-items:center; justify-content:center; text-align:center;
-    padding:0 20px;
+    box-shadow:3px 3px 0 var(--ink);
+    display:flex; align-items:center; justify-content:center;
     font-family:"Baloo 2", sans-serif;
-    font-weight:700;
-    font-size:16px;
-    color: var(--ink);
+    font-weight:800;
+    font-size:24px;
+    color:#fff;
+    cursor:pointer;
+    user-select:none;
   }
-  .reel::after{
-    content:"";
-    position:absolute; inset:0;
-    pointer-events:none;
-    background:
-      linear-gradient(to bottom, var(--paper-2), transparent 26%, transparent 74%, var(--paper-2)),
-      linear-gradient(to right, var(--paper-2), transparent 20%, transparent 80%, var(--paper-2));
-  }
+  .face-card:nth-child(4n+2){ background: var(--blue); }
+  .face-card:nth-child(4n+3){ background: var(--idea); }
+  .face-card:nth-child(4n){ background: var(--yellow); color: var(--ink); }
+  @keyframes drift1{ 0%,100%{ transform:translate(0,0) rotate(0deg); } 50%{ transform:translate(14px,-10px) rotate(4deg); } }
+  @keyframes drift2{ 0%,100%{ transform:translate(0,0) rotate(0deg); } 50%{ transform:translate(-12px,12px) rotate(-5deg); } }
+  @keyframes drift3{ 0%,100%{ transform:translate(0,0) rotate(0deg); } 50%{ transform:translate(10px,10px) rotate(3deg); } }
 
-  /* ---- drawn card ---- */
+  /* ---- drawn card (name + timer only) ---- */
   .card{
     position:relative;
     background: var(--card-bg);
@@ -174,54 +198,42 @@
     animation: cardIn .3s ease forwards;
   }
   @keyframes cardIn{ to{ opacity:1; transform:none; } }
-
   .card-banner{
-    padding:13px 18px;
+    padding:10px;
     background: var(--type-color);
     border-bottom:3px solid var(--ink);
-    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
   }
-  .card-banner .stamp-big{
-    font-family:"Baloo 2", sans-serif;
-    font-weight:800;
-    font-size:15px;
-    color:#fff;
-    text-shadow: -1px -1px 0 var(--ink), 1px -1px 0 var(--ink), -1px 1px 0 var(--ink), 1px 1px 0 var(--ink);
-  }
-  .card-banner .stars{
-    font-family:"Baloo 2", sans-serif;
-    font-weight:700;
-    font-size:14px;
-    color:#fff;
-    text-shadow: -1px -1px 0 var(--ink), 1px -1px 0 var(--ink), -1px 1px 0 var(--ink), 1px 1px 0 var(--ink);
-    letter-spacing:1px;
-  }
-
-  .card-body{ padding: 18px 18px 20px; }
+  .card-body{ padding: 26px 20px 28px; text-align:center; }
   .card h2{
     font-family:"Baloo 2", sans-serif;
     font-weight:800;
-    font-size:22px;
+    font-size:26px;
     color: var(--ink);
-    margin:0 0 10px;
+    margin:0;
     text-wrap:balance;
   }
-  .card p.desc{
-    font-size:15px;
-    line-height:1.6;
-    color: var(--ink-soft);
-    margin:0 0 18px;
-    max-width:58ch;
-  }
-  .sec-label{
+  .card-timer{ margin-top:16px; }
+  .card-timer .lock-label{
+    display:block;
     font-family:"Baloo 2", sans-serif;
     font-weight:700;
     font-size:11px;
-    letter-spacing:.05em;
+    letter-spacing:.06em;
     text-transform:uppercase;
     color: var(--ink-soft);
-    margin: 0 0 8px;
+    margin-bottom:4px;
   }
+  .card-timer .lock-time{
+    display:block;
+    font-family:"Baloo 2", sans-serif;
+    font-weight:800;
+    font-size:30px;
+    color: var(--red);
+  }
+
+  /* ---- below-card: reason + keys ---- */
+  .below-card{ margin-top:18px; }
+  .reason-text{ color: var(--ink-soft); font-size:14px; line-height:1.6; margin:0 0 16px; }
 
   .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
   .tag{
@@ -235,7 +247,23 @@
     border-radius:8px;
   }
 
-  .query-block{ margin-bottom:16px; }
+  .keys{ display:flex; flex-direction:column; gap:8px; }
+  .key-toggle{
+    align-self:flex-start;
+    font-family:"Baloo 2", sans-serif;
+    font-weight:700;
+    font-size:12.5px;
+    color: var(--ink);
+    background: var(--yellow);
+    border:2px solid var(--ink);
+    border-radius:8px;
+    padding:8px 14px;
+    cursor:pointer;
+    box-shadow:2px 2px 0 var(--ink);
+  }
+  .key-toggle.open{ background: var(--blue); color:#fff; }
+  .key-content{ margin: 8px 0 4px; }
+  .key-content[hidden]{ display:none; }
   .query-console{
     display:flex; gap:10px; align-items:flex-start;
     background: var(--query-bg);
@@ -275,26 +303,9 @@
     .copy-btn{ align-self:flex-end; }
   }
 
-  .controls{ display:flex; flex-direction:column; align-items:center; gap:12px; margin-top:26px; }
-  .roll-btn{
-    font-family:"Baloo 2", sans-serif;
-    font-weight:800;
-    font-size:16px;
-    letter-spacing:.02em;
-    color:#fff;
-    background: var(--red);
-    border:3px solid var(--ink);
-    border-radius:999px;
-    padding:16px 34px;
-    cursor:pointer;
-    box-shadow: 5px 5px 0 var(--ink);
-    transition: transform .08s ease, box-shadow .08s ease;
-  }
-  .roll-btn:active{ transform: translate(4px,4px); box-shadow: 1px 1px 0 var(--ink); }
-  .roll-btn:disabled{ opacity:.55; cursor:default; background: var(--ink-soft); }
-  .roll-btn:focus-visible{ outline:3px solid var(--blue); outline-offset:3px; }
-
   .counter-badge{
+    display:table;
+    margin: 22px auto 0;
     font-family:"Baloo 2", sans-serif;
     font-weight:700;
     font-size:14px;
@@ -310,53 +321,76 @@
     text-align:center;
     font-size:12px;
     color: var(--ink-soft);
-    margin-top:20px;
+    margin-top:16px;
     padding:0 10px;
   }
-
-  /* ---- deck preview marquee ---- */
-  .deck-label{ text-align:center; margin-bottom:10px; }
-  .marquee-wrap{
-    margin: 0 0 22px;
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-    overflow:hidden;
-    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-  }
-  .marquee-row{
-    display:flex;
-    width:max-content;
-    gap:8px;
-    animation: scrollLeft 40s linear infinite;
-  }
-  .marquee-row.dir-right{ animation-name: scrollRight; }
-  .marquee-row.dir-left{ animation-name: scrollLeft; }
-  @keyframes scrollLeft{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
-  @keyframes scrollRight{ from{ transform:translateX(-50%); } to{ transform:translateX(0); } }
-  .chip{
-    flex:none;
-    display:flex; align-items:center; gap:6px;
-    font-family:"Baloo 2", sans-serif;
-    font-weight:700;
-    font-size:12.5px;
-    color: var(--ink);
-    background: var(--card-bg);
-    border:2px solid var(--ink);
-    border-radius:10px;
-    padding:6px 12px;
-    box-shadow: 2px 2px 0 var(--ink);
-    white-space:nowrap;
-  }
-  .chip .dot{ width:8px; height:8px; border-radius:50%; flex:none; }
-  .chip.exist .dot{ background: var(--exist); }
-  .chip.idea .dot{ background: var(--idea); }
 
   @media (prefers-reduced-motion: reduce){
     .card{ animation:none; opacity:1; transform:none; }
     .marquee-row{ animation:none; }
+    .face-card{ animation:none !important; }
   }
+
+  /* ---- onboarding overlay ---- */
+  .onboard-overlay{
+    position:fixed; inset:0;
+    background: rgba(36,28,20,.6);
+    display:flex; align-items:center; justify-content:center;
+    padding:20px;
+    z-index:1000;
+  }
+  .onboard-overlay.hidden{ display:none; }
+  .onboard-modal{
+    background: var(--card-bg);
+    border:4px solid var(--ink);
+    border-radius:18px;
+    padding:26px 24px;
+    max-width:440px;
+    width:100%;
+    max-height:85vh;
+    overflow-y:auto;
+    box-shadow:8px 8px 0 var(--ink);
+  }
+  .onboard-title{
+    font-family:"Baloo 2", sans-serif;
+    font-weight:800;
+    font-size:22px;
+    color: var(--red);
+    text-shadow: -1.5px -1.5px 0 var(--ink), 1.5px -1.5px 0 var(--ink), -1.5px 1.5px 0 var(--ink), 1.5px 1.5px 0 var(--ink);
+    margin:0 0 12px;
+  }
+  .onboard-text{ font-size:14.5px; line-height:1.6; color: var(--ink-soft); margin:0 0 20px; }
+  .onboard-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+  .onboard-btn{
+    font-family:"Baloo 2", sans-serif;
+    font-weight:700;
+    font-size:14px;
+    padding:10px 20px;
+    border:2.5px solid var(--ink);
+    border-radius:10px;
+    cursor:pointer;
+    box-shadow:3px 3px 0 var(--ink);
+    transition: transform .08s ease, box-shadow .08s ease;
+  }
+  .onboard-btn:active{ transform: translate(3px,3px); box-shadow:0 0 0 var(--ink); }
+  .onboard-btn:focus-visible{ outline:2px solid var(--blue); outline-offset:2px; }
+  .onboard-btn.primary{ background: var(--exist); color:#fff; }
+  .onboard-btn.secondary{ background: var(--paper-2); color: var(--ink); }
+  .onboard-steps{ margin:0 0 18px; padding-left:20px; font-size:14px; line-height:1.7; color: var(--ink-soft); }
+  .onboard-steps li{ margin-bottom:6px; }
+  .onboard-try-label{
+    font-family:"Baloo 2", sans-serif;
+    font-weight:700;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color: var(--ink-soft);
+    margin:0 0 10px;
+  }
+  .onboard-demo{ text-align:center; margin-bottom:20px; }
+  .demo-face{ position:static !important; margin:0 auto 12px !important; animation:none !important; }
+  .demo-result{ font-size:13.5px; line-height:1.6; color: var(--ink); }
+  .demo-note{ display:block; font-size:12px; color: var(--ink-soft); margin-top:4px; }
 </style>
 </head>
 <body>
@@ -371,18 +405,17 @@
   <div class="deck-label sec-label">To'plamdagi kartalar</div>
   <div class="marquee-wrap" id="marqueeWrap"></div>
 
-  <p class="subtitle" id="topInfo">Mavjud IT loyihalar va hali yaratilmagan g'oyalardan yig'ilgan katta karta to'plamidan tasodifiy bittasini tortib olasiz — har bir kartada AI va Google uchun bonus so'rovlar bor.</p>
+  <p class="subtitle" id="topInfo">Istalgan kartani tanlang — u orqali o'zingiz uchun yangi loyihani kashf etasiz!</p>
 
-  <div class="stage" id="stage">
-    <div class="attract" id="attract">TORTISH UCHUN<br>TUGMANI BOSING!</div>
-  </div>
+  <div class="stage" id="stage"></div>
+  <div class="below-card" id="belowCard"></div>
 
-  <div class="controls">
-    <button class="roll-btn" id="rollBtn">KARTA TORT!</button>
-    <div class="counter-badge" id="counter">TORTILGAN 000</div>
-  </div>
+  <div class="counter-badge" id="counter">TORTILGAN 000</div>
+  <div class="footer-plate">Har safar kartani ochganingizda yangi loyiha va unga mos kutish vaqti beriladi.</div>
+</div>
 
-  <div class="footer-plate">Har safar karta tortganingizda baraban boshqa tomonga aylanadi va to'plamdan tasodifiy bitta loyiha chiqadi.</div>
+<div class="onboard-overlay" id="onboardOverlay">
+  <div class="onboard-modal" id="onboardModal"></div>
 </div>
 
 <script>
@@ -492,12 +525,6 @@ const PROJECTS = [
   {name:"Ijara shartnomalarini tekshiruvchi tizim", type:"idea", difficulty:"Qiyin", desc:"Ko'chmas mulk ijarasidan oldin mulk hujjatlari va egasining haqiqiyligini tekshirib, firibgarlik xavfini kamaytiruvchi xizmat.", tags:["PropTech","Verification"]},
 ];
 
-const DIRS = {
-  down:  { axis: "y", sign: "pos" },   // tepadan pastga
-  up:    { axis: "y", sign: "neg" },   // pastdan tepaga
-  left:  { axis: "x", sign: "neg" },   // o'ngdan chapga
-  right: { axis: "x", sign: "pos" },   // chapdan o'ngga
-};
 const DIFF_LEVEL = { "Oson": 1, "O'rta": 2, "Qiyin": 3 };
 const COOLDOWN_HOURS = { "Oson": 4, "O'rta": 8, "Qiyin": 24 };
 const COOLDOWN_REASON = {
@@ -509,9 +536,9 @@ const COOLDOWN_REASON = {
 let count = 0;
 let countdownTimer = null;
 const stage = document.getElementById("stage");
-const rollBtn = document.getElementById("rollBtn");
 const counterEl = document.getElementById("counter");
 const topInfoEl = document.getElementById("topInfo");
+const belowCardEl = document.getElementById("belowCard");
 const DEFAULT_TOPINFO_HTML = topInfoEl.innerHTML;
 
 const LOCK_KEY = "loyiha-generator:lock";
@@ -553,46 +580,6 @@ function formatCountdown(ms){
   return pad(h) + ":" + pad(m) + ":" + pad(s);
 }
 
-function startCountdown(unlockAt, difficulty){
-  rollBtn.disabled = true;
-  rollBtn.textContent = "NAVBAT KUTILMOQDA";
-  const reason = COOLDOWN_REASON[difficulty] || COOLDOWN_REASON["Oson"];
-  if(countdownTimer) clearInterval(countdownTimer);
-
-  const tick = () => {
-    const remaining = unlockAt - Date.now();
-    if(remaining <= 0){
-      clearInterval(countdownTimer);
-      countdownTimer = null;
-      clearLockRaw();
-      rollBtn.disabled = false;
-      rollBtn.textContent = "KARTA TORT!";
-      topInfoEl.innerHTML = DEFAULT_TOPINFO_HTML;
-      return;
-    }
-    topInfoEl.innerHTML =
-      '<span class="lock-label">Keyingi navbatgacha</span>' +
-      '<span class="lock-time">' + formatCountdown(remaining) + '</span>' +
-      '<span class="lock-reason">' + reason + '</span>';
-  };
-  tick();
-  countdownTimer = setInterval(tick, 1000);
-}
-
-function aiQueryFor(p){
-  if(p.type === "exist"){
-    return `"${p.name}" xizmati qanday ishlaydi? Uning texnik arxitekturasini, ma'lumotlar bazasi tuzilishini, asosiy algoritmlarini va monetizatsiya modelini batafsil, misollar bilan tushuntirib ber.`;
-  }
-  return `Men "${p.name}" nomli loyiha g'oyasini amalga oshirmoqchiman: ${p.desc} Buning uchun MVP qanday funksiyalardan iborat bo'lishi kerak, qaysi texnologik stekni tanlash maqsadga muvofiq va bosqichma-bosqich boshlash rejasini tuzib ber.`;
-}
-
-function googleQueryFor(p){
-  if(p.type === "exist"){
-    return `${p.name} how it works technical architecture tech stack`;
-  }
-  return `${p.name} - mavjud yechimlar va raqobatchilar tahlili`;
-}
-
 function buildDeckMarquee(){
   const wrap = document.getElementById("marqueeWrap");
   if(!wrap) return;
@@ -610,117 +597,171 @@ function buildDeckMarquee(){
 }
 buildDeckMarquee();
 
+function aiQueryFor(p){
+  if(p.type === "exist"){
+    return `"${p.name}" xizmati qanday ishlaydi? Uning texnik arxitekturasini, ma'lumotlar bazasi tuzilishini, asosiy algoritmlarini va monetizatsiya modelini batafsil, misollar bilan tushuntirib ber.`;
+  }
+  return `Men "${p.name}" nomli loyiha g'oyasini amalga oshirmoqchiman: ${p.desc} Buning uchun MVP qanday funksiyalardan iborat bo'lishi kerak, qaysi texnologik stekni tanlash maqsadga muvofiq va bosqichma-bosqich boshlash rejasini tuzib ber.`;
+}
+
+function googleQueryFor(p){
+  if(p.type === "exist"){
+    return `${p.name} how it works technical architecture tech stack`;
+  }
+  return `${p.name} - mavjud yechimlar va raqobatchilar tahlili`;
+}
+
 function starsFor(level){
   let s = "";
   for(let i=1;i<=3;i++){ s += i <= level ? "★" : "☆"; }
   return s;
 }
 
-function renderCard(p){
-  const isExist = p.type === "exist";
+/* ---- idle state: a tray of face-down, gently drifting cards ---- */
+function layoutPositions(n){
+  const cols = Math.ceil(Math.sqrt(n * 1.6));
+  const rows = Math.ceil(n / cols);
+  const cellW = 100 / cols, cellH = 100 / rows;
+  const pts = [];
+  for(let i = 0; i < n; i++){
+    const col = i % cols, row = Math.floor(i / cols);
+    const jitterX = (Math.random() - 0.5) * cellW * 0.5;
+    const jitterY = (Math.random() - 0.5) * cellH * 0.5;
+    const left = Math.min(93, Math.max(7, col * cellW + cellW / 2 + jitterX));
+    const top = Math.min(86, Math.max(14, row * cellH + cellH / 2 + jitterY));
+    pts.push({ left, top });
+  }
+  return pts;
+}
+
+function renderIdleField(){
+  const N = 10;
+  const positions = layoutPositions(N);
+  const cards = positions.map((pos, i) => {
+    const driftN = (i % 3) + 1;
+    const dur = (7 + Math.random() * 4).toFixed(1);
+    const delay = (Math.random() * 3).toFixed(1);
+    return `<div class="face-card" style="left:${pos.left}%;top:${pos.top}%;animation-name:drift${driftN};animation-duration:${dur}s;animation-delay:${delay}s;">?</div>`;
+  }).join("");
+  stage.innerHTML = `<div class="field-tray">${cards}</div>`;
+  belowCardEl.innerHTML = "";
+
+  stage.querySelectorAll(".face-card").forEach(el => {
+    el.addEventListener("click", () => {
+      if(loadLockRaw()) return;
+      const pick = PROJECTS[Math.floor(Math.random() * PROJECTS.length)];
+      pickFromField(pick, el);
+    }, { once: true });
+  });
+}
+
+function pickFromField(pick, clickedEl){
+  stage.querySelectorAll(".face-card").forEach(el => {
+    if(el !== clickedEl){
+      el.style.transition = "opacity .3s ease";
+      el.style.opacity = "0";
+      el.style.pointerEvents = "none";
+    }
+  });
+  clickedEl.style.pointerEvents = "none";
+  clickedEl.style.animation = "none";
+
+  const flickerNames = Array.from({ length: 4 }, () =>
+    PROJECTS[Math.floor(Math.random() * PROJECTS.length)].name.slice(0, 9)
+  );
+  let flickers = 0;
+  const flickerInterval = setInterval(() => {
+    clickedEl.textContent = flickerNames[flickers % flickerNames.length];
+    flickers++;
+    if(flickers >= 4){
+      clearInterval(flickerInterval);
+      clickedEl.style.transition = "opacity .25s ease, transform .25s ease";
+      clickedEl.style.opacity = "0";
+      clickedEl.style.transform = "scale(.7)";
+      setTimeout(() => landOnCard(pick), 220);
+    }
+  }, 90);
+}
+
+/* ---- picked state: minimal card + info split above/below it ---- */
+function renderPicked(pick){
+  const isExist = pick.type === "exist";
   const typeVar = isExist ? "exist" : "idea";
   const bigLabel = isExist ? "MAVJUD KARTA" : "YANGI KARTA";
-  const aiQuery = aiQueryFor(p);
-  const googleQuery = googleQueryFor(p);
-  const diffN = DIFF_LEVEL[p.difficulty] || 1;
+  const diffN = DIFF_LEVEL[pick.difficulty] || 1;
+
+  topInfoEl.innerHTML =
+    `<span class="picked-banner" style="color:var(--${typeVar})">${bigLabel} · ${starsFor(diffN)} ${pick.difficulty.toUpperCase()}</span>` +
+    `<span class="picked-desc">${pick.desc}</span>`;
 
   stage.innerHTML = `
     <div class="card" style="--type-color:var(--${typeVar})">
-      <div class="card-banner">
-        <span class="stamp-big">${bigLabel}</span>
-        <span class="stars">${starsFor(diffN)} · ${p.difficulty.toUpperCase()}</span>
-      </div>
+      <div class="card-banner"></div>
       <div class="card-body">
-        <h2>${p.name}</h2>
-        <p class="desc">${p.desc}</p>
-
-        <div class="sec-label">Kerakli asboblar</div>
-        <div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
-
-        <div class="sec-label">Bonus: AI'ga savol ber</div>
-        <div class="query-block">
-          <div class="query-console">
-            <p class="query-text">${aiQuery}</p>
-            <button class="copy-btn" type="button">NUSXALASH</button>
-          </div>
+        <h2>${pick.name}</h2>
+        <div class="card-timer">
+          <span class="lock-label">Keyingi navbatgacha</span>
+          <span class="lock-time" id="cardTimer">00:00:00</span>
         </div>
+      </div>
+    </div>
+  `;
 
-        <div class="sec-label">Bonus: Google'da qidir</div>
-        <div class="query-block">
-          <div class="query-console">
-            <p class="query-text">${googleQuery}</p>
-            <button class="copy-btn" type="button">NUSXALASH</button>
-          </div>
+  const aiQuery = aiQueryFor(pick);
+  const googleQuery = googleQueryFor(pick);
+  const reason = COOLDOWN_REASON[pick.difficulty] || COOLDOWN_REASON["Oson"];
+
+  belowCardEl.innerHTML = `
+    <p class="reason-text">${reason}</p>
+    <div class="sec-label">Kerakli asboblar</div>
+    <div class="tags">${pick.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
+    <div class="sec-label">Kalitlar</div>
+    <div class="keys">
+      <button class="key-toggle" type="button" data-target="keyAi">Kalit: AI'ga savol ber ›</button>
+      <div class="key-content" id="keyAi" hidden>
+        <div class="query-console">
+          <p class="query-text">${aiQuery}</p>
+          <button class="copy-btn" type="button">NUSXALASH</button>
+        </div>
+      </div>
+      <button class="key-toggle" type="button" data-target="keyGoogle">Kalit: Google'da qidir ›</button>
+      <div class="key-content" id="keyGoogle" hidden>
+        <div class="query-console">
+          <p class="query-text">${googleQuery}</p>
+          <button class="copy-btn" type="button">NUSXALASH</button>
         </div>
       </div>
     </div>
   `;
 }
 
+function startCountdown(unlockAt, difficulty){
+  if(countdownTimer) clearInterval(countdownTimer);
+  const tick = () => {
+    const remaining = unlockAt - Date.now();
+    if(remaining <= 0){
+      clearInterval(countdownTimer);
+      countdownTimer = null;
+      clearLockRaw();
+      topInfoEl.innerHTML = DEFAULT_TOPINFO_HTML;
+      renderIdleField();
+      return;
+    }
+    const timerEl = document.getElementById("cardTimer");
+    if(timerEl) timerEl.textContent = formatCountdown(remaining);
+  };
+  tick();
+  countdownTimer = setInterval(tick, 1000);
+}
+
 function landOnCard(pick){
   count++;
   counterEl.textContent = "TORTILGAN " + String(count).padStart(3, "0");
-  renderCard(pick);
   const hours = COOLDOWN_HOURS[pick.difficulty] || 4;
   const unlockAt = Date.now() + hours * 60 * 60 * 1000;
   saveLockRaw(pick, unlockAt);
+  renderPicked(pick);
   startCountdown(unlockAt, pick.difficulty);
-}
-
-function spin(dirKey, finalProject){
-  rollBtn.disabled = true;
-
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if(reduceMotion){
-    landOnCard(finalProject);
-    return;
-  }
-
-  const { axis, sign } = DIRS[dirKey];
-  const isX = axis === "x";
-  const N = 16;
-  const randoms = Array.from({ length: N - 1 }, () => PROJECTS[Math.floor(Math.random() * PROJECTS.length)]);
-  const items = sign === "neg" ? [...randoms, finalProject] : [finalProject, ...randoms];
-
-  stage.innerHTML = `<div class="reel" id="reelBox"><div class="reel-strip" id="reelStrip"></div></div>`;
-  const reelBox = document.getElementById("reelBox");
-  const reelStrip = document.getElementById("reelStrip");
-  const rect = reelBox.getBoundingClientRect();
-  const w = rect.width, h = rect.height;
-
-  reelStrip.style.display = "flex";
-  reelStrip.style.flexDirection = isX ? "row" : "column";
-  reelStrip.style.width = isX ? (items.length * w) + "px" : w + "px";
-  reelStrip.style.height = isX ? h + "px" : (items.length * h) + "px";
-
-  reelStrip.innerHTML = items.map(p =>
-    `<div class="reel-item" style="${isX ? "width:" + w + "px;height:100%;" : "width:100%;height:" + h + "px;"}">${p.name}</div>`
-  ).join("");
-
-  const travel = (items.length - 1) * (isX ? w : h);
-  const startPx = sign === "neg" ? 0 : -travel;
-  const endPx = sign === "neg" ? -travel : 0;
-
-  reelStrip.style.transition = "none";
-  reelStrip.style.transform = isX ? `translateX(${startPx}px)` : `translateY(${startPx}px)`;
-  void reelStrip.offsetWidth;
-  reelStrip.style.transition = "transform 1.1s cubic-bezier(.1,.85,.2,1)";
-  requestAnimationFrame(() => {
-    reelStrip.style.transform = isX ? `translateX(${endPx}px)` : `translateY(${endPx}px)`;
-  });
-
-  reelStrip.addEventListener("transitionend", function done(){
-    reelStrip.removeEventListener("transitionend", done);
-    landOnCard(finalProject);
-  }, { once: true });
-}
-
-function roll(){
-  if(loadLockRaw()) return;
-  const pick = PROJECTS[Math.floor(Math.random() * PROJECTS.length)];
-  const dirKeys = Object.keys(DIRS);
-  const dir = dirKeys[Math.floor(Math.random() * dirKeys.length)];
-  spin(dir, pick);
 }
 
 function copyText(text, btn){
@@ -757,22 +798,91 @@ function fallbackCopy(text, finish){
   }
 }
 
-rollBtn.addEventListener("click", roll);
-
-stage.addEventListener("click", (e) => {
-  const btn = e.target.closest(".copy-btn");
-  if(!btn) return;
-  const row = btn.closest(".query-console");
-  const textEl = row && row.querySelector(".query-text");
-  if(!textEl) return;
-  copyText(textEl.textContent, btn);
+document.addEventListener("click", (e) => {
+  const toggle = e.target.closest(".key-toggle");
+  if(toggle){
+    const content = document.getElementById(toggle.dataset.target);
+    if(content){
+      const isHidden = content.hasAttribute("hidden");
+      if(isHidden){ content.removeAttribute("hidden"); toggle.classList.add("open"); }
+      else { content.setAttribute("hidden", ""); toggle.classList.remove("open"); }
+    }
+    return;
+  }
+  const copyBtn = e.target.closest(".copy-btn");
+  if(copyBtn){
+    const row = copyBtn.closest(".query-console");
+    const textEl = row && row.querySelector(".query-text");
+    if(textEl) copyText(textEl.textContent, copyBtn);
+  }
 });
 
 const existingLock = loadLockRaw();
 if(existingLock){
-  renderCard(existingLock.pick);
+  renderPicked(existingLock.pick);
   startCountdown(existingLock.unlockAt, existingLock.pick.difficulty);
+} else {
+  renderIdleField();
 }
+
+/* ---- onboarding: shown every visit; branches only for "Tushunmadim" ---- */
+const onboardOverlay = document.getElementById("onboardOverlay");
+const onboardModal = document.getElementById("onboardModal");
+
+function closeOnboard(){
+  onboardOverlay.classList.add("hidden");
+}
+
+function renderOnboardStep1(){
+  onboardModal.innerHTML = `
+    <h2 class="onboard-title">Xush kelibsiz!</h2>
+    <p class="onboard-text">Bu — tasodifiy IT loyiha g'oyalari beruvchi karta o'yini. Yopiq kartalardan birini tanlang — u sizga tasodifiy loyiha (mavjud yoki hali yaratilmagan g'oya) ochib beradi. Har kartaning o'z qiyinligi bor va tanlagandan keyin keyingi kartani ochish uchun 4, 8 yoki 24 soat kutishingiz kerak bo'ladi. Karta ochilgach, pastdagi "Kalitlar" orqali AI va Google'dan to'liq ma'lumot so'rash uchun tayyor savollarni topasiz.</p>
+    <div class="onboard-actions">
+      <button class="onboard-btn primary" id="understandBtn" type="button">Tushundim</button>
+      <button class="onboard-btn secondary" id="dontUnderstandBtn" type="button">Tushunmadim</button>
+    </div>
+  `;
+  document.getElementById("understandBtn").addEventListener("click", closeOnboard);
+  document.getElementById("dontUnderstandBtn").addEventListener("click", renderOnboardStep2);
+}
+
+function renderOnboardStep2(){
+  onboardModal.innerHTML = `
+    <h2 class="onboard-title">Qanday ishlatiladi?</h2>
+    <ol class="onboard-steps">
+      <li>Yopiq kartalardan birini tanlang.</li>
+      <li>Karta ochiladi — loyiha nomi va unga berilgan kutish vaqti ko'rinadi.</li>
+      <li>Pastda tavsif, kerakli texnologiyalar va "Kalitlar" (AI/Google so'rovlari) chiqadi — ularni bosib to'liq ma'lumot oling.</li>
+      <li>Berilgan vaqt tugagach, yangi karta tanlash yana mumkin bo'ladi.</li>
+    </ol>
+    <p class="onboard-try-label">Hoziroq sinab ko'ring</p>
+    <div class="onboard-demo">
+      <div class="face-card demo-face" id="demoFaceCard">?</div>
+      <p class="demo-result" id="demoResult" hidden></p>
+    </div>
+    <div class="onboard-actions">
+      <button class="onboard-btn primary" id="toSiteBtn" type="button">Saytga o'tish</button>
+    </div>
+  `;
+  document.getElementById("toSiteBtn").addEventListener("click", closeOnboard);
+
+  const demoCard = document.getElementById("demoFaceCard");
+  const demoResult = document.getElementById("demoResult");
+  demoCard.addEventListener("click", () => {
+    const pick = PROJECTS[Math.floor(Math.random() * PROJECTS.length)];
+    const label = pick.type === "exist" ? "MAVJUD KARTA" : "YANGI KARTA";
+    const diffN = DIFF_LEVEL[pick.difficulty] || 1;
+    demoCard.style.opacity = ".35";
+    demoCard.style.pointerEvents = "none";
+    demoCard.textContent = "✓";
+    demoResult.hidden = false;
+    demoResult.innerHTML =
+      `<strong>${pick.name}</strong> — ${label} · ${starsFor(diffN)} ${pick.difficulty.toUpperCase()}` +
+      `<span class="demo-note">Bu — sinov, hisobga olinmaydi. Haqiqiy saytda xuddi shunday karta chiqadi.</span>`;
+  }, { once: true });
+}
+
+renderOnboardStep1();
 </script>
 </body>
 </html>
