@@ -6,26 +6,23 @@
 <title>Loyiha Generatori</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* a warm pastel poster - one committed light look, no dark variant */
-    --bg-1:#ffd7e3;
-    --bg-2:#ffe9d6;
-    --paper-2:#fff3ee;
-    --card-bg:#ffffff;
-    --ink:#3d2f3a;
-    --ink-soft:#8c7a89;
-    --pink:#ff8fb1;
-    --sapphire:#6fb6f0;
-    --gold:#f5b95c;
-    --exist:#3fae8f;
-    --exist-bg:#e2f6f0;
-    --idea:#9b7be0;
-    --idea-bg:#efeafc;
-    --query:#5fa8ea;
-    --query-bg:#e9f3fd;
-    --card-white:#ffffff;
+    /* a light dev-terminal look - one committed world, no dark variant */
+    --bg:#f6f5f0;
+    --bg-dot:#d8d5c8;
+    --card-bg:#fffdf8;
+    --bar-bg:#ece7d8;
+    --border:#cfc9b8;
+    --ink:#2a2a22;
+    --ink-soft:#7a7360;
+    --exist:#4d8a5a;
+    --exist-bg:#e3f0e6;
+    --idea:#b8722f;
+    --idea-bg:#f5ead9;
+    --query:#3a7ca8;
+    --query-bg:#e7f0f5;
   }
 
   *{ box-sizing:border-box; }
@@ -34,9 +31,11 @@
     min-height:100vh;
     padding-block:32px;
     padding-inline:16px;
-    background: linear-gradient(160deg, var(--bg-1), var(--bg-2));
+    background-color: var(--bg);
+    background-image: radial-gradient(var(--bg-dot) 1px, transparent 1px);
+    background-size: 16px 16px;
     color: var(--ink);
-    font-family: "Nunito", ui-sans-serif, system-ui, sans-serif;
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   }
 
   /* ---- cards scattered across the whole page ---- */
@@ -48,25 +47,25 @@
     max-width: 680px;
     margin: 0 auto;
     background: var(--card-bg);
-    border: none;
-    border-radius: 32px;
-    padding: 30px;
-    box-shadow: 0 24px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.04);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    overflow:hidden;
+    box-shadow: 0 14px 34px rgba(42,42,34,.10);
   }
-
-  .box-header{
-    text-align:center;
-    padding-bottom:16px;
-    margin-bottom:20px;
+  .box-bar{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:11px 14px;
+    background: var(--bar-bg);
+    border-bottom: 1.5px solid var(--border);
   }
-  .title{
-    font-family:"Fredoka", sans-serif;
-    font-weight:600;
-    font-size: clamp(24px, 5.5vw, 32px);
-    color: var(--pink);
-    margin:0;
-    text-wrap:balance;
-  }
+  .box-bar .dot{ width:10px; height:10px; border-radius:50%; flex:none; }
+  .box-bar .dot-r{ background:#e5675a; }
+  .box-bar .dot-y{ background:#e3b341; }
+  .box-bar .dot-g{ background:#5fae6b; }
+  .box-bar .bar-title{ margin-left:8px; font-size:12px; color: var(--ink-soft); }
+  .box-body{ padding:24px 22px; }
 
   @keyframes scrollLeft{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
   @keyframes scrollRight{ from{ transform:translateX(-50%); } to{ transform:translateX(0); } }
@@ -74,20 +73,19 @@
   /* ---- top info: picked summary (empty until a card is opened) ---- */
   .subtitle{
     color: var(--ink-soft);
-    font-size: 14.5px;
+    font-size: 13px;
     line-height: 1.65;
-    max-width: 56ch;
+    font-style:italic;
     margin: 0 0 20px;
   }
-  .subtitle .picked-banner{
+  .subtitle .picked-row{
     display:block;
-    font-family:"Fredoka", sans-serif;
-    font-weight:600;
-    font-size:13px;
-    letter-spacing:.02em;
+    font-style:normal;
+    color: var(--ink);
     margin-bottom:8px;
   }
-  .subtitle .picked-desc{ display:block; color: var(--ink-soft); font-size:14.5px; line-height:1.65; }
+  .subtitle .picked-row b{ font-weight:700; }
+  .subtitle .picked-desc{ display:block; color: var(--ink-soft); }
 
   /* ---- result area ---- */
   .stage{ position:relative; min-height: 0; }
@@ -107,130 +105,116 @@
     position:static;
     flex:none;
     width:70px; height:98px;
-    border-radius:20px;
-    background: var(--card-fc-bg, var(--pink));
-    box-shadow: 0 10px 22px rgba(61,47,58,.16);
+    border-radius:8px;
+    background: var(--card-bg);
+    border:1.5px solid var(--border);
+    box-shadow: 0 8px 18px rgba(42,42,34,.10);
     display:flex; align-items:center; justify-content:center;
-    color:#fff;
+    font-family:"JetBrains Mono", monospace;
+    font-weight:600;
+    font-size:15px;
+    color: var(--ink-soft);
     cursor:pointer;
     user-select:none;
     pointer-events:auto;
   }
-  .face-card svg{ opacity:.95; }
-  .face-card:nth-child(4n+2){ --card-fc-bg: var(--sapphire); }
-  .face-card:nth-child(4n+3){ --card-fc-bg: var(--exist); }
-  .face-card:nth-child(4n){ --card-fc-bg: var(--gold); }
 
-  /* ---- drawn card: a soft friendly result card ---- */
-  .result-card{
-    position:relative;
-    max-width:320px;
+  /* ---- drawn card: a terminal-window result ---- */
+  .term-card{
+    max-width:280px;
     margin:0 auto;
+    border:1.5px solid var(--border);
+    border-radius:8px;
+    overflow:hidden;
     background: var(--card-bg);
-    border-radius:28px;
-    box-shadow: 0 20px 44px rgba(61,47,58,.18);
-    padding: 30px 26px;
-    text-align:center;
+    box-shadow: 0 16px 36px rgba(42,42,34,.12);
     opacity:0;
-    transform: translateY(10px) scale(.97);
-    animation: cardIn .32s ease forwards;
+    transform: translateY(8px) scale(.98);
+    animation: cardIn .28s ease forwards;
   }
   @keyframes cardIn{ to{ opacity:1; transform:none; } }
-  .eyebrow{
-    display:inline-block;
-    font-family:"Fredoka", sans-serif;
-    font-weight:600;
-    font-size:12.5px;
-    color: var(--pink);
-    margin-bottom:10px;
-  }
-  .result-name{
-    font-family:"Fredoka", sans-serif;
-    font-weight:600;
-    font-size:22px;
-    color: var(--ink);
-    margin:0 0 14px;
-    line-height:1.25;
-    text-wrap:balance;
-  }
-  .result-pills{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
-  .pill{
-    font-family:"Nunito", sans-serif;
-    font-weight:700;
+  .term-bar{
+    background: var(--bar-bg);
+    border-bottom:1.5px solid var(--border);
+    padding:8px 14px;
     font-size:12px;
-    padding:6px 14px;
-    border-radius:999px;
+    color: var(--ink-soft);
   }
-  .pill-type.type-exist{ background: var(--exist-bg); color: var(--exist); }
-  .pill-type.type-idea{ background: var(--idea-bg); color: var(--idea); }
-  .pill-diff{ background:#fdf1d6; color:#b8863a; }
-  .pill-diff.diff-oson{ background:#e2f6f0; color:#2f8a6e; }
-  .pill-diff.diff-qiyin{ background:#fde3e3; color:#c14a4a; }
+  .term-body{ padding:18px 16px 20px; text-align:left; }
+  .term-comment{ font-size:11.5px; color: var(--exist); margin-bottom:8px; }
+  .term-name{
+    font-family:"JetBrains Mono", monospace;
+    font-weight:700;
+    font-size:17px;
+    color: var(--ink);
+    margin:0 0 12px;
+    line-height:1.3;
+  }
+  .term-row{ font-size:12px; color: var(--ink-soft); margin-bottom:16px; }
+  .term-row .term-type{ color: var(--exist); }
+  .term-row .term-type.is-idea{ color: var(--idea); }
+  .term-row .term-diff{ color: var(--ink); }
 
   /* ---- below-card: keys + draw again ---- */
   .below-card{ margin-top:20px; }
 
   .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
   .tag{
-    font-family:"Nunito", sans-serif;
-    font-weight:700;
-    font-size:12px;
+    font-family:"JetBrains Mono", monospace;
+    font-size:11.5px;
     color: var(--ink);
-    background: var(--paper-2);
-    padding:5px 12px;
-    border-radius:999px;
+    background: var(--bg);
+    border:1px solid var(--border);
+    padding:4px 9px;
+    border-radius:5px;
   }
 
   .keys{ display:flex; flex-direction:column; gap:8px; }
   .key-toggle{
     align-self:flex-start;
-    font-family:"Nunito", sans-serif;
-    font-weight:700;
-    font-size:12.5px;
-    color:#fff;
-    background: var(--sapphire);
-    border:none;
-    border-radius:12px;
-    padding:9px 16px;
+    font-family:"JetBrains Mono", monospace;
+    font-weight:600;
+    font-size:12px;
+    color: var(--query);
+    background: var(--query-bg);
+    border:1.5px solid var(--query);
+    border-radius:6px;
+    padding:8px 14px;
     cursor:pointer;
-    box-shadow: 0 6px 16px rgba(95,168,234,.35);
   }
-  .key-toggle.open{ background:#4a95d9; }
+  .key-toggle.open{ background: var(--query); color: var(--card-bg); }
   .key-content{ margin: 8px 0 4px; }
   .key-content[hidden]{ display:none; }
   .query-console{
     display:flex; gap:10px; align-items:flex-start;
-    background: var(--query-bg);
-    border-radius:16px;
+    background:#faf8f0;
+    border:1px solid var(--border);
+    border-radius:6px;
     padding:12px;
   }
   .query-text{
     flex:1; margin:0;
-    font-family:"Nunito", sans-serif;
-    font-weight:500;
-    font-size:13.5px;
-    line-height:1.55;
+    font-family:"JetBrains Mono", monospace;
+    font-size:12.5px;
+    line-height:1.6;
     color: var(--ink);
   }
   .copy-btn{
     flex:none;
-    font-family:"Nunito", sans-serif;
+    font-family:"JetBrains Mono", monospace;
     font-weight:700;
     font-size:11px;
-    letter-spacing:.02em;
-    text-transform:uppercase;
-    color:#fff;
-    background: var(--sapphire);
+    color: var(--card-bg);
+    background: var(--ink);
     border:none;
-    border-radius:10px;
+    border-radius:5px;
     padding:8px 12px;
     cursor:pointer;
-    box-shadow: 0 4px 12px rgba(95,168,234,.35);
-    transition: transform .08s ease, box-shadow .08s ease;
+    transition: transform .08s ease;
   }
-  .copy-btn:active{ transform: translateY(2px); box-shadow: 0 2px 6px rgba(95,168,234,.3); }
+  .copy-btn:active{ transform: translateY(2px); }
   .copy-btn.copied{ background: var(--exist); }
-  .copy-btn:focus-visible{ outline:2px solid var(--pink); outline-offset:2px; }
+  .copy-btn:focus-visible{ outline:2px solid var(--query); outline-offset:2px; }
   @media (max-width:480px){
     .query-console{ flex-direction:column; }
     .copy-btn{ align-self:flex-end; }
@@ -239,23 +223,22 @@
   .again-btn{
     display:table;
     margin:24px auto 0;
-    font-family:"Fredoka", sans-serif;
-    font-weight:600;
-    font-size:15px;
-    color:#fff;
-    background: var(--pink);
+    font-family:"JetBrains Mono", monospace;
+    font-weight:700;
+    font-size:13px;
+    color: var(--card-bg);
+    background: var(--ink);
     border:none;
-    border-radius:999px;
-    padding:14px 30px;
+    border-radius:6px;
+    padding:12px 22px;
     cursor:pointer;
-    box-shadow: 0 12px 26px rgba(255,143,177,.45);
-    transition: transform .08s ease, box-shadow .08s ease;
+    transition: transform .08s ease;
   }
-  .again-btn:active{ transform: translateY(2px); box-shadow: 0 6px 14px rgba(255,143,177,.4); }
-  .again-btn:focus-visible{ outline:2px solid var(--sapphire); outline-offset:3px; }
+  .again-btn:active{ transform: translateY(2px); }
+  .again-btn:focus-visible{ outline:2px solid var(--query); outline-offset:3px; }
 
   @media (prefers-reduced-motion: reduce){
-    .result-card{ animation:none; opacity:1; transform:none; }
+    .term-card{ animation:none; opacity:1; transform:none; }
     .card-row{ animation:none; }
   }
 </style>
@@ -263,15 +246,15 @@
 <body>
 <div class="global-field" id="globalField"></div>
 <div class="box">
-
-  <div class="box-header">
-    <h1 class="title">Loyiha Kartalari</h1>
+  <div class="box-bar">
+    <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+    <span class="bar-title">loyiha-kartalari.sh</span>
   </div>
-
-  <p class="subtitle" id="topInfo"></p>
-
-  <div class="stage" id="stage"></div>
-  <div class="below-card" id="belowCard"></div>
+  <div class="box-body">
+    <p class="subtitle" id="topInfo"></p>
+    <div class="stage" id="stage"></div>
+    <div class="below-card" id="belowCard"></div>
+  </div>
 </div>
 
 <script>
@@ -381,14 +364,12 @@ const PROJECTS = [
   {name:"Ijara shartnomalarini tekshiruvchi tizim", type:"idea", difficulty:"Qiyin", desc:"Ko'chmas mulk ijarasidan oldin mulk hujjatlari va egasining haqiqiyligini tekshirib, firibgarlik xavfini kamaytiruvchi xizmat.", tags:["PropTech","Verification"]},
 ];
 
-const DIFF_CLASS = { "Oson": "diff-oson", "O'rta": "diff-orta", "Qiyin": "diff-qiyin" };
-const SPARKLE_PATH = "M12 2c.6 3.2 1.2 5.2 2.4 6.4C15.6 9.6 17.6 10.2 20.8 10.8c-3.2.6-5.2 1.2-6.4 2.4-1.2 1.2-1.8 3.2-2.4 6.4-.6-3.2-1.2-5.2-2.4-6.4C8.4 12 6.4 11.4 3.2 10.8c3.2-.6 5.2-1.2 6.4-2.4C10.8 7.2 11.4 5.2 12 2Z";
-const CARD_BACK_EMBLEM = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="${SPARKLE_PATH}"/></svg>`;
-
 const stage = document.getElementById("stage");
 const topInfoEl = document.getElementById("topInfo");
 const belowCardEl = document.getElementById("belowCard");
 const globalField = document.getElementById("globalField");
+const DEFAULT_TOPINFO = "// Sahifada aylanib yurgan kartalardan birini bosing";
+topInfoEl.textContent = DEFAULT_TOPINFO;
 
 function aiQueryFor(p){
   if(p.type === "exist"){
@@ -417,12 +398,10 @@ function renderIdleField(){
   stage.innerHTML = "";
   belowCardEl.innerHTML = "";
 
-  // enough cards in one set to always exceed the viewport width, so the
-  // loop never shows a gap between where one pass ends and the next begins
   const setCount = Math.max(10, Math.ceil((window.innerWidth + CARD_PITCH * 3) / CARD_PITCH));
 
   globalField.innerHTML = ROW_CONFIG.map(row => {
-    const cards = Array.from({ length: setCount }, () => `<div class="face-card">${CARD_BACK_EMBLEM}</div>`).join("");
+    const cards = Array.from({ length: setCount }, () => `<div class="face-card">&gt;_</div>`).join("");
     return `<div class="card-row dir-${row.dir}" style="top:${row.top}%;animation-duration:${row.dur}s">${cards}${cards}</div>`;
   }).join("");
 
@@ -455,24 +434,23 @@ function pickFromField(pick, clickedEl){
   }, 220);
 }
 
-/* ---- picked state: minimal foil card + info split above/below it ---- */
+/* ---- picked state: terminal-window result ---- */
 function renderPicked(pick){
   const isExist = pick.type === "exist";
   const typeVar = isExist ? "exist" : "idea";
-  const bigLabel = isExist ? "Mavjud loyiha" : "Yangi g'oya";
-  const diffClass = DIFF_CLASS[pick.difficulty] || "diff-orta";
+  const bigLabel = isExist ? "mavjud" : "yangi g'oya";
 
   topInfoEl.innerHTML =
-    `<span class="picked-banner" style="color:var(--${typeVar})">${bigLabel} · Qiyinlik: ${pick.difficulty}</span>` +
-    `<span class="picked-desc">${pick.desc}</span>`;
+    `<span class="picked-row">turi: <b style="color:var(--${typeVar})">${bigLabel}</b> · daraja: <b>${pick.difficulty}</b></span>` +
+    `<span class="picked-desc">// ${pick.desc}</span>`;
 
   stage.innerHTML = `
-    <div class="result-card">
-      <span class="eyebrow">✦ Sizning kartangiz</span>
-      <h2 class="result-name">${pick.name}</h2>
-      <div class="result-pills">
-        <span class="pill pill-type type-${typeVar}">${bigLabel}</span>
-        <span class="pill pill-diff ${diffClass}">${pick.difficulty}</span>
+    <div class="term-card">
+      <div class="term-bar">$ karta --draw</div>
+      <div class="term-body">
+        <div class="term-comment">// natija</div>
+        <h2 class="term-name">${pick.name}</h2>
+        <div class="term-row">turi: <b class="term-type${isExist ? "" : " is-idea"}">${bigLabel}</b> · daraja: <b class="term-diff">${pick.difficulty}</b></div>
       </div>
     </div>
   `;
@@ -481,27 +459,27 @@ function renderPicked(pick){
   const googleQuery = googleQueryFor(pick);
 
   belowCardEl.innerHTML = `
-    <div class="tags">${pick.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
+    <div class="tags">${pick.tags.map(t => `<span class="tag">#${t}</span>`).join("")}</div>
     <div class="keys">
-      <button class="key-toggle" type="button" data-target="keyAi">Kalit: AI'ga savol ber ›</button>
+      <button class="key-toggle" type="button" data-target="keyAi">$ ai --ask</button>
       <div class="key-content" id="keyAi" hidden>
         <div class="query-console">
           <p class="query-text">${aiQuery}</p>
-          <button class="copy-btn" type="button">NUSXALASH</button>
+          <button class="copy-btn" type="button">copy</button>
         </div>
       </div>
-      <button class="key-toggle" type="button" data-target="keyGoogle">Kalit: Google'da qidir ›</button>
+      <button class="key-toggle" type="button" data-target="keyGoogle">$ google --search</button>
       <div class="key-content" id="keyGoogle" hidden>
         <div class="query-console">
           <p class="query-text">${googleQuery}</p>
-          <button class="copy-btn" type="button">NUSXALASH</button>
+          <button class="copy-btn" type="button">copy</button>
         </div>
       </div>
     </div>
-    <button class="again-btn" type="button" id="againBtn">Yana karta tort</button>
+    <button class="again-btn" type="button" id="againBtn">yana_tort()</button>
   `;
   document.getElementById("againBtn").addEventListener("click", () => {
-    topInfoEl.innerHTML = "";
+    topInfoEl.textContent = DEFAULT_TOPINFO;
     belowCardEl.innerHTML = "";
     renderIdleField();
   });
@@ -514,7 +492,7 @@ function landOnCard(pick){
 function copyText(text, btn){
   const original = btn.textContent;
   const finish = (ok) => {
-    btn.textContent = ok ? "OLINDI!" : "XATOLIK";
+    btn.textContent = ok ? "copied!" : "error";
     btn.classList.toggle("copied", ok);
     setTimeout(() => {
       btn.textContent = original;
