@@ -46,24 +46,8 @@
     font-family: "Karla", ui-sans-serif, system-ui, sans-serif;
   }
 
-  .ambient-field{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
-  .ambient-card{
-    position:absolute;
-    width:52px; height:73px;
-    border-radius:6px;
-    border:3px solid var(--card-white);
-    outline:1px solid rgba(0,0,0,.4);
-    background-color: var(--cardback-red);
-    background-image:
-      repeating-linear-gradient(45deg, rgba(255,255,255,.14) 0 2px, transparent 2px 7px),
-      repeating-linear-gradient(-45deg, rgba(255,255,255,.14) 0 2px, transparent 2px 7px);
-    box-shadow: 0 8px 18px rgba(0,0,0,.4);
-    opacity:.45;
-    display:flex; align-items:center; justify-content:center;
-    font-family:"Cinzel", serif;
-    font-size:16px;
-    color: var(--card-white);
-  }
+  /* ---- cards scattered across the whole page ---- */
+  .global-field{ position:fixed; inset:0; pointer-events:none; z-index:50; }
 
   .box{
     position:relative;
@@ -184,14 +168,16 @@
   }
   .subtitle .picked-desc{ display:block; color: var(--ink-soft); font-size:14.5px; line-height:1.65; }
 
-  /* ---- face-down card field ---- */
-  .stage{ position:relative; min-height: 340px; }
-  .field-tray{
-    position:absolute; inset:0;
+  /* ---- result area ---- */
+  .stage{ position:relative; min-height: 200px; }
+  .idle-hint{
+    text-align:center;
+    font-family:"Cinzel", serif;
+    font-size:14px;
+    color: var(--ink-soft);
+    padding: 50px 16px;
     border:1px dashed rgba(217,174,66,.3);
     border-radius:16px;
-    background: rgba(0,0,0,.15);
-    overflow:hidden;
   }
   .face-card{
     position:absolute;
@@ -211,6 +197,7 @@
     color: var(--card-white);
     cursor:pointer;
     user-select:none;
+    pointer-events:auto;
   }
   @keyframes drift1{ 0%,100%{ transform:translate(0,0) rotate(0deg); } 50%{ transform:translate(14px,-10px) rotate(4deg); } }
   @keyframes drift2{ 0%,100%{ transform:translate(0,0) rotate(0deg); } 50%{ transform:translate(-12px,12px) rotate(-5deg); } }
@@ -463,7 +450,7 @@
 </style>
 </head>
 <body>
-<div class="ambient-field" id="ambientField" aria-hidden="true"></div>
+<div class="global-field" id="globalField"></div>
 <div class="box">
 
   <div class="box-header">
@@ -475,7 +462,7 @@
   <div class="deck-label sec-label">To'plamdagi kartalar</div>
   <div class="marquee-wrap" id="marqueeWrap"></div>
 
-  <p class="subtitle" id="topInfo">Istalgan kartani tanlang — u orqali o'zingiz uchun yangi loyihani kashf etasiz!</p>
+  <p class="subtitle" id="topInfo">Sahifa bo'ylab aylanib yurgan kartalardan istalganini tanlang — u orqali o'zingiz uchun yangi loyihani kashf etasiz!</p>
 
   <div class="stage" id="stage"></div>
   <div class="below-card" id="belowCard"></div>
@@ -625,23 +612,6 @@ function buildDeckMarquee(){
 }
 buildDeckMarquee();
 
-function buildAmbientField(){
-  const el = document.getElementById("ambientField");
-  if(!el) return;
-  const spots = [
-    { left: 4, top: 8 }, { left: 92, top: 14 }, { left: 6, top: 38 },
-    { left: 94, top: 46 }, { left: 3, top: 70 }, { left: 93, top: 78 },
-    { left: 50, top: 4 }, { left: 50, top: 96 },
-  ];
-  el.innerHTML = spots.map((s, i) => {
-    const driftN = (i % 3) + 1;
-    const dur = (9 + Math.random() * 5).toFixed(1);
-    const delay = (Math.random() * 4).toFixed(1);
-    return `<div class="ambient-card" style="left:${s.left}%;top:${s.top}%;animation-name:drift${driftN};animation-duration:${dur}s;animation-delay:${delay}s;">◆</div>`;
-  }).join("");
-}
-buildAmbientField();
-
 function aiQueryFor(p){
   if(p.type === "exist"){
     return `"${p.name}" xizmati qanday ishlaydi? Uning texnik arxitekturasini, ma'lumotlar bazasi tuzilishini, asosiy algoritmlarini va monetizatsiya modelini batafsil, misollar bilan tushuntirib ber.`;
@@ -656,7 +626,9 @@ function googleQueryFor(p){
   return `${p.name} - mavjud yechimlar va raqobatchilar tahlili`;
 }
 
-/* ---- idle state: a tray of face-down, gently drifting cards ---- */
+/* ---- idle state: face-down cards scattered across the whole page ---- */
+const globalField = document.getElementById("globalField");
+
 function layoutPositions(n){
   const cols = Math.ceil(Math.sqrt(n * 1.6));
   const rows = Math.ceil(n / cols);
@@ -666,26 +638,27 @@ function layoutPositions(n){
     const col = i % cols, row = Math.floor(i / cols);
     const jitterX = (Math.random() - 0.5) * cellW * 0.5;
     const jitterY = (Math.random() - 0.5) * cellH * 0.5;
-    const left = Math.min(93, Math.max(7, col * cellW + cellW / 2 + jitterX));
-    const top = Math.min(86, Math.max(14, row * cellH + cellH / 2 + jitterY));
+    const left = Math.min(95, Math.max(5, col * cellW + cellW / 2 + jitterX));
+    const top = Math.min(92, Math.max(8, row * cellH + cellH / 2 + jitterY));
     pts.push({ left, top });
   }
   return pts;
 }
 
 function renderIdleField(){
-  const N = 10;
+  stage.innerHTML = `<div class="idle-hint">↑ Sahifada aylanib yurgan kartalardan birini tanlang</div>`;
+  belowCardEl.innerHTML = "";
+
+  const N = 11;
   const positions = layoutPositions(N);
-  const cards = positions.map((pos, i) => {
+  globalField.innerHTML = positions.map((pos, i) => {
     const driftN = (i % 3) + 1;
     const dur = (7 + Math.random() * 4).toFixed(1);
     const delay = (Math.random() * 3).toFixed(1);
     return `<div class="face-card" style="left:${pos.left}%;top:${pos.top}%;animation-name:drift${driftN};animation-duration:${dur}s;animation-delay:${delay}s;">◆</div>`;
   }).join("");
-  stage.innerHTML = `<div class="field-tray">${cards}</div>`;
-  belowCardEl.innerHTML = "";
 
-  stage.querySelectorAll(".face-card").forEach(el => {
+  globalField.querySelectorAll(".face-card").forEach(el => {
     el.addEventListener("click", () => {
       const pick = PROJECTS[Math.floor(Math.random() * PROJECTS.length)];
       pickFromField(pick, el);
@@ -694,7 +667,7 @@ function renderIdleField(){
 }
 
 function pickFromField(pick, clickedEl){
-  stage.querySelectorAll(".face-card").forEach(el => {
+  globalField.querySelectorAll(".face-card").forEach(el => {
     if(el !== clickedEl){
       el.style.transition = "opacity .3s ease";
       el.style.opacity = "0";
@@ -716,7 +689,10 @@ function pickFromField(pick, clickedEl){
       clickedEl.style.transition = "opacity .25s ease, transform .25s ease";
       clickedEl.style.opacity = "0";
       clickedEl.style.transform = "scale(.7)";
-      setTimeout(() => landOnCard(pick), 220);
+      setTimeout(() => {
+        globalField.innerHTML = "";
+        landOnCard(pick);
+      }, 220);
     }
   }, 90);
 }
@@ -855,7 +831,7 @@ function closeOnboard(){
 function renderOnboardStep1(){
   onboardModal.innerHTML = `
     <h2 class="onboard-title">Xush kelibsiz!</h2>
-    <p class="onboard-text">Bu — tasodifiy IT loyiha g'oyalari beruvchi kolleksiya kartalari o'yini. Yopiq kartalardan birini tanlang — u sizga tasodifiy loyiha (mavjud yoki hali yaratilmagan g'oya) ochib beradi. Karta ochilgach, pastdagi tavsif, kerakli texnologiyalar va "Kalitlar" orqali AI va Google'dan to'liq ma'lumot so'rashingiz mumkin. Istalgan vaqtda "Yana karta tort" tugmasi bilan yangisini tanlaysiz.</p>
+    <p class="onboard-text">Bu — tasodifiy IT loyiha g'oyalari beruvchi kolleksiya kartalari o'yini. Butun sahifa bo'ylab aylanib yurgan yopiq kartalardan birini bosing — u sizga tasodifiy loyiha (mavjud yoki hali yaratilmagan g'oya) ochib beradi. Karta ochilgach, pastdagi tavsif, kerakli texnologiyalar va "Kalitlar" orqali AI va Google'dan to'liq ma'lumot so'rashingiz mumkin. Istalgan vaqtda "Yana karta tort" tugmasi bilan yangisini tanlaysiz.</p>
     <div class="onboard-actions">
       <button class="onboard-btn primary" id="understandBtn" type="button">Tushundim</button>
       <button class="onboard-btn secondary" id="dontUnderstandBtn" type="button">Tushunmadim</button>
@@ -869,7 +845,7 @@ function renderOnboardStep2(){
   onboardModal.innerHTML = `
     <h2 class="onboard-title">Qanday ishlatiladi?</h2>
     <ol class="onboard-steps">
-      <li>Yopiq kartalardan birini tanlang.</li>
+      <li>Sahifa bo'ylab aylanib yurgan yopiq kartalardan birini bosing.</li>
       <li>Karta ochiladi — loyiha nomi ko'rinadi.</li>
       <li>Pastda tavsif, kerakli texnologiyalar va "Kalitlar" (AI/Google so'rovlari) chiqadi — ularni bosib to'liq ma'lumot oling.</li>
       <li>"Yana karta tort" tugmasi bilan istalgan vaqtda yangi loyiha tanlaysiz.</li>
