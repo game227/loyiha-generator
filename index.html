@@ -6,25 +6,24 @@
 <title>Loyiha Generatori</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* deliberately single-theme: a lit arcade cabinet has no "light mode" */
-    --bg:#0a0a12;
-    --cabinet-1:#2a1a3a;
-    --cabinet-2:#150d20;
-    --screen-1:#0d1524;
-    --screen-2:#04060b;
-    --ink:#eaf0ff;
-    --ink-soft:#8b96b8;
-    --pink:#ff2e88;
-    --cyan:#2ee6ff;
-    --gold:#ffd23f;
-    --exist:#39ff6a;
-    --exist-glow:rgba(57,255,106,.55);
-    --idea:#ff8a3d;
-    --idea-glow:rgba(255,138,61,.55);
-    --metal:#2a3a5c;
+    /* deliberately single-theme: a printed board-game box has no "dark mode" */
+    --paper:#F6E8C8;
+    --paper-2:#EFDCB0;
+    --card-bg:#FFFBF0;
+    --ink:#241C14;
+    --ink-soft:#6b5d47;
+    --red:#E8432E;
+    --blue:#2C5FC4;
+    --yellow:#F2A93B;
+    --exist:#3E8E4F;
+    --exist-bg:#DCEEDF;
+    --idea:#7B4FC7;
+    --idea-bg:#EAE0F7;
+    --query:#2C5FC4;
+    --query-bg:#DCE6F7;
   }
 
   *{ box-sizing:border-box; }
@@ -33,310 +32,314 @@
     min-height:100vh;
     padding-block:32px;
     padding-inline:16px;
-    background-color: var(--bg);
-    background-image:
-      radial-gradient(560px circle at 12% 8%, rgba(255,46,136,.16), transparent 62%),
-      radial-gradient(560px circle at 88% 92%, rgba(46,230,255,.13), transparent 62%),
-      radial-gradient(900px circle at 50% 35%, rgba(255,255,255,.035), transparent 70%);
+    background-color: var(--paper);
+    background-image: radial-gradient(rgba(36,28,20,.09) 1.2px, transparent 1.2px);
+    background-size: 14px 14px;
     color: var(--ink);
-    font-family: "Chakra Petch", ui-sans-serif, system-ui, sans-serif;
+    font-family: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
   }
 
-  .cabinet{
+  .box{
     max-width: 680px;
     margin: 0 auto;
-    border-radius: 26px;
-    padding: 18px;
-    background: linear-gradient(160deg, var(--cabinet-1), var(--cabinet-2));
-    box-shadow: 0 30px 80px rgba(0,0,0,.55), inset 0 2px 0 rgba(255,255,255,.06);
+    background: var(--card-bg);
+    border: 4px solid var(--ink);
+    border-radius: 22px;
+    padding: 22px;
+    box-shadow: 8px 8px 0 var(--ink);
   }
 
-  /* ---- marquee ---- */
-  .marquee{
-    border-radius: 14px;
-    padding: 14px 16px 16px;
-    background: linear-gradient(180deg, #150a1e, #0a0512);
-    border: 3px solid #3a2550;
-    text-align: center;
+  .box-header{
+    text-align:center;
+    padding-bottom:18px;
+    margin-bottom:20px;
+    border-bottom: 3px dashed var(--ink);
   }
-  .bulbs{ display:flex; justify-content:center; gap:6px; flex-wrap:wrap; }
-  .bulb{
-    width:7px; height:7px; border-radius:50%;
-    background: var(--gold); box-shadow: 0 0 6px var(--gold);
-    animation: twinkle 1.2s ease-in-out infinite;
-    animation-delay: calc(var(--i) * .09s);
+  .badge-seal{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:58px; height:58px;
+    border-radius:50%;
+    background: var(--yellow);
+    border:3px solid var(--ink);
+    font-family:"Baloo 2", sans-serif;
+    font-weight:800;
+    font-size:22px;
+    margin-bottom:10px;
+    transform: rotate(-6deg);
+    box-shadow: 3px 3px 0 var(--ink);
   }
-  .bulb:nth-child(3n+2){ background: var(--pink); box-shadow: 0 0 6px var(--pink); }
-  .bulb:nth-child(3n){ background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
-  @keyframes twinkle{ 0%,100%{ opacity:.35; } 50%{ opacity:1; } }
-
-  .title{ display:flex; flex-direction:column; align-items:center; gap:6px; margin:10px 0; }
-  .title span{
-    font-family:"Press Start 2P", monospace;
-    font-size: clamp(16px, 5.5vw, 25px);
-    color:#fff8fc;
-    text-shadow: 0 0 6px var(--pink), 0 0 18px var(--pink);
-    letter-spacing:.02em;
+  .title{
+    font-family:"Baloo 2", sans-serif;
+    font-weight:800;
+    font-size: clamp(26px, 6vw, 38px);
+    color: var(--red);
+    text-shadow: -2px -2px 0 var(--ink), 2px -2px 0 var(--ink), -2px 2px 0 var(--ink), 2px 2px 0 var(--ink);
+    margin:0 0 8px;
+    text-wrap:balance;
   }
-  .title span.accent{
-    color:#eafdff;
-    text-shadow: 0 0 6px var(--cyan), 0 0 18px var(--cyan);
+  .tagline{
+    font-family:"Baloo 2", sans-serif;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:.03em;
+    color: var(--ink-soft);
+    text-transform:uppercase;
+    margin:0;
   }
-
-  /* ---- screen ---- */
-  .screen{
-    position:relative;
-    margin-top:14px;
-    border-radius:12px;
-    padding: 22px 18px 26px;
-    background: radial-gradient(120% 100% at 50% 0%, var(--screen-1), var(--screen-2));
-    border: 3px solid #1c2740;
-    box-shadow: inset 0 0 40px rgba(0,0,0,.6);
-    overflow:hidden;
-  }
-  .screen::before{
-    content:"";
-    position:absolute; inset:0;
-    pointer-events:none;
-    background: repeating-linear-gradient(rgba(255,255,255,.025) 0 1px, transparent 1px 3px);
-  }
-  .screw{
-    position:absolute; width:10px; height:10px; border-radius:50%;
-    background: radial-gradient(circle at 35% 35%, #9aa3b5, #23283a 70%);
-    z-index:2;
-  }
-  .screw::after{
-    content:""; position:absolute; left:50%; top:50%; width:65%; height:1.5px;
-    background:#10131c; transform:translate(-50%,-50%) rotate(40deg);
-  }
-  .screw.tl{ top:8px; left:8px; } .screw.tr{ top:8px; right:8px; }
-  .screw.bl{ bottom:8px; left:8px; } .screw.br{ bottom:8px; right:8px; }
 
   .subtitle{
-    position:relative; z-index:1;
     color: var(--ink-soft);
-    font-size: 14.5px;
-    line-height:1.6;
+    font-size: 15px;
+    line-height: 1.6;
     max-width: 56ch;
-    margin: 0 0 20px;
+    margin: 0 0 22px;
+  }
+  .subtitle .lock-label{
+    display:block;
+    font-family:"Baloo 2", sans-serif;
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color: var(--ink-soft);
+    margin-bottom:4px;
+  }
+  .subtitle .lock-time{
+    display:block;
+    font-family:"Baloo 2", sans-serif;
+    font-weight:800;
+    font-size:32px;
+    color: var(--red);
+    margin-bottom:8px;
+  }
+  .subtitle .lock-reason{
+    display:block;
+    color: var(--ink-soft);
+    font-size:14.5px;
+    line-height:1.6;
   }
 
-  .stage{ position:relative; z-index:1; min-height: 300px; }
+  .stage{ min-height: 300px; }
 
   .attract{
-    font-family:"Press Start 2P", monospace;
-    font-size: 12px;
-    line-height:2;
-    color: var(--gold);
+    font-family:"Baloo 2", sans-serif;
+    font-weight:800;
+    font-size:19px;
+    line-height:1.7;
+    color: var(--ink);
     text-align:center;
-    text-shadow: 0 0 8px var(--gold);
-    padding: 56px 10px;
-    animation: blink 1s steps(1) infinite;
+    padding: 56px 20px;
+    border:3px dashed var(--ink);
+    border-radius:14px;
+    background: var(--paper-2);
   }
-  @keyframes blink{ 50%{ opacity:0; } }
 
-  /* ---- reel ---- */
+  /* ---- card-draw window ---- */
   .reel{
     position:relative;
     height:130px;
-    border-radius:8px;
     overflow:hidden;
-    background:#03050a;
-    border:2px solid var(--metal);
-    box-shadow: inset 0 0 24px rgba(0,0,0,.75);
+    background: var(--paper-2);
+    border:3px solid var(--ink);
+    border-radius:14px;
+    box-shadow: 4px 4px 0 var(--ink);
   }
   .reel-item{
     display:flex; align-items:center; justify-content:center; text-align:center;
     padding:0 20px;
-    font-family:"Chakra Petch", sans-serif;
+    font-family:"Baloo 2", sans-serif;
     font-weight:700;
-    font-size:15px;
-    color: var(--cyan);
-    text-shadow: 0 0 8px rgba(46,230,255,.6);
+    font-size:16px;
+    color: var(--ink);
   }
   .reel::after{
     content:"";
     position:absolute; inset:0;
     pointer-events:none;
     background:
-      linear-gradient(to bottom, #03050a, transparent 26%, transparent 74%, #03050a),
-      linear-gradient(to right, #03050a, transparent 20%, transparent 80%, #03050a);
+      linear-gradient(to bottom, var(--paper-2), transparent 26%, transparent 74%, var(--paper-2)),
+      linear-gradient(to right, var(--paper-2), transparent 20%, transparent 80%, var(--paper-2));
   }
 
-  /* ---- result card ---- */
+  /* ---- drawn card ---- */
   .card{
     position:relative;
-    border-radius:10px;
-    padding: 20px 18px 6px;
-    background: linear-gradient(180deg, #0d1424, #060a13);
-    border: 2px solid var(--type-color);
-    box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset, 0 0 28px var(--type-glow);
+    background: var(--card-bg);
+    border: 3px solid var(--ink);
+    border-radius:16px;
+    box-shadow: 6px 6px 0 var(--ink);
+    overflow:hidden;
     opacity:0;
-    transform: translateY(10px) scale(.98);
+    transform: translateY(10px) scale(.97) rotate(-1deg);
     animation: cardIn .3s ease forwards;
   }
   @keyframes cardIn{ to{ opacity:1; transform:none; } }
 
-  .stamp-big{
-    font-family:"Press Start 2P", monospace;
-    font-size:16px;
-    color: var(--type-color);
-    text-shadow: 0 0 10px var(--type-glow);
-    margin-bottom:4px;
+  .card-banner{
+    padding:13px 18px;
+    background: var(--type-color);
+    border-bottom:3px solid var(--ink);
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
   }
-  .stamp-sub{
-    font-size:11px; letter-spacing:.08em; text-transform:uppercase;
-    color: var(--ink-soft);
-    margin-bottom:16px;
+  .card-banner .stamp-big{
+    font-family:"Baloo 2", sans-serif;
+    font-weight:800;
+    font-size:15px;
+    color:#fff;
+    text-shadow: -1px -1px 0 var(--ink), 1px -1px 0 var(--ink), -1px 1px 0 var(--ink), 1px 1px 0 var(--ink);
   }
+  .card-banner .stars{
+    font-family:"Baloo 2", sans-serif;
+    font-weight:700;
+    font-size:14px;
+    color:#fff;
+    text-shadow: -1px -1px 0 var(--ink), 1px -1px 0 var(--ink), -1px 1px 0 var(--ink), 1px 1px 0 var(--ink);
+    letter-spacing:1px;
+  }
+
+  .card-body{ padding: 18px 18px 20px; }
   .card h2{
-    font-weight:700; font-size:22px; color:var(--ink);
-    margin:0 0 10px; text-wrap:balance;
+    font-family:"Baloo 2", sans-serif;
+    font-weight:800;
+    font-size:22px;
+    color: var(--ink);
+    margin:0 0 10px;
+    text-wrap:balance;
   }
   .card p.desc{
-    font-weight:400; font-size:15px; line-height:1.6;
+    font-size:15px;
+    line-height:1.6;
     color: var(--ink-soft);
-    margin:0 0 20px; max-width:58ch;
+    margin:0 0 18px;
+    max-width:58ch;
   }
   .sec-label{
-    font-family:"Press Start 2P", monospace;
-    font-size:9.5px;
+    font-family:"Baloo 2", sans-serif;
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
     color: var(--ink-soft);
-    letter-spacing:.04em;
     margin: 0 0 8px;
   }
-  .diff-row{ display:flex; align-items:center; gap:8px; margin-bottom:18px; }
-  .pip{ width:13px; height:13px; border-radius:3px; background:#161c2c; border:1px solid #263252; }
-  .pip.on{ background: var(--gold); border-color: var(--gold); box-shadow:0 0 6px var(--gold); }
-  .diff-word{ font-weight:600; font-size:13px; color:var(--ink); text-transform:uppercase; letter-spacing:.05em; }
 
-  .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+  .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
   .tag{
-    font-size:11.5px; font-weight:600; color:var(--ink);
-    background:#141b2e; border:1px solid #263252;
-    padding:4px 9px; border-radius:5px;
+    font-family:"Nunito Sans", sans-serif;
+    font-weight:700;
+    font-size:12px;
+    color: var(--ink);
+    background: var(--paper-2);
+    border:2px solid var(--ink);
+    padding:4px 10px;
+    border-radius:8px;
   }
 
   .query-block{ margin-bottom:16px; }
   .query-console{
-    position:relative;
     display:flex; gap:10px; align-items:flex-start;
-    background:#020509;
-    border:1px solid var(--cyan);
-    border-radius:6px;
+    background: var(--query-bg);
+    border:2px dashed var(--query);
+    border-radius:12px;
     padding:12px;
-    box-shadow: inset 0 0 14px rgba(46,230,255,.12), 0 0 10px rgba(46,230,255,.18);
   }
   .query-text{
     flex:1; margin:0;
-    font-family:"VT323", monospace;
-    font-size:17px; line-height:1.45;
-    color:#8ff4ff;
-  }
-  .query-text::after{
-    content:"▮"; display:inline-block; margin-left:3px; color:#8ff4ff;
-    animation: blink .9s steps(1) infinite;
+    font-family:"Nunito Sans", sans-serif;
+    font-weight:600;
+    font-size:13.5px;
+    line-height:1.55;
+    color: var(--ink);
   }
   .copy-btn{
     flex:none;
-    font-weight:700; font-size:11px; letter-spacing:.04em; text-transform:uppercase;
-    color:#04141a;
-    background: linear-gradient(180deg, var(--cyan), #12a3c2);
-    border:none; border-radius:5px;
+    font-family:"Baloo 2", sans-serif;
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+    color:#fff;
+    background: var(--blue);
+    border:2px solid var(--ink);
+    border-radius:8px;
     padding:8px 12px;
     cursor:pointer;
-    box-shadow: 0 3px 0 #0c6f85;
+    box-shadow: 3px 3px 0 var(--ink);
     transition: transform .08s ease, box-shadow .08s ease;
   }
-  .copy-btn:active{ transform: translateY(3px); box-shadow: 0 0 0 #0c6f85; }
-  .copy-btn.copied{ background: linear-gradient(180deg, var(--exist), #1f9c46); box-shadow:0 3px 0 #12652c; color:#03170a; }
-  .copy-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+  .copy-btn:active{ transform: translate(3px,3px); box-shadow: 0 0 0 var(--ink); }
+  .copy-btn.copied{ background: var(--exist); }
+  .copy-btn:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
   @media (max-width:480px){
     .query-console{ flex-direction:column; }
     .copy-btn{ align-self:flex-end; }
   }
 
-  .card-bottom-space{ height:14px; }
-
-  /* ---- controls ---- */
-  .controls{
-    position:relative; z-index:1;
-    display:flex; flex-direction:column; align-items:center; gap:10px;
-    margin-top:24px;
-  }
-  .coin-hint{ font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); }
+  .controls{ display:flex; flex-direction:column; align-items:center; gap:12px; margin-top:26px; }
   .roll-btn{
-    font-family:"Press Start 2P", monospace;
-    font-size:14px;
-    color:#fff0f7;
-    background: radial-gradient(circle at 35% 30%, #ff5fa8, #c2116a 65%, #8a0a4b 100%);
-    border:none;
+    font-family:"Baloo 2", sans-serif;
+    font-weight:800;
+    font-size:16px;
+    letter-spacing:.02em;
+    color:#fff;
+    background: var(--red);
+    border:3px solid var(--ink);
     border-radius:999px;
-    padding:18px 32px;
+    padding:16px 34px;
     cursor:pointer;
-    box-shadow: 0 6px 0 #6b0836, 0 10px 24px rgba(255,46,136,.4), inset 0 2px 4px rgba(255,255,255,.4);
+    box-shadow: 5px 5px 0 var(--ink);
     transition: transform .08s ease, box-shadow .08s ease;
   }
-  .roll-btn:active{ transform: translateY(4px); box-shadow: 0 2px 0 #6b0836, 0 4px 10px rgba(255,46,136,.3), inset 0 2px 4px rgba(255,255,255,.3); }
-  .roll-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
-  .roll-btn:disabled{ opacity:.55; cursor:default; }
+  .roll-btn:active{ transform: translate(4px,4px); box-shadow: 1px 1px 0 var(--ink); }
+  .roll-btn:disabled{ opacity:.55; cursor:default; background: var(--ink-soft); }
+  .roll-btn:focus-visible{ outline:3px solid var(--blue); outline-offset:3px; }
 
-  .counter-lcd{
-    font-family:"VT323", monospace;
-    font-size:20px; letter-spacing:.12em;
-    color: var(--exist);
-    background:#04140a;
-    padding:6px 18px;
-    border-radius:6px;
-    border:1px solid #10331d;
-    text-shadow: 0 0 8px rgba(57,255,106,.7);
+  .counter-badge{
+    font-family:"Baloo 2", sans-serif;
+    font-weight:700;
+    font-size:14px;
+    color: var(--ink);
+    background: var(--yellow);
+    border:2.5px solid var(--ink);
+    padding:6px 16px;
+    border-radius:999px;
+    box-shadow: 3px 3px 0 var(--ink);
   }
 
   .footer-plate{
     text-align:center;
-    font-size:11px;
+    font-size:12px;
     color: var(--ink-soft);
-    margin-top:16px;
-    padding: 0 10px;
+    margin-top:20px;
+    padding:0 10px;
   }
 
   @media (prefers-reduced-motion: reduce){
-    .bulb{ animation:none; opacity:1; }
-    .attract{ animation:none; opacity:1; }
-    .query-text::after{ animation:none; }
     .card{ animation:none; opacity:1; transform:none; }
   }
 </style>
 </head>
 <body>
-<div class="cabinet">
+<div class="box">
 
-  <div class="marquee">
-    <div class="bulbs" id="bulbsTop"></div>
-    <div class="title">
-      <span>LOYIHA</span>
-      <span class="accent">GENERATOR</span>
-    </div>
-    <div class="bulbs" id="bulbsBottom"></div>
+  <div class="box-header">
+    <div class="badge-seal">?</div>
+    <h1 class="title">LOYIHA O'YINI</h1>
+    <p class="tagline">Tasodifiy IT loyiha kartalari to'plami</p>
   </div>
 
-  <div class="screen">
-    <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
+  <p class="subtitle" id="topInfo">Mavjud IT loyihalar va hali yaratilmagan g'oyalardan yig'ilgan katta karta to'plamidan tasodifiy bittasini tortib olasiz — har bir kartada AI va Google uchun bonus so'rovlar bor.</p>
 
-    <p class="subtitle">Mavjud IT loyihalar va hali hech kim yaratmagan g'oyalar aralashmasidan baraban tasodifiy birini uradi — har biriga AI va Google orqali chuqurroq bilib olish uchun tayyor "cheat-kod" bilan.</p>
-
-    <div class="stage" id="stage">
-      <div class="attract" id="attract">TUGMANI<br>BOSING!</div>
-    </div>
-
-    <div class="controls">
-      <div class="coin-hint" id="coinHint">1 tanga = 1 aylanish</div>
-      <button class="roll-btn" id="rollBtn">AYLANTIR</button>
-      <div class="counter-lcd" id="counter">AYLANISH 000</div>
-    </div>
+  <div class="stage" id="stage">
+    <div class="attract" id="attract">TORTISH UCHUN<br>TUGMANI BOSING!</div>
   </div>
 
-  <div class="footer-plate">Har bosishda baraban boshqa tomonga aylanadi va arxivdan tasodifiy bitta loyiha chiqadi.</div>
+  <div class="controls">
+    <button class="roll-btn" id="rollBtn">KARTA TORT!</button>
+    <div class="counter-badge" id="counter">TORTILGAN 000</div>
+  </div>
+
+  <div class="footer-plate">Har safar karta tortganingizda baraban boshqa tomonga aylanadi va to'plamdan tasodifiy bitta loyiha chiqadi.</div>
 </div>
 
 <script>
@@ -453,16 +456,22 @@ const DIRS = {
   right: { axis: "x", sign: "pos" },   // chapdan o'ngga
 };
 const DIFF_LEVEL = { "Oson": 1, "O'rta": 2, "Qiyin": 3 };
+const COOLDOWN_HOURS = { "Oson": 4, "O'rta": 8, "Qiyin": 24 };
+const COOLDOWN_REASON = {
+  "Oson": "Bu — OSON karta: uni boshlash uchun katta tayyorgarlik shart emas, shuning uchun navbatingiz atigi 4 soatdan keyin keladi.",
+  "O'rta": "Bu — O'RTA murakkablikdagi karta: biroz reja va tadqiqot kerak, shuning uchun navbatingiz 8 soatdan keyin keladi.",
+  "Qiyin": "Bu — QIYIN karta: arxitekturasini jiddiy o'ylab rejalashtirish kerak, shuning uchun navbatingiz 24 soatdan (1 kundan) keyin keladi.",
+};
 
 let count = 0;
 let countdownTimer = null;
 const stage = document.getElementById("stage");
 const rollBtn = document.getElementById("rollBtn");
 const counterEl = document.getElementById("counter");
-const coinHintEl = document.getElementById("coinHint");
+const topInfoEl = document.getElementById("topInfo");
+const DEFAULT_TOPINFO_HTML = topInfoEl.innerHTML;
 
 const LOCK_KEY = "loyiha-generator:lock";
-const COOLDOWN_HOURS = { "Oson": 4, "O'rta": 8, "Qiyin": 24 };
 
 function loadLockRaw(){
   try{
@@ -501,9 +510,10 @@ function formatCountdown(ms){
   return pad(h) + ":" + pad(m) + ":" + pad(s);
 }
 
-function startCountdown(unlockAt){
+function startCountdown(unlockAt, difficulty){
   rollBtn.disabled = true;
-  rollBtn.textContent = "TANGA YO'Q";
+  rollBtn.textContent = "NAVBAT KUTILMOQDA";
+  const reason = COOLDOWN_REASON[difficulty] || COOLDOWN_REASON["Oson"];
   if(countdownTimer) clearInterval(countdownTimer);
 
   const tick = () => {
@@ -513,23 +523,18 @@ function startCountdown(unlockAt){
       countdownTimer = null;
       clearLockRaw();
       rollBtn.disabled = false;
-      rollBtn.textContent = "AYLANTIR";
-      coinHintEl.textContent = "1 tanga = 1 aylanish";
+      rollBtn.textContent = "KARTA TORT!";
+      topInfoEl.innerHTML = DEFAULT_TOPINFO_HTML;
       return;
     }
-    coinHintEl.textContent = "Keyingi tanga: " + formatCountdown(remaining);
+    topInfoEl.innerHTML =
+      '<span class="lock-label">Keyingi navbatgacha</span>' +
+      '<span class="lock-time">' + formatCountdown(remaining) + '</span>' +
+      '<span class="lock-reason">' + reason + '</span>';
   };
   tick();
   countdownTimer = setInterval(tick, 1000);
 }
-
-function makeBulbs(el, n){
-  let html = "";
-  for(let i=0;i<n;i++){ html += `<span class="bulb" style="--i:${i}"></span>`; }
-  el.innerHTML = html;
-}
-makeBulbs(document.getElementById("bulbsTop"), 12);
-makeBulbs(document.getElementById("bulbsBottom"), 12);
 
 function aiQueryFor(p){
   if(p.type === "exist"){
@@ -545,58 +550,61 @@ function googleQueryFor(p){
   return `${p.name} - mavjud yechimlar va raqobatchilar tahlili`;
 }
 
+function starsFor(level){
+  let s = "";
+  for(let i=1;i<=3;i++){ s += i <= level ? "★" : "☆"; }
+  return s;
+}
+
 function renderCard(p){
   const isExist = p.type === "exist";
   const typeVar = isExist ? "exist" : "idea";
-  const bigLabel = isExist ? "JACKPOT!" : "LEVEL UP!";
-  const subLabel = isExist ? "Mavjud loyiha" : "Yangi g'oya";
+  const bigLabel = isExist ? "MAVJUD KARTA" : "YANGI KARTA";
   const aiQuery = aiQueryFor(p);
   const googleQuery = googleQueryFor(p);
   const diffN = DIFF_LEVEL[p.difficulty] || 1;
-  let pips = "";
-  for(let i=1;i<=3;i++){ pips += `<span class="pip ${i<=diffN ? "on":""}"></span>`; }
 
   stage.innerHTML = `
-    <div class="card" style="--type-color:var(--${typeVar});--type-glow:var(--${typeVar}-glow)">
-      <div class="stamp-big">${bigLabel}</div>
-      <div class="stamp-sub">${subLabel}</div>
-      <h2>${p.name}</h2>
-      <p class="desc">${p.desc}</p>
+    <div class="card" style="--type-color:var(--${typeVar})">
+      <div class="card-banner">
+        <span class="stamp-big">${bigLabel}</span>
+        <span class="stars">${starsFor(diffN)} · ${p.difficulty.toUpperCase()}</span>
+      </div>
+      <div class="card-body">
+        <h2>${p.name}</h2>
+        <p class="desc">${p.desc}</p>
 
-      <div class="sec-label">QIYINLIK DARAJASI</div>
-      <div class="diff-row">${pips}<span class="diff-word">${p.difficulty}</span></div>
+        <div class="sec-label">Kerakli asboblar</div>
+        <div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
 
-      <div class="sec-label">TEXNOLOGIK INVENTAR</div>
-      <div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
+        <div class="sec-label">Bonus: AI'ga savol ber</div>
+        <div class="query-block">
+          <div class="query-console">
+            <p class="query-text">${aiQuery}</p>
+            <button class="copy-btn" type="button">NUSXALASH</button>
+          </div>
+        </div>
 
-      <div class="sec-label">AI UCHUN CHEAT-KOD</div>
-      <div class="query-block">
-        <div class="query-console">
-          <p class="query-text">${aiQuery}</p>
-          <button class="copy-btn" type="button">NUSXALASH</button>
+        <div class="sec-label">Bonus: Google'da qidir</div>
+        <div class="query-block">
+          <div class="query-console">
+            <p class="query-text">${googleQuery}</p>
+            <button class="copy-btn" type="button">NUSXALASH</button>
+          </div>
         </div>
       </div>
-
-      <div class="sec-label">GOOGLE UCHUN CHEAT-KOD</div>
-      <div class="query-block">
-        <div class="query-console">
-          <p class="query-text">${googleQuery}</p>
-          <button class="copy-btn" type="button">NUSXALASH</button>
-        </div>
-      </div>
-      <div class="card-bottom-space"></div>
     </div>
   `;
 }
 
 function landOnCard(pick){
   count++;
-  counterEl.textContent = "AYLANISH " + String(count).padStart(3, "0");
+  counterEl.textContent = "TORTILGAN " + String(count).padStart(3, "0");
   renderCard(pick);
   const hours = COOLDOWN_HOURS[pick.difficulty] || 4;
   const unlockAt = Date.now() + hours * 60 * 60 * 1000;
   saveLockRaw(pick, unlockAt);
-  startCountdown(unlockAt);
+  startCountdown(unlockAt, pick.difficulty);
 }
 
 function spin(dirKey, finalProject){
@@ -703,7 +711,7 @@ stage.addEventListener("click", (e) => {
 const existingLock = loadLockRaw();
 if(existingLock){
   renderCard(existingLock.pick);
-  startCountdown(existingLock.unlockAt);
+  startCountdown(existingLock.unlockAt, existingLock.pick.difficulty);
 }
 </script>
 </body>
