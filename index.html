@@ -38,7 +38,28 @@
     font-family: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
   }
 
+  .ambient-field{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
+  .ambient-card{
+    position:absolute;
+    width:60px; height:80px;
+    border-radius:9px;
+    border:3px solid var(--ink);
+    box-shadow:2px 2px 0 var(--ink);
+    opacity:.32;
+    display:flex; align-items:center; justify-content:center;
+    font-family:"Baloo 2", sans-serif;
+    font-weight:800;
+    font-size:18px;
+    color:#fff;
+  }
+  .ambient-card:nth-child(4n+1){ background: var(--red); }
+  .ambient-card:nth-child(4n+2){ background: var(--blue); }
+  .ambient-card:nth-child(4n+3){ background: var(--idea); }
+  .ambient-card:nth-child(4n){ background: var(--yellow); color: var(--ink); }
+
   .box{
+    position:relative;
+    z-index:1;
     max-width: 680px;
     margin: 0 auto;
     background: var(--card-bg);
@@ -326,6 +347,7 @@
     .card{ animation:none; opacity:1; transform:none; }
     .marquee-row{ animation:none; }
     .face-card{ animation:none !important; }
+    .ambient-card{ animation:none !important; }
   }
 
   /* ---- onboarding overlay ---- */
@@ -391,6 +413,7 @@
 </style>
 </head>
 <body>
+<div class="ambient-field" id="ambientField" aria-hidden="true"></div>
 <div class="box">
 
   <div class="box-header">
@@ -547,6 +570,23 @@ function buildDeckMarquee(){
   }).join("");
 }
 buildDeckMarquee();
+
+function buildAmbientField(){
+  const el = document.getElementById("ambientField");
+  if(!el) return;
+  const spots = [
+    { left: 4, top: 8 }, { left: 92, top: 14 }, { left: 6, top: 38 },
+    { left: 94, top: 46 }, { left: 3, top: 70 }, { left: 93, top: 78 },
+    { left: 50, top: 4 }, { left: 50, top: 96 },
+  ];
+  el.innerHTML = spots.map((s, i) => {
+    const driftN = (i % 3) + 1;
+    const dur = (9 + Math.random() * 5).toFixed(1);
+    const delay = (Math.random() * 4).toFixed(1);
+    return `<div class="ambient-card" style="left:${s.left}%;top:${s.top}%;animation-name:drift${driftN};animation-duration:${dur}s;animation-delay:${delay}s;">?</div>`;
+  }).join("");
+}
+buildAmbientField();
 
 function aiQueryFor(p){
   if(p.type === "exist"){
