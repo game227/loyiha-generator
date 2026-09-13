@@ -17,10 +17,7 @@
     --border:#cfc9b8;
     --ink:#2a2a22;
     --ink-soft:#7a7360;
-    --exist:#4d8a5a;
-    --exist-bg:#e3f0e6;
-    --idea:#b8722f;
-    --idea-bg:#f5ead9;
+    --accent:#4d8a5a;
     --query:#3a7ca8;
     --query-bg:#e7f0f5;
   }
@@ -141,7 +138,7 @@
     color: var(--ink-soft);
   }
   .term-body{ padding:18px 16px 20px; text-align:left; }
-  .term-comment{ font-size:11.5px; color: var(--exist); margin-bottom:8px; }
+  .term-comment{ font-size:11.5px; color: var(--accent); margin-bottom:8px; }
   .term-name{
     font-family:"JetBrains Mono", monospace;
     font-weight:700;
@@ -151,9 +148,7 @@
     line-height:1.3;
   }
   .term-row{ font-size:12px; color: var(--ink-soft); margin-bottom:16px; }
-  .term-row .term-type{ color: var(--exist); }
-  .term-row .term-type.is-idea{ color: var(--idea); }
-  .term-row .term-diff{ color: var(--ink); }
+  .term-row b{ color: var(--ink); }
 
   /* ---- below-card: keys + draw again ---- */
   .below-card{ margin-top:20px; }
@@ -213,7 +208,7 @@
     transition: transform .08s ease;
   }
   .copy-btn:active{ transform: translateY(2px); }
-  .copy-btn.copied{ background: var(--exist); }
+  .copy-btn.copied{ background: var(--accent); }
   .copy-btn:focus-visible{ outline:2px solid var(--query); outline-offset:2px; }
   @media (max-width:480px){
     .query-console{ flex-direction:column; }
@@ -268,110 +263,68 @@
 
 <script>
 const PROJECTS = [
-  // ---- MAVJUD (dunyoda haqiqatan mavjud IT loyihalar) ----
-  {name:"Instagram", type:"exist", difficulty:"Qiyin", desc:"Foto va video almashish uchun ijtimoiy tarmoq. Feed, Stories va Reels kabi formatlari bilan mashhur.", tags:["Mobile","Social","CDN"]},
-  {name:"Uber", type:"exist", difficulty:"Qiyin", desc:"Real-vaqt xarita va marshrutlash asosida haydovchi va yo'lovchini bog'laydigan taksi chaqirish platformasi.", tags:["Geolocation","Payments","Realtime"]},
-  {name:"Airbnb", type:"exist", difficulty:"Qiyin", desc:"Uy egalari va sayohatchilarni bog'lovchi qisqa muddatli ijara bozori.", tags:["Marketplace","Booking","Payments"]},
-  {name:"Spotify", type:"exist", difficulty:"Qiyin", desc:"Musiqa va podkastlarni oqim (streaming) orqali tinglash platformasi, shaxsiylashtirilgan tavsiyalar bilan.", tags:["Streaming","Recommendation AI"]},
-  {name:"Duolingo", type:"exist", difficulty:"O'rta", desc:"Til o'rganishni o'yinga aylantirgan (gamification) mobil ta'lim ilovasi.", tags:["EdTech","Gamification","Mobile"]},
-  {name:"Wikipedia", type:"exist", difficulty:"O'rta", desc:"Har kim tahrirlashi mumkin bo'lgan ochiq, bepul onlayn ensiklopediya.", tags:["Wiki","Open Source","CMS"]},
-  {name:"GitHub", type:"exist", difficulty:"Qiyin", desc:"Dasturchilar uchun kod versiyalash, hamkorlik va CI/CD platformasi.", tags:["Git","DevOps","Collaboration"]},
-  {name:"Notion", type:"exist", difficulty:"Qiyin", desc:"Eslatmalar, hujjatlar va bazalarni bitta workspace ichida birlashtiruvchi mahsuldorlik ilovasi.", tags:["Productivity","Docs","Database"]},
-  {name:"Figma", type:"exist", difficulty:"Qiyin", desc:"Brauzerda ishlaydigan, real-vaqtda hamkorlikda dizayn qilish vositasi.", tags:["Design","Realtime","Canvas"]},
-  {name:"Telegram", type:"exist", difficulty:"Qiyin", desc:"Tezkor, shifrlangan xabar almashish ilovasi, botlar va kanallar bilan.", tags:["Messaging","Bots","Encryption"]},
-  {name:"TikTok", type:"exist", difficulty:"Qiyin", desc:"Qisqa video kontent va kuchli tavsiya algoritmiga asoslangan platforma.", tags:["Video","Recommendation AI","Mobile"]},
-  {name:"Netflix", type:"exist", difficulty:"Qiyin", desc:"Film va seriallarni oqim orqali ko'rsatuvchi, shaxsiylashtirilgan tavsiyali xizmat.", tags:["Streaming","Recommendation AI"]},
-  {name:"Slack", type:"exist", difficulty:"O'rta", desc:"Jamoalar uchun kanal asosida ishlaydigan ish xabarlashuv platformasi.", tags:["Messaging","Teams","Integrations"]},
-  {name:"Trello", type:"exist", difficulty:"O'rta", desc:"Kanban doskalari asosida vazifalarni boshqarish vositasi.", tags:["Kanban","Task Management"]},
-  {name:"Zoom", type:"exist", difficulty:"Qiyin", desc:"Video konferensiya va onlayn uchrashuvlar uchun platforma.", tags:["Video Call","WebRTC"]},
-  {name:"Discord", type:"exist", difficulty:"Qiyin", desc:"O'yinchilar va jamoalar uchun ovozli, matnli va video chat platformasi.", tags:["Voice Chat","Community"]},
-  {name:"Twitch", type:"exist", difficulty:"Qiyin", desc:"Jonli video translatsiya (live streaming) platformasi, asosan o'yinlar uchun.", tags:["Live Streaming","Video"]},
-  {name:"Reddit", type:"exist", difficulty:"O'rta", desc:"Mavzu bo'yicha jamoalarga (subreddit) bo'lingan forum va yangiliklar platformasi.", tags:["Forum","Community"]},
-  {name:"Pinterest", type:"exist", difficulty:"O'rta", desc:"Vizual ilhom va g'oyalarni to'plash uchun rasm asosidagi platforma.", tags:["Visual Search","Social"]},
-  {name:"LinkedIn", type:"exist", difficulty:"Qiyin", desc:"Professional tarmoq va ish qidirish platformasi.", tags:["Networking","Recruiting"]},
-  {name:"WhatsApp", type:"exist", difficulty:"Qiyin", desc:"Oxir-oxirigacha shifrlangan xabar va qo'ng'iroq ilovasi.", tags:["Messaging","Encryption"]},
-  {name:"Google Maps", type:"exist", difficulty:"Qiyin", desc:"Xarita, navigatsiya va joy izlash xizmati.", tags:["Maps","Navigation"]},
-  {name:"YouTube", type:"exist", difficulty:"Qiyin", desc:"Video yuklash, tomosha qilish va monetizatsiya qilish platformasi.", tags:["Video","CDN","Ads"]},
-  {name:"PayPal", type:"exist", difficulty:"Qiyin", desc:"Onlayn to'lov va pul o'tkazish tizimi.", tags:["Fintech","Payments"]},
-  {name:"Todoist", type:"exist", difficulty:"Oson", desc:"Shaxsiy va jamoaviy vazifalarni boshqarish ilovasi.", tags:["Productivity","Tasks"]},
-  {name:"Shopify", type:"exist", difficulty:"Qiyin", desc:"Savdogarlarga onlayn do'kon ochish va boshqarish imkonini beruvchi e-commerce platformasi.", tags:["E-commerce","SaaS","Payments"]},
-  {name:"Stripe", type:"exist", difficulty:"Qiyin", desc:"Internet-bizneslar uchun to'lovlarni qabul qilish infratuzilmasini API orqali taqdim etuvchi xizmat.", tags:["Fintech","API","Payments"]},
-  {name:"Canva", type:"exist", difficulty:"O'rta", desc:"Professional dizayn ko'nikmasi talab qilmaydigan, tayyor shablonlarga asoslangan onlayn grafik dizayn vositasi.", tags:["Design","Templates","SaaS"]},
-  {name:"Dropbox", type:"exist", difficulty:"Qiyin", desc:"Fayllarni bulutda saqlash va turli qurilmalar orasida avtomatik sinxronlash xizmati.", tags:["Cloud Storage","Sync"]},
-  {name:"Evernote", type:"exist", difficulty:"O'rta", desc:"Eslatmalar, hujjatlar va veb-sahifalarni bitta joyda saqlaydigan shaxsiy arxiv ilovasi.", tags:["Productivity","Notes"]},
-  {name:"Asana", type:"exist", difficulty:"O'rta", desc:"Jamoalar uchun vazifa va loyihalarni rejalashtirish hamda kuzatib borish platformasi.", tags:["Project Management","Teams"]},
-  {name:"Airtable", type:"exist", difficulty:"O'rta", desc:"Jadval va bazani birlashtirgan, kod yozmasdan moslashtirish mumkin bo'lgan ma'lumot boshqaruv vositasi.", tags:["Database","No-code","Spreadsheet"]},
-  {name:"Coursera", type:"exist", difficulty:"Qiyin", desc:"Dunyo universitetlaridan onlayn kurslar va sertifikatlar taqdim etuvchi ta'lim platformasi.", tags:["EdTech","Video","Certificates"]},
-  {name:"Khan Academy", type:"exist", difficulty:"O'rta", desc:"Bepul video darslar va mashqlar orqali turli fanlarni o'rgatuvchi notijorat ta'lim platformasi.", tags:["EdTech","Nonprofit","Video"]},
-  {name:"Booking.com", type:"exist", difficulty:"Qiyin", desc:"Mehmonxona va turar joylarni qidirish hamda onlayn bron qilish platformasi.", tags:["Travel","Booking"]},
-  {name:"Skyscanner", type:"exist", difficulty:"Qiyin", desc:"Aviachiptalar narxini turli aviakompaniyalar bo'yicha solishtiruvchi qidiruv tizimi.", tags:["Travel","Aggregator"]},
-  {name:"Waze", type:"exist", difficulty:"Qiyin", desc:"Haydovchilarning real vaqtdagi hisobotlari asosida ishlaydigan jamoaviy navigatsiya ilovasi.", tags:["Maps","Community","Realtime"]},
-  {name:"Snapchat", type:"exist", difficulty:"Qiyin", desc:"Vaqtinchalik, o'zi yo'qoluvchi foto va video xabarlar almashish ilovasi.", tags:["Social","AR","Messaging"]},
-  {name:"Tinder", type:"exist", difficulty:"O'rta", desc:"Joylashuv va qiziqishlar asosida ishlaydigan tanishuv ilovasi.", tags:["Dating","Geolocation"]},
-  {name:"Strava", type:"exist", difficulty:"O'rta", desc:"Sportchilar uchun mashg'ulotlarni kuzatib boruvchi va ijtimoiy tarmoq bilan bog'lovchi ilova.", tags:["Fitness","Social","GPS"]},
-  {name:"Headspace", type:"exist", difficulty:"Oson", desc:"Meditatsiya va ongli fikrlash amaliyotlarini o'rgatuvchi audio-ilova.", tags:["Wellness","Audio"]},
-  {name:"Robinhood", type:"exist", difficulty:"Qiyin", desc:"Vositachisiz va komissiyasiz aksiya hamda kriptovalyuta sotib olish ilovasi.", tags:["Fintech","Trading"]},
-  {name:"Venmo", type:"exist", difficulty:"O'rta", desc:"Do'stlar orasida pul o'tkazish va uni ijtimoiy oqimda ko'rsatuvchi to'lov ilovasi.", tags:["Fintech","Social Payments"]},
-  {name:"Zillow", type:"exist", difficulty:"Qiyin", desc:"Ko'chmas mulk narxlarini avtomatik baholovchi va e'lonlarni ko'rsatuvchi platforma.", tags:["PropTech","Listings"]},
-  {name:"DoorDash", type:"exist", difficulty:"Qiyin", desc:"Restoranlardan uyga ovqat yetkazib berishni tashkil qiluvchi logistika platformasi.", tags:["Delivery","Marketplace","Logistics"]},
-  {name:"Coinbase", type:"exist", difficulty:"Qiyin", desc:"Kriptovalyuta sotib olish, sotish va saqlash uchun onlayn birja.", tags:["Crypto","Fintech"]},
-  {name:"Medium", type:"exist", difficulty:"O'rta", desc:"Mualliflar maqola yozib, kitobxonlar bilan bevosita ulashadigan nashr platformasi.", tags:["Publishing","CMS"]},
-  {name:"WordPress", type:"exist", difficulty:"O'rta", desc:"Veb-sayt va blog yaratish uchun dunyoda eng ommabop kontent boshqaruv tizimi.", tags:["CMS","Open Source"]},
-  {name:"Shazam", type:"exist", difficulty:"Qiyin", desc:"Atrofda yangragan qo'shiqni bir necha soniyada ovozidan tanib oluvchi ilova.", tags:["Audio Recognition","Mobile"]},
-  {name:"Grammarly", type:"exist", difficulty:"Qiyin", desc:"Matndagi grammatik xato va uslub muammolarini AI yordamida real vaqtda tekshiruvchi yozuv yordamchisi.", tags:["AI","Writing","NLP"]},
+  {name:"Mahalliy dialektlarni tushunadigan ovozli yordamchi", difficulty:"Qiyin", desc:"O'zbek tilining turli mintaqaviy shevalarini tushunadigan va javob beradigan AI ovozli assistent.", tags:["AI","Speech Recognition","NLP"]},
+  {name:"Fermerlar uchun hosildorlik bashoratchisi", difficulty:"Qiyin", desc:"Ob-havo, tuproq va tarixiy ma'lumotlar asosida hosildorlikni bashorat qiluvchi AI platforma.", tags:["AI","AgriTech","Data"]},
+  {name:"Anonim talaba-repetitor almashish tarmog'i", difficulty:"O'rta", desc:"Talabalar bir-biriga bepul yoki nuqta (ball) evaziga fan bo'yicha yordam beradigan platforma.", tags:["EdTech","Peer-to-peer"]},
+  {name:"Kichik biznes uchun avtomatik soliq boti", difficulty:"O'rta", desc:"Kunlik savdo ma'lumotlarini olib, soliq hisobotlarini avtomatik tayyorlaydigan chat-bot.", tags:["Fintech","Automation","Bot"]},
+  {name:"Shahar transporti navbat bashoratchisi", difficulty:"O'rta", desc:"Avtobus/metro kelish vaqtini real vaqtda GPS ma'lumotlari asosida bashorat qiluvchi ilova.", tags:["Geolocation","Public Transport"]},
+  {name:"Fan bo'yicha bilim almashish tarmog'i", difficulty:"Oson", desc:"Talabalar o'z konspektlari va yechimlarini yuklab, ball to'plab boshqa fanlar bo'yicha yordam olishlari mumkin bo'lgan tizim.", tags:["EdTech","Community"]},
+  {name:"Chekka hududlar uchun offline ta'lim ilovasi", difficulty:"O'rta", desc:"Internet bo'lmagan joylarda ham ishlaydigan, keyin sinxronlanadigan ta'lim kontenti ilovasi.", tags:["EdTech","Offline-first"]},
+  {name:"Fermer mahsulotlari uchun shaffof yetkazib berish tizimi", difficulty:"Qiyin", desc:"Mahsulot yo'lini fermadan iste'molchigacha kuzatib boruvchi shaffof reestr asosidagi tizim.", tags:["Supply Chain","Blockchain"]},
+  {name:"Diqqatni jamlash AI-yordamchisi", difficulty:"Oson", desc:"Foydalanuvchi ish odatlarini o'rganib, eng samarali Pomodoro tsikllarini tavsiya qiluvchi ilova.", tags:["Productivity","AI"]},
+  {name:"Kam resurs tillar uchun ochiq tarjima modeli", difficulty:"Qiyin", desc:"O'zbek va boshqa Markaziy Osiyo tillari uchun ochiq manbali mashina tarjimasi modeli.", tags:["NLP","Open Source","AI"]},
+  {name:"Mahalliy veterinar chaqiruv platformasi", difficulty:"Oson", desc:"Uy hayvonlari egalarini yaqin atrofdagi veterinarlar bilan bog'laydigan chaqiruv xizmati.", tags:["Marketplace","Booking"]},
+  {name:"Jamoat transporti uchun ochiq xarita API'si", difficulty:"O'rta", desc:"Shahar transport marshrutlari va jadvallarini ochiq API sifatida taqdim etuvchi platforma.", tags:["Open Data","Maps","API"]},
+  {name:"Til va vaqt zonasiga mos freelance platforma", difficulty:"O'rta", desc:"Mijoz va ijrochini ish tili hamda vaqt farqi bo'yicha aqlli moslashtiruvchi freelance bozor.", tags:["Marketplace","Matching AI"]},
+  {name:"Ko'nikma asosida ish topish AI'si", difficulty:"Qiyin", desc:"Rezyume o'rniga amaliy ko'nikmalarni baholab, mos vakansiyalarni tavsiya qiluvchi platforma.", tags:["HRTech","AI","Matching"]},
+  {name:"An'analarni saqlash raqamli arxivi", difficulty:"Oson", desc:"Mahalliy hunarmandchilik, folklor va an'analarni video/audio ko'rinishida arxivlaydigan platforma.", tags:["Culture","Archive","Media"]},
+  {name:"Offline-sync inventarizatsiya tizimi", difficulty:"O'rta", desc:"Internet uzilganda ham ishlab, qayta ulanganda sinxronlanadigan kichik do'konlar uchun sotuv tizimi.", tags:["Retail","Offline-first"]},
+  {name:"Tuman kesimida ko'chmas mulk tahlilchisi", difficulty:"O'rta", desc:"Ko'chmas mulk narxlari dinamikasini tuman/mahalla darajasida vizualizatsiya qiluvchi platforma.", tags:["PropTech","Data Viz"]},
+  {name:"Jamoat transporti chiptalari agregatori", difficulty:"O'rta", desc:"Avtobus, poyezd va metro chiptalarini bitta ilovada qidirish va sotib olish imkonini beruvchi agregator.", tags:["Travel","Aggregator","Payments"]},
+  {name:"Stipendiya va grantlar agregatori", difficulty:"O'rta", desc:"Talabalar uchun mavjud barcha stipendiya, grant va almashinuv dasturlarini bitta joyda to'plab, muddatlarini eslatib turuvchi xizmat.", tags:["EdTech","Aggregator"]},
+  {name:"Mahalla ko'ngillilar tarmog'i", difficulty:"O'rta", desc:"Tabiiy ofat yoki favqulodda vaziyatlarda yordam so'ragan va yordam bera oladigan odamlarni tezda bog'laydigan mahalliy platforma.", tags:["Community","Emergency","Geolocation"]},
+  {name:"Universitet ichidagi startap bozori", difficulty:"O'rta", desc:"Talabalar loyihalarini kurs ishi sifatida qolib ketmasligi uchun ularni bitiruvchilar va mahalliy investorlar bilan bog'lovchi platforma.", tags:["Startup","Networking"]},
+  {name:"Dasturlashni o'zbek tilida o'rgatuvchi AI repetitor", difficulty:"Qiyin", desc:"Kod yozishni endi boshlaganlar uchun tushuntirishlarni to'liq o'zbek tilida, misollar bilan beradigan suhbat asosidagi AI repetitor.", tags:["EdTech","AI","NLP"]},
+  {name:"Jamoat transporti uchun QR to'lov tizimi", difficulty:"O'rta", desc:"Avtobus va marshrutkalarda naqd pulsiz, faqat telefon kamerasi bilan QR kod orqali yo'l haqini to'lash tizimi.", tags:["Fintech","QR","Public Transport"]},
+  {name:"Talaba-amaliyot platformasi", difficulty:"O'rta", desc:"Talabalarni kompaniyalardagi amaliyot (stajirovka) o'rinlari bilan to'g'ridan-to'g'ri bog'lovchi, murakkab CV talab qilmaydigan sodda platforma.", tags:["HRTech","EdTech"]},
+  {name:"Fermer bozorlari xaritasi", difficulty:"Oson", desc:"Yaqin atrofdagi dehqon bozorlarini, ularda mavjud mahsulot va narxlarni xaritada ko'rsatuvchi ilova.", tags:["AgriTech","Maps"]},
+  {name:"Mahalliy tilda audiokitob yaratish platformasi", difficulty:"Qiyin", desc:"Matnni tabiiy ovozli sun'iy intellekt yordamida o'zbek tilida audiokitobga aylantiruvchi xizmat.", tags:["AI","Text-to-Speech","Media"]},
+  {name:"Velosipedchilar uchun xavfsiz yo'l xaritasi", difficulty:"O'rta", desc:"Foydalanuvchilar hisobotlari asosida shahardagi eng xavfsiz va qulay velosiped yo'llarini ko'rsatuvchi xarita ilovasi.", tags:["Maps","Community","Cycling"]},
+  {name:"Talabalar uchun stress va imtihon monitoringi", difficulty:"Oson", desc:"Imtihon jadvalini kuzatib, talabaning stress darajasini so'rovnomalar orqali baholab, dam olish tavsiyalarini beruvchi ilova.", tags:["EdTech","Wellness"]},
+  {name:"Hunarmandlar uchun onlayn sertifikatlash", difficulty:"O'rta", desc:"An'anaviy hunar ustalarining mahoratini video-imtihon orqali baholab, raqamli sertifikat beruvchi platforma.", tags:["EdTech","Certification"]},
+  {name:"Ijara shartnomalarini tekshiruvchi tizim", difficulty:"Qiyin", desc:"Ko'chmas mulk ijarasidan oldin mulk hujjatlari va egasining haqiqiyligini tekshirib, firibgarlik xavfini kamaytiruvchi xizmat.", tags:["PropTech","Verification"]},
+  {name:"Kichik ishlab chiqaruvchilar uchun eksport hujjat generatori", difficulty:"Qiyin", desc:"Mahsulotni chet elga sotish uchun kerakli sertifikat va hujjatlar ro'yxatini avtomatik tuzib beruvchi xizmat.", tags:["Trade","Automation","SME"]},
 
-  // ---- HALI MAVJUD BO'LMAGAN G'OYALAR ----
-  {name:"Mahalliy dialektlarni tushunadigan ovozli yordamchi", type:"idea", difficulty:"Qiyin", desc:"O'zbek tilining turli mintaqaviy shevalarini tushunadigan va javob beradigan AI ovozli assistent.", tags:["AI","Speech Recognition","NLP"]},
-  {name:"Fermerlar uchun hosildorlik bashoratchisi", type:"idea", difficulty:"Qiyin", desc:"Ob-havo, tuproq va tarixiy ma'lumotlar asosida hosildorlikni bashorat qiluvchi AI platforma.", tags:["AI","AgriTech","Data"]},
-  {name:"Anonim talaba-repetitor almashish tarmog'i", type:"idea", difficulty:"O'rta", desc:"Talabalar bir-biriga bepul yoki nuqta (ball) evaziga fan bo'yicha yordam beradigan platforma.", tags:["EdTech","Peer-to-peer"]},
-  {name:"Kichik biznes uchun avtomatik soliq boti", type:"idea", difficulty:"O'rta", desc:"Kunlik savdo ma'lumotlarini olib, soliq hisobotlarini avtomatik tayyorlaydigan chat-bot.", tags:["Fintech","Automation","Bot"]},
-  {name:"Mahalliy hunarmandlar bozori", type:"idea", difficulty:"O'rta", desc:"O'rta Osiyo hunarmandlari uchun Etsy uslubidagi onlayn qo'lda yasalgan mahsulotlar bozori.", tags:["Marketplace","E-commerce"]},
-  {name:"Shahar transporti navbat bashoratchisi", type:"idea", difficulty:"O'rta", desc:"Avtobus/metro kelish vaqtini real vaqtda GPS ma'lumotlari asosida bashorat qiluvchi ilova.", tags:["Geolocation","Public Transport"]},
-  {name:"Fan bo'yicha bilim almashish tarmog'i", type:"idea", difficulty:"Oson", desc:"Talabalar o'z konspektlari va yechimlarini yuklab, ball to'plab boshqa fanlar bo'yicha yordam olishlari mumkin bo'lgan tizim.", tags:["EdTech","Community"]},
-  {name:"Chekka hududlar uchun offline ta'lim ilovasi", type:"idea", difficulty:"O'rta", desc:"Internet bo'lmagan joylarda ham ishlaydigan, keyin sinxronlanadigan ta'lim kontenti ilovasi.", tags:["EdTech","Offline-first"]},
-  {name:"Fermer mahsulotlari uchun shaffof yetkazib berish tizimi", type:"idea", difficulty:"Qiyin", desc:"Mahsulot yo'lini fermadan iste'molchigacha kuzatib boruvchi shaffof reestr asosidagi tizim.", tags:["Supply Chain","Blockchain"]},
-  {name:"Diqqatni jamlash AI-yordamchisi", type:"idea", difficulty:"Oson", desc:"Foydalanuvchi ish odatlarini o'rganib, eng samarali Pomodoro tsikllarini tavsiya qiluvchi ilova.", tags:["Productivity","AI"]},
-  {name:"Kam resurs tillar uchun ochiq tarjima modeli", type:"idea", difficulty:"Qiyin", desc:"O'zbek va boshqa Markaziy Osiyo tillari uchun ochiq manbali mashina tarjimasi modeli.", tags:["NLP","Open Source","AI"]},
-  {name:"Mahalliy veterinar chaqiruv platformasi", type:"idea", difficulty:"Oson", desc:"Uy hayvonlari egalarini yaqin atrofdagi veterinarlar bilan bog'laydigan chaqiruv xizmati.", tags:["Marketplace","Booking"]},
-  {name:"Gamifikatsiya qilingan debugging o'yini", type:"idea", difficulty:"O'rta", desc:"Yangi dasturchilar real xatolarni topib tuzatish orqali ball to'playdigan ta'lim o'yini.", tags:["EdTech","Gamification","DevTools"]},
-  {name:"Mikro-jamg'arma ilovasi", type:"idea", difficulty:"O'rta", desc:"Har bir xariddan qolgan mayda pulni avtomatik jamg'armaga o'tkazadigan fintech ilova.", tags:["Fintech","Automation"]},
-  {name:"Jamoat transporti uchun ochiq xarita API'si", type:"idea", difficulty:"O'rta", desc:"Shahar transport marshrutlari va jadvallarini ochiq API sifatida taqdim etuvchi platforma.", tags:["Open Data","Maps","API"]},
-  {name:"Til va vaqt zonasiga mos freelance platforma", type:"idea", difficulty:"O'rta", desc:"Mijoz va ijrochini ish tili hamda vaqt farqi bo'yicha aqlli moslashtiruvchi freelance bozor.", tags:["Marketplace","Matching AI"]},
-  {name:"Ko'nikma asosida ish topish AI'si", type:"idea", difficulty:"Qiyin", desc:"Rezyume o'rniga amaliy ko'nikmalarni baholab, mos vakansiyalarni tavsiya qiluvchi platforma.", tags:["HRTech","AI","Matching"]},
-  {name:"Chiqindisiz oshxona ilovasi", type:"idea", difficulty:"Oson", desc:"Uyda mavjud ingredientlar asosida retsept tavsiya qilib, oziq-ovqat isrofini kamaytiruvchi ilova.", tags:["Lifestyle","Recommendation"]},
-  {name:"Shaxsiy moliya tahlilchisi AI", type:"idea", difficulty:"O'rta", desc:"Bank tranzaksiyalarini tahlil qilib, tejash bo'yicha shaxsiylashtirilgan maslahat beruvchi ilova.", tags:["Fintech","AI","Analytics"]},
-  {name:"An'analarni saqlash raqamli arxivi", type:"idea", difficulty:"Oson", desc:"Mahalliy hunarmandchilik, folklor va an'analarni video/audio ko'rinishida arxivlaydigan platforma.", tags:["Culture","Archive","Media"]},
-  {name:"Offline-sync inventarizatsiya tizimi", type:"idea", difficulty:"O'rta", desc:"Internet uzilganda ham ishlab, qayta ulanganda sinxronlanadigan kichik do'konlar uchun sotuv tizimi.", tags:["Retail","Offline-first"]},
-  {name:"Ilmiy maqolalarni soddalashtiruvchi AI", type:"idea", difficulty:"O'rta", desc:"Murakkab ilmiy maqolalarni oddiy tilga qisqacha 'tarjima' qilib beruvchi vosita.", tags:["AI","NLP","EdTech"]},
-  {name:"Tuman kesimida ko'chmas mulk tahlilchisi", type:"idea", difficulty:"O'rta", desc:"Ko'chmas mulk narxlari dinamikasini tuman/mahalla darajasida vizualizatsiya qiluvchi platforma.", tags:["PropTech","Data Viz"]},
-  {name:"Dori qabul qilish va o'zaro ta'sir eslatuvchisi", type:"idea", difficulty:"Oson", desc:"Dori qabul qilish jadvalini eslatib, dorilar orasidagi xavfli o'zaro ta'sirlarni ogohlantiruvchi ilova.", tags:["HealthTech","Reminders"]},
-  {name:"Jamoat transporti chiptalari agregatori", type:"idea", difficulty:"O'rta", desc:"Avtobus, poyezd va metro chiptalarini bitta ilovada qidirish va sotib olish imkonini beruvchi agregator.", tags:["Travel","Aggregator","Payments"]},
-  {name:"Soxta yangiliklarni aniqlovchi AI brauzer plagini", type:"idea", difficulty:"O'rta", desc:"Yangilik matnini tahlil qilib, uning ishonchlilik darajasini va manba tarixini ko'rsatuvchi brauzer kengaytmasi.", tags:["AI","NLP","Browser Extension"]},
-  {name:"Go'zallik salonlari uchun navbat va bron tizimi", type:"idea", difficulty:"Oson", desc:"Sartaroshxona va go'zallik salonlariga onlayn navbat olish hamda ustalar jadvalini boshqarish imkonini beruvchi platforma.", tags:["Booking","SaaS","Local Business"]},
-  {name:"Bepul narsalar almashish platformasi", type:"idea", difficulty:"Oson", desc:"Kerak bo'lmay qolgan buyumlarni sotish o'rniga mahalla ichida bepul berish va olish uchun mo'ljallangan platforma.", tags:["Community","Marketplace","Sustainability"]},
-  {name:"Stipendiya va grantlar agregatori", type:"idea", difficulty:"O'rta", desc:"Talabalar uchun mavjud barcha stipendiya, grant va almashinuv dasturlarini bitta joyda to'plab, muddatlarini eslatib turuvchi xizmat.", tags:["EdTech","Aggregator"]},
-  {name:"Mahalla ko'ngillilar tarmog'i", type:"idea", difficulty:"O'rta", desc:"Tabiiy ofat yoki favqulodda vaziyatlarda yordam so'ragan va yordam bera oladigan odamlarni tezda bog'laydigan mahalliy platforma.", tags:["Community","Emergency","Geolocation"]},
-  {name:"Kichik ustalarni chaqirish platformasi", type:"idea", difficulty:"O'rta", desc:"Santexnik, elektrik va boshqa maishiy ustalarni reyting va narx bo'yicha solishtirib, bir necha bosishda chaqirish mumkin bo'lgan xizmat.", tags:["Marketplace","Local Services"]},
-  {name:"Universitet ichidagi startap bozori", type:"idea", difficulty:"O'rta", desc:"Talabalar loyihalarini kurs ishi sifatida qolib ketmasligi uchun ularni bitiruvchilar va mahalliy investorlar bilan bog'lovchi platforma.", tags:["Startup","Networking"]},
-  {name:"Dasturlashni o'zbek tilida o'rgatuvchi AI repetitor", type:"idea", difficulty:"Qiyin", desc:"Kod yozishni endi boshlaganlar uchun tushuntirishlarni to'liq o'zbek tilida, misollar bilan beradigan suhbat asosidagi AI repetitor.", tags:["EdTech","AI","NLP"]},
-  {name:"Uy uchun elektr tejash monitoringi", type:"idea", difficulty:"Qiyin", desc:"Har bir maishiy asbobning elektr sarfini kuzatib, qaysi qurilma ko'p energiya yeyotganini va qanday tejash mumkinligini ko'rsatuvchi aqlli tizim.", tags:["IoT","Sustainability","Analytics"]},
-  {name:"Jamoat transporti uchun QR to'lov tizimi", type:"idea", difficulty:"O'rta", desc:"Avtobus va marshrutkalarda naqd pulsiz, faqat telefon kamerasi bilan QR kod orqali yo'l haqini to'lash tizimi.", tags:["Fintech","QR","Public Transport"]},
-  {name:"Ko'zi ojizlar uchun shahar ovozli yo'lboshchisi", type:"idea", difficulty:"Qiyin", desc:"Atrofdagi ko'cha, do'kon va to'siqlarni kamera orqali aniqlab, ovozli tarzda tasvirlab beruvchi mobil yordamchi.", tags:["AI","Accessibility","Computer Vision"]},
-  {name:"Talaba-amaliyot platformasi", type:"idea", difficulty:"O'rta", desc:"Talabalarni kompaniyalardagi amaliyot (stajirovka) o'rinlari bilan to'g'ridan-to'g'ri bog'lovchi, murakkab CV talab qilmaydigan sodda platforma.", tags:["HRTech","EdTech"]},
-  {name:"Fermer bozorlari xaritasi", type:"idea", difficulty:"Oson", desc:"Yaqin atrofdagi dehqon bozorlarini, ularda mavjud mahsulot va narxlarni xaritada ko'rsatuvchi ilova.", tags:["AgriTech","Maps"]},
-  {name:"Maktab-ota-ona aloqa platformasi", type:"idea", difficulty:"O'rta", desc:"Ota-onalar farzandining uy vazifalari, davomati va baholarini real vaqtda kuzatib borishi mumkin bo'lgan maktab platformasi.", tags:["EdTech","Communication"]},
-  {name:"Mahalliy tilda audiokitob yaratish platformasi", type:"idea", difficulty:"Qiyin", desc:"Matnni tabiiy ovozli sun'iy intellekt yordamida o'zbek tilida audiokitobga aylantiruvchi xizmat.", tags:["AI","Text-to-Speech","Media"]},
-  {name:"Til almashish uchun tandem ilovasi", type:"idea", difficulty:"O'rta", desc:"Sayohatchi va mahalliy aholini bir-biriga til o'rgatish maqsadida juftlashtiruvchi ilova.", tags:["EdTech","Social","Travel"]},
-  {name:"Qishloqlar uchun telemeditsina platformasi", type:"idea", difficulty:"Qiyin", desc:"Shifokorga borish qiyin bo'lgan chekka hududlardagi bemorlarni video orqali shahar shifokorlari bilan bog'lovchi xizmat.", tags:["HealthTech","Video Call"]},
-  {name:"AI yordamida CV va portfolio generatori", type:"idea", difficulty:"O'rta", desc:"Foydalanuvchi tajribasini savol-javob orqali yig'ib, undan avtomatik chiroyli CV va portfolio sayt yasab beruvchi vosita.", tags:["AI","Career","Generator"]},
-  {name:"Kichik ishlab chiqaruvchilar uchun eksport hujjat generatori", type:"idea", difficulty:"Qiyin", desc:"Mahsulotni chet elga sotish uchun kerakli sertifikat va hujjatlar ro'yxatini avtomatik tuzib beruvchi xizmat.", tags:["Trade","Automation","SME"]},
-  {name:"Uy hayvonlarini vaqtincha boqish platformasi", type:"idea", difficulty:"Oson", desc:"Sayohatga ketayotganlar uchun uy hayvonini vaqtincha boquvchi ishonchli odamlarni topib beruvchi platforma.", tags:["Marketplace","Pets"]},
-  {name:"Velosipedchilar uchun xavfsiz yo'l xaritasi", type:"idea", difficulty:"O'rta", desc:"Foydalanuvchilar hisobotlari asosida shahardagi eng xavfsiz va qulay velosiped yo'llarini ko'rsatuvchi xarita ilovasi.", tags:["Maps","Community","Cycling"]},
-  {name:"Isrofgarchilikka qarshi oshxona ilovasi", type:"idea", difficulty:"O'rta", desc:"Kun oxirida sotilmay qolgan taomlarni restoranlardan katta chegirma bilan sotib olish imkonini beruvchi ilova.", tags:["Sustainability","Marketplace","Food"]},
-  {name:"Talabalar uchun stress va imtihon monitoringi", type:"idea", difficulty:"Oson", desc:"Imtihon jadvalini kuzatib, talabaning stress darajasini so'rovnomalar orqali baholab, dam olish tavsiyalarini beruvchi ilova.", tags:["EdTech","Wellness"]},
-  {name:"Hunarmandlar uchun onlayn sertifikatlash", type:"idea", difficulty:"O'rta", desc:"An'anaviy hunar ustalarining mahoratini video-imtihon orqali baholab, raqamli sertifikat beruvchi platforma.", tags:["EdTech","Certification"]},
-  {name:"Ijara shartnomalarini tekshiruvchi tizim", type:"idea", difficulty:"Qiyin", desc:"Ko'chmas mulk ijarasidan oldin mulk hujjatlari va egasining haqiqiyligini tekshirib, firibgarlik xavfini kamaytiruvchi xizmat.", tags:["PropTech","Verification"]},
+  {name:"Mahalla ustalarini ovoz orqali chaqirish liniyasi", difficulty:"O'rta", desc:"Internet yoki ilova o'rniga oddiy telefon qo'ng'irog'i orqali santexnik yoki elektrikni chaqirish mumkin bo'lgan IVR tizimi — internetsiz odamlar uchun.", tags:["Voice IVR","Accessibility","Local Services"]},
+  {name:"Ta'til kunlarida bo'sh turgan maktab xonalarini ijaraga beruvchi platforma", difficulty:"O'rta", desc:"Yozgi ta'tilda bo'sh qolgan maktab sinf xonalarini kurslar yoki tadbirlar uchun vaqtincha ijaraga berish tizimi.", tags:["PropTech","Marketplace","Education"]},
+  {name:"Ko'chada sotuvchi dehqonlar uchun narx-navbat radiosi", difficulty:"Oson", desc:"Dehqon bozorlaridagi kunlik narxlarni FM-radio orqali eshittiradigan, internetga bog'liq bo'lmagan axborot xizmati.", tags:["Radio","AgriTech","Low-tech"]},
+  {name:"Ko'p bolali oilalar uchun kiyim-almashish tarmog'i", difficulty:"Oson", desc:"Bolalar tez o'sib chiqib ketadigan kiyimlarni oilalar orasida navbat bilan almashtirish tizimi.", tags:["Community","Sustainability"]},
+  {name:"Elektr uzilishlarini oldindan xabar qiluvchi hudud xaritasi", difficulty:"O'rta", desc:"Elektr ta'minoti kompaniyalarining rejalashtirilgan uzilish jadvalini hudud bo'yicha xaritada ko'rsatuvchi ochiq xizmat.", tags:["Open Data","Utilities","Maps"]},
+  {name:"Uzoq yo'l haydovchilari uchun hamroh topish platformasi", difficulty:"O'rta", desc:"Bir xil yo'nalishda ketayotgan yuk mashinasi haydovchilarini bir-biri bilan bog'lab, yo'lda birga to'xtash va xavfsizlikni oshirish tizimi.", tags:["Logistics","Safety","Community"]},
+  {name:"Kollej talabalari uchun umumiy oshxona jadvali ilovasi", difficulty:"Oson", desc:"Yotoqxonada birga ovqat pishiradigan talabalar uchun navbat va oshxona bandligini boshqarish ilovasi.", tags:["Campus Life","Scheduling"]},
+  {name:"Mahalliy hunarmandchilik texnikasini video orqali o'rgatuvchi arxiv", difficulty:"O'rta", desc:"Keksa ustalarning noyob hunar texnikalarini video sifatida yozib, keyingi avlodga meros sifatida saqlaydigan platforma.", tags:["Culture","Video","Archive"]},
+  {name:"Amaliyot davomida talabalar xatolarini anonim ulashish forumi", difficulty:"Oson", desc:"Talabalar amaliyot joyida qilgan xatolarini anonim tarzda ulashib, bir-biridan saboq oladigan forum.", tags:["EdTech","Community"]},
+  {name:"Uy egalari va ijarachilar o'rtasidagi kelishmovchiliklarni hal qiluvchi vositachi bot", difficulty:"Qiyin", desc:"Kommunal to'lov yoki ta'mirlash bo'yicha kelishmovchiliklarda ikki tomonni AI yordamida adolatli murosaga keltiruvchi chat-bot.", tags:["PropTech","AI","Mediation"]},
+  {name:"Bog'-rog' mevalarini yig'ib olishga ko'ngilli chaqiruvchi tizim", difficulty:"Oson", desc:"Hosil yetilganda uni o'zi yig'ib ulgurmagan uy egalarini ko'ngillilar bilan bog'lab, hosilni baham ko'rish tizimi.", tags:["Community","AgriTech"]},
+  {name:"Kichik ustaxonalar uchun birgalikda asbob-uskuna ijarasi", difficulty:"O'rta", desc:"Qimmat uskunalarni (payvandlash, kesish mashinasi) bir nechta kichik ustaxona birgalikda sotib olib, navbat bilan ishlatish tizimi.", tags:["Sharing Economy","SME"]},
+  {name:"Shifoxonada navbat kutish vaqtini SMS orqali bashorat qiluvchi tizim", difficulty:"O'rta", desc:"Davlat shifoxonalaridagi jonli navbat holatini kuzatib, bemorga SMS orqali taxminiy kutish vaqtini yuboruvchi tizim.", tags:["HealthTech","SMS","Public Service"]},
+  {name:"Talabalar uchun fan bo'yicha 'ustoz toping' anonim reyting tizimi", difficulty:"O'rta", desc:"O'qituvchilarni fan bo'yicha real talabalar tajribasiga asoslangan, sharhlarsiz, faqat savol-javob natijalari bilan reytinglaydigan tizim.", tags:["EdTech","Ratings"]},
+  {name:"Mahalliy transport haydovchilari uchun yoqilg'i tejash musobaqasi ilovasi", difficulty:"O'rta", desc:"Marshrutka haydovchilarining yoqilg'i sarfini kuzatib, eng tejamkorlarini oylik reytingda ko'rsatadigan gamifikatsiya ilovasi.", tags:["Gamification","Transport","IoT"]},
+  {name:"Qishloq maktablariga masofadan fanlar bo'yicha 'mehmon dars' tashkil qiluvchi tizim", difficulty:"O'rta", desc:"Shahar mutaxassislarini video orqali qishloq maktablariga bir martalik 'mehmon dars' o'tishga taklif qiluvchi platforma.", tags:["EdTech","Video Call","Volunteering"]},
+  {name:"Mahalliy bozorlarda o'lchov firibgarligini aniqlovchi tarozi tekshiruvi ilovasi", difficulty:"Qiyin", desc:"Telefon kamerasi orqali bozor tarozisi ko'rsatkichini skanerlab, standart og'irlik bilan solishtiradigan iste'molchi himoyasi ilovasi.", tags:["Consumer Protection","Computer Vision"]},
+  {name:"Kam ta'minlangan talabalar uchun eski darsliklarni raqamlashtirish loyihasi", difficulty:"Oson", desc:"Bitiruvchilarning eski darsliklarini skanerlab, keyingi kurslarga bepul elektron shaklda uzatuvchi tizim.", tags:["EdTech","Digitization","Nonprofit"]},
+  {name:"Shahar ichidagi bo'sh turgan avtoturargohlarni soatlab ijaraga beruvchi tizim", difficulty:"O'rta", desc:"Ish vaqtida bo'sh turadigan xususiy avtoturargohlarni boshqa haydovchilarga soatlab ijaraga berish platformasi.", tags:["PropTech","Sharing Economy"]},
+  {name:"Mahalliy hunarmandlar uchun buyurtma-asosida ishlab chiqarish platformasi", difficulty:"O'rta", desc:"Xaridor avval buyurtma berib, keyin hunarmand shu buyurtma asosida qo'lda tayyorlaydigan, ortiqcha ishlab chiqarishsiz savdo tizimi.", tags:["Made-to-order","Craft","Sustainability"]},
+  {name:"Ko'p qavatli uylarda umumiy xarajatlarni shaffof taqsimlovchi ilova", difficulty:"O'rta", desc:"Uy-joy boshqaruv xarajatlarini barcha xonadon egalari ko'ra oladigan tarzda ochiq hisob-kitob qiluvchi ilova.", tags:["PropTech","Transparency","Finance"]},
+  {name:"Yosh ota-onalar uchun tungi navbat bilan bola parvarishi tarmog'i", difficulty:"Oson", desc:"Bir mahallada yashovchi yangi ota-onalarni tungi parvarish tajribasi va yordamini almashish uchun bog'laydigan tarmoq.", tags:["Community","Parenting"]},
+  {name:"Chekka hududlarga dori yetkazib berish marshrutlarini optimallashtiruvchi tizim", difficulty:"Qiyin", desc:"Yo'l infratuzilmasi yomon hududlarga dori-darmon yetkazib berish marshrutlarini eng qisqa va ishonchli qilib rejalashtiruvchi tizim.", tags:["Logistics","HealthTech","Routing"]},
+  {name:"Talabalar uchun imtihon oldidan bilim bo'shliqlarini aniqlovchi diagnostik test tizimi", difficulty:"O'rta", desc:"Imtihondan oldin talabaning qaysi mavzularda kuchsiz ekanini aniqlab, faqat o'sha qismlarga yo'naltiruvchi qisqa diagnostik testlar.", tags:["EdTech","Assessment","AI"]},
+  {name:"Mahalliy transport uchun real vaqtdagi bandlik ko'rsatkichi", difficulty:"Qiyin", desc:"Avtobus ichidagi bandlik darajasini sensorlar orqali aniqlab, navbatdagi bekatlarga oldindan xabar beruvchi tizim.", tags:["IoT","Public Transport","Realtime"]},
 ];
+
+const COOLDOWN_HOURS = { "Oson": 1.5, "O'rta": 2, "Qiyin": 3 };
+const LOCK_KEY = "loyiha-generator:lock";
+let countdownTimer = null;
 
 const stage = document.getElementById("stage");
 const topInfoEl = document.getElementById("topInfo");
@@ -379,10 +332,6 @@ const belowCardEl = document.getElementById("belowCard");
 const globalField = document.getElementById("globalField");
 const DEFAULT_TOPINFO = "// Sahifada aylanib yurgan kartalardan birini bosing";
 topInfoEl.textContent = DEFAULT_TOPINFO;
-
-const COOLDOWN_HOURS = { "Oson": 1.5, "O'rta": 2, "Qiyin": 3 };
-const LOCK_KEY = "loyiha-generator:lock";
-let countdownTimer = null;
 
 function loadLockRaw(){
   try{
@@ -445,16 +394,10 @@ function showCooldown(unlockAt){
 }
 
 function aiQueryFor(p){
-  if(p.type === "exist"){
-    return `"${p.name}" xizmati qanday ishlaydi? Uning texnik arxitekturasini, ma'lumotlar bazasi tuzilishini, asosiy algoritmlarini va monetizatsiya modelini batafsil, misollar bilan tushuntirib ber.`;
-  }
   return `Men "${p.name}" nomli loyiha g'oyasini amalga oshirmoqchiman: ${p.desc} Buning uchun MVP qanday funksiyalardan iborat bo'lishi kerak, qaysi texnologik stekni tanlash maqsadga muvofiq va bosqichma-bosqich boshlash rejasini tuzib ber.`;
 }
 
 function googleQueryFor(p){
-  if(p.type === "exist"){
-    return `${p.name} how it works technical architecture tech stack`;
-  }
   return `${p.name} - mavjud yechimlar va raqobatchilar tahlili`;
 }
 
@@ -509,12 +452,8 @@ function pickFromField(pick, clickedEl){
 
 /* ---- picked state: terminal-window result ---- */
 function renderPicked(pick){
-  const isExist = pick.type === "exist";
-  const typeVar = isExist ? "exist" : "idea";
-  const bigLabel = isExist ? "mavjud" : "yangi g'oya";
-
   topInfoEl.innerHTML =
-    `<span class="picked-row">turi: <b style="color:var(--${typeVar})">${bigLabel}</b> · daraja: <b>${pick.difficulty}</b></span>` +
+    `<span class="picked-row">daraja: <b>${pick.difficulty}</b></span>` +
     `<span class="picked-desc">// ${pick.desc}</span>`;
 
   stage.innerHTML = `
@@ -523,7 +462,7 @@ function renderPicked(pick){
       <div class="term-body">
         <div class="term-comment">// natija</div>
         <h2 class="term-name">${pick.name}</h2>
-        <div class="term-row">turi: <b class="term-type${isExist ? "" : " is-idea"}">${bigLabel}</b> · daraja: <b class="term-diff">${pick.difficulty}</b></div>
+        <div class="term-row">daraja: <b>${pick.difficulty}</b></div>
       </div>
     </div>
   `;
