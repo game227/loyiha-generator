@@ -6,29 +6,26 @@
 <title>Loyiha Generatori</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* deliberately single-theme: a lit collector's display case has no "day mode" */
-    --paper:#0b2318;
-    --paper-2:#123527;
-    --card-bg:#0f2c1f;
-    --ink:#f4ecd8;
-    --ink-soft:#b3c2ac;
-    --ruby:#c14a63;
-    --sapphire:#3f8fd6;
-    --gold:#d9ae42;
-    --exist:#4fd19c;
-    --exist-bg:rgba(79,209,156,.14);
-    --idea:#b98cf0;
-    --idea-bg:rgba(185,140,240,.14);
-    --query:#6fb0f2;
-    --query-bg:rgba(111,176,242,.12);
-    --gold-1:#f6e0a0; --gold-2:#caa23a; --gold-3:#8a6a1c;
-    --card-white:#fdfaf3;
-    --card-red:#b3212f;
-    --card-black:#1c1a17;
-    --cardback-red:#a4202c;
+    /* a warm pastel poster - one committed light look, no dark variant */
+    --bg-1:#ffd7e3;
+    --bg-2:#ffe9d6;
+    --paper-2:#fff3ee;
+    --card-bg:#ffffff;
+    --ink:#3d2f3a;
+    --ink-soft:#8c7a89;
+    --pink:#ff8fb1;
+    --sapphire:#6fb6f0;
+    --gold:#f5b95c;
+    --exist:#3fae8f;
+    --exist-bg:#e2f6f0;
+    --idea:#9b7be0;
+    --idea-bg:#efeafc;
+    --query:#5fa8ea;
+    --query-bg:#e9f3fd;
+    --card-white:#ffffff;
   }
 
   *{ box-sizing:border-box; }
@@ -37,13 +34,9 @@
     min-height:100vh;
     padding-block:32px;
     padding-inline:16px;
-    background-color: var(--paper);
-    background-image:
-      radial-gradient(900px circle at 50% 0%, rgba(217,174,66,.08), transparent 60%),
-      radial-gradient(700px circle at 10% 90%, rgba(79,209,156,.06), transparent 60%),
-      radial-gradient(700px circle at 90% 90%, rgba(185,140,240,.06), transparent 60%);
+    background: linear-gradient(160deg, var(--bg-1), var(--bg-2));
     color: var(--ink);
-    font-family: "Karla", ui-sans-serif, system-ui, sans-serif;
+    font-family: "Nunito", ui-sans-serif, system-ui, sans-serif;
   }
 
   /* ---- cards scattered across the whole page ---- */
@@ -54,28 +47,23 @@
     z-index:1;
     max-width: 680px;
     margin: 0 auto;
-    background: linear-gradient(165deg, var(--paper-2), var(--paper));
-    border: 2px solid rgba(217,174,66,.35);
-    border-radius: 22px;
-    padding: 26px;
+    background: var(--card-bg);
+    border: none;
+    border-radius: 32px;
+    padding: 30px;
     box-shadow: 0 24px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.04);
   }
 
   .box-header{
     text-align:center;
     padding-bottom:16px;
-    margin-bottom:18px;
-    border-bottom: 1px solid rgba(217,174,66,.25);
+    margin-bottom:20px;
   }
   .title{
-    font-family:"Cinzel", serif;
-    font-weight:700;
-    font-size: clamp(24px, 5.5vw, 34px);
-    letter-spacing:.02em;
-    background: linear-gradient(180deg, var(--gold-1), var(--gold-2));
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
+    font-family:"Fredoka", sans-serif;
+    font-weight:600;
+    font-size: clamp(24px, 5.5vw, 32px);
+    color: var(--pink);
     margin:0;
     text-wrap:balance;
   }
@@ -93,10 +81,10 @@
   }
   .subtitle .picked-banner{
     display:block;
-    font-family:"Cinzel", serif;
+    font-family:"Fredoka", sans-serif;
     font-weight:600;
     font-size:13px;
-    letter-spacing:.05em;
+    letter-spacing:.02em;
     margin-bottom:8px;
   }
   .subtitle .picked-desc{ display:block; color: var(--ink-soft); font-size:14.5px; line-height:1.65; }
@@ -119,132 +107,106 @@
     position:static;
     flex:none;
     width:70px; height:98px;
-    border-radius:8px;
-    border:4px solid var(--card-white);
-    outline:1.5px solid rgba(0,0,0,.45);
-    background-color: var(--cardback-red);
-    background-image:
-      repeating-linear-gradient(45deg, rgba(255,255,255,.14) 0 2px, transparent 2px 7px),
-      repeating-linear-gradient(-45deg, rgba(255,255,255,.14) 0 2px, transparent 2px 7px);
-    box-shadow: 0 10px 22px rgba(0,0,0,.5);
+    border-radius:20px;
+    background: var(--card-fc-bg, var(--pink));
+    box-shadow: 0 10px 22px rgba(61,47,58,.16);
     display:flex; align-items:center; justify-content:center;
-    color: var(--card-white);
+    color:#fff;
     cursor:pointer;
     user-select:none;
     pointer-events:auto;
   }
-  .face-card svg{ opacity:.85; }
+  .face-card svg{ opacity:.95; }
+  .face-card:nth-child(4n+2){ --card-fc-bg: var(--sapphire); }
+  .face-card:nth-child(4n+3){ --card-fc-bg: var(--exist); }
+  .face-card:nth-child(4n){ --card-fc-bg: var(--gold); }
 
-  /* ---- drawn card: a real playing-card face ---- */
-  .playing-card{
+  /* ---- drawn card: a soft friendly result card ---- */
+  .result-card{
     position:relative;
-    width:236px;
-    max-width:100%;
-    aspect-ratio: 5 / 7;
+    max-width:320px;
     margin:0 auto;
-    background: var(--card-white);
-    border:2.5px solid var(--card-black);
-    border-radius:14px;
-    box-shadow: 0 18px 40px rgba(0,0,0,.55);
+    background: var(--card-bg);
+    border-radius:28px;
+    box-shadow: 0 20px 44px rgba(61,47,58,.18);
+    padding: 30px 26px;
+    text-align:center;
     opacity:0;
     transform: translateY(10px) scale(.97);
     animation: cardIn .32s ease forwards;
   }
   @keyframes cardIn{ to{ opacity:1; transform:none; } }
-  .playing-card::before{
-    content:"";
-    position:absolute; inset:9px;
-    border:1px solid rgba(28,26,23,.22);
-    border-radius:8px;
-    pointer-events:none;
+  .eyebrow{
+    display:inline-block;
+    font-family:"Fredoka", sans-serif;
+    font-weight:600;
+    font-size:12.5px;
+    color: var(--pink);
+    margin-bottom:10px;
   }
-  .pc-corner{
-    position:absolute;
-    display:flex; flex-direction:column; align-items:center;
-    gap:2px;
-    line-height:1;
-    font-family:"Cinzel", serif;
-  }
-  .pc-corner.pc-top{ top:14px; left:14px; }
-  .pc-corner.pc-bottom{ bottom:14px; right:14px; transform:rotate(180deg); }
-  .pc-rank{ font-size:19px; font-weight:700; }
-  .playing-card[data-suit="red"] .pc-corner,
-  .playing-card[data-suit="red"] .pc-watermark{ color: var(--card-red); }
-  .playing-card[data-suit="black"] .pc-corner,
-  .playing-card[data-suit="black"] .pc-watermark{ color: var(--card-black); }
-  .pc-center{
-    position:absolute; inset:0;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    text-align:center;
-    padding: 44px 20px;
-  }
-  .pc-watermark{
-    position:absolute; top:50%; left:50%;
-    transform:translate(-50%,-50%);
-    opacity:.08;
-    line-height:1;
-  }
-  .pc-name{
-    position:relative;
-    font-family:"Cinzel", serif;
-    font-weight:700;
-    font-size:18px;
-    color: var(--card-black);
-    margin:0 0 8px;
+  .result-name{
+    font-family:"Fredoka", sans-serif;
+    font-weight:600;
+    font-size:22px;
+    color: var(--ink);
+    margin:0 0 14px;
     line-height:1.25;
+    text-wrap:balance;
   }
-  .pc-type-label{
-    position:relative;
-    font-family:"Karla", sans-serif;
+  .result-pills{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+  .pill{
+    font-family:"Nunito", sans-serif;
     font-weight:700;
-    font-size:10px;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    color:#6b6558;
+    font-size:12px;
+    padding:6px 14px;
+    border-radius:999px;
   }
+  .pill-type.type-exist{ background: var(--exist-bg); color: var(--exist); }
+  .pill-type.type-idea{ background: var(--idea-bg); color: var(--idea); }
+  .pill-diff{ background:#fdf1d6; color:#b8863a; }
+  .pill-diff.diff-oson{ background:#e2f6f0; color:#2f8a6e; }
+  .pill-diff.diff-qiyin{ background:#fde3e3; color:#c14a4a; }
 
   /* ---- below-card: keys + draw again ---- */
   .below-card{ margin-top:20px; }
 
   .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
   .tag{
-    font-family:"Karla", sans-serif;
-    font-weight:600;
+    font-family:"Nunito", sans-serif;
+    font-weight:700;
     font-size:12px;
     color: var(--ink);
-    background: var(--card-bg);
-    border:1px solid rgba(244,236,216,.18);
-    padding:4px 10px;
-    border-radius:8px;
+    background: var(--paper-2);
+    padding:5px 12px;
+    border-radius:999px;
   }
 
   .keys{ display:flex; flex-direction:column; gap:8px; }
   .key-toggle{
     align-self:flex-start;
-    font-family:"Karla", sans-serif;
+    font-family:"Nunito", sans-serif;
     font-weight:700;
     font-size:12.5px;
-    color:#0d2a3d;
-    background: linear-gradient(160deg, #9ccdf2, var(--sapphire));
+    color:#fff;
+    background: var(--sapphire);
     border:none;
-    border-radius:9px;
-    padding:9px 15px;
+    border-radius:12px;
+    padding:9px 16px;
     cursor:pointer;
-    box-shadow: 0 6px 16px rgba(63,143,214,.3);
+    box-shadow: 0 6px 16px rgba(95,168,234,.35);
   }
-  .key-toggle.open{ background: linear-gradient(160deg, #cfe6fb, #7fb8e8); }
+  .key-toggle.open{ background:#4a95d9; }
   .key-content{ margin: 8px 0 4px; }
   .key-content[hidden]{ display:none; }
   .query-console{
     display:flex; gap:10px; align-items:flex-start;
     background: var(--query-bg);
-    border:1px solid rgba(111,176,242,.4);
-    border-radius:12px;
+    border-radius:16px;
     padding:12px;
   }
   .query-text{
     flex:1; margin:0;
-    font-family:"Karla", sans-serif;
+    font-family:"Nunito", sans-serif;
     font-weight:500;
     font-size:13.5px;
     line-height:1.55;
@@ -252,23 +214,23 @@
   }
   .copy-btn{
     flex:none;
-    font-family:"Karla", sans-serif;
+    font-family:"Nunito", sans-serif;
     font-weight:700;
     font-size:11px;
     letter-spacing:.02em;
     text-transform:uppercase;
-    color:#0d2a3d;
+    color:#fff;
     background: var(--sapphire);
     border:none;
-    border-radius:8px;
+    border-radius:10px;
     padding:8px 12px;
     cursor:pointer;
-    box-shadow: 0 4px 12px rgba(63,143,214,.35);
+    box-shadow: 0 4px 12px rgba(95,168,234,.35);
     transition: transform .08s ease, box-shadow .08s ease;
   }
-  .copy-btn:active{ transform: translateY(2px); box-shadow: 0 2px 6px rgba(63,143,214,.3); }
-  .copy-btn.copied{ background: var(--exist); color:#0a2a1c; }
-  .copy-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+  .copy-btn:active{ transform: translateY(2px); box-shadow: 0 2px 6px rgba(95,168,234,.3); }
+  .copy-btn.copied{ background: var(--exist); }
+  .copy-btn:focus-visible{ outline:2px solid var(--pink); outline-offset:2px; }
   @media (max-width:480px){
     .query-console{ flex-direction:column; }
     .copy-btn{ align-self:flex-end; }
@@ -276,25 +238,24 @@
 
   .again-btn{
     display:table;
-    margin:22px auto 0;
-    font-family:"Cinzel", serif;
-    font-weight:700;
-    font-size:14px;
-    letter-spacing:.04em;
-    color:#2a2007;
-    background: linear-gradient(160deg, var(--gold-1), var(--gold-2));
+    margin:24px auto 0;
+    font-family:"Fredoka", sans-serif;
+    font-weight:600;
+    font-size:15px;
+    color:#fff;
+    background: var(--pink);
     border:none;
     border-radius:999px;
     padding:14px 30px;
     cursor:pointer;
-    box-shadow: 0 10px 26px rgba(202,162,58,.4);
+    box-shadow: 0 12px 26px rgba(255,143,177,.45);
     transition: transform .08s ease, box-shadow .08s ease;
   }
-  .again-btn:active{ transform: translateY(2px); box-shadow: 0 5px 14px rgba(202,162,58,.35); }
+  .again-btn:active{ transform: translateY(2px); box-shadow: 0 6px 14px rgba(255,143,177,.4); }
   .again-btn:focus-visible{ outline:2px solid var(--sapphire); outline-offset:3px; }
 
   @media (prefers-reduced-motion: reduce){
-    .playing-card{ animation:none; opacity:1; transform:none; }
+    .result-card{ animation:none; opacity:1; transform:none; }
     .card-row{ animation:none; }
   }
 </style>
@@ -304,7 +265,7 @@
 <div class="box">
 
   <div class="box-header">
-    <h1 class="title">Loyiha Kolleksiyasi</h1>
+    <h1 class="title">Loyiha Kartalari</h1>
   </div>
 
   <p class="subtitle" id="topInfo"></p>
@@ -420,19 +381,9 @@ const PROJECTS = [
   {name:"Ijara shartnomalarini tekshiruvchi tizim", type:"idea", difficulty:"Qiyin", desc:"Ko'chmas mulk ijarasidan oldin mulk hujjatlari va egasining haqiqiyligini tekshirib, firibgarlik xavfini kamaytiruvchi xizmat.", tags:["PropTech","Verification"]},
 ];
 
-const RANK_FOR_DIFF = { "Oson": "7", "O'rta": "J", "Qiyin": "A" };
-const SUIT_PATH = {
-  diamond: "M12 2 L22 12 L12 22 L2 12 Z",
-  spade: "M12 3C8 8 3 12.2 3 16.2 3 19.4 5.6 22 8.8 22c1.6 0 3-.6 4-1.7-.4 2-1.7 3.6-3.6 4.7h5.6c-1.9-1.1-3.2-2.7-3.6-4.7 1 1.1 2.4 1.7 4 1.7 3.2 0 5.8-2.6 5.8-5.8 0-4-5-8.2-9-13.2Z",
-};
-const SUIT_FOR_TYPE = {
-  exist: { shape: "diamond", color: "red" },
-  idea: { shape: "spade", color: "black" },
-};
-function suitSvg(shape, size){
-  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="currentColor"><path d="${SUIT_PATH[shape]}"/></svg>`;
-}
-const CARD_BACK_EMBLEM = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="${SUIT_PATH.diamond}"/></svg>`;
+const DIFF_CLASS = { "Oson": "diff-oson", "O'rta": "diff-orta", "Qiyin": "diff-qiyin" };
+const SPARKLE_PATH = "M12 2c.6 3.2 1.2 5.2 2.4 6.4C15.6 9.6 17.6 10.2 20.8 10.8c-3.2.6-5.2 1.2-6.4 2.4-1.2 1.2-1.8 3.2-2.4 6.4-.6-3.2-1.2-5.2-2.4-6.4C8.4 12 6.4 11.4 3.2 10.8c3.2-.6 5.2-1.2 6.4-2.4C10.8 7.2 11.4 5.2 12 2Z";
+const CARD_BACK_EMBLEM = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="${SPARKLE_PATH}"/></svg>`;
 
 const stage = document.getElementById("stage");
 const topInfoEl = document.getElementById("topInfo");
@@ -508,28 +459,20 @@ function pickFromField(pick, clickedEl){
 function renderPicked(pick){
   const isExist = pick.type === "exist";
   const typeVar = isExist ? "exist" : "idea";
-  const bigLabel = isExist ? "MAVJUD LOYIHA" : "YANGI G'OYA";
-  const rank = RANK_FOR_DIFF[pick.difficulty] || "7";
-  const suit = SUIT_FOR_TYPE[pick.type] || SUIT_FOR_TYPE.exist;
+  const bigLabel = isExist ? "Mavjud loyiha" : "Yangi g'oya";
+  const diffClass = DIFF_CLASS[pick.difficulty] || "diff-orta";
 
   topInfoEl.innerHTML =
     `<span class="picked-banner" style="color:var(--${typeVar})">${bigLabel} · Qiyinlik: ${pick.difficulty}</span>` +
     `<span class="picked-desc">${pick.desc}</span>`;
 
   stage.innerHTML = `
-    <div class="playing-card" data-suit="${suit.color}">
-      <div class="pc-corner pc-top">
-        <span class="pc-rank">${rank}</span>
-        ${suitSvg(suit.shape, 15)}
-      </div>
-      <div class="pc-center">
-        <span class="pc-watermark">${suitSvg(suit.shape, 108)}</span>
-        <h2 class="pc-name">${pick.name}</h2>
-        <span class="pc-type-label">${bigLabel}</span>
-      </div>
-      <div class="pc-corner pc-bottom">
-        <span class="pc-rank">${rank}</span>
-        ${suitSvg(suit.shape, 15)}
+    <div class="result-card">
+      <span class="eyebrow">✦ Sizning kartangiz</span>
+      <h2 class="result-name">${pick.name}</h2>
+      <div class="result-pills">
+        <span class="pill pill-type type-${typeVar}">${bigLabel}</span>
+        <span class="pill pill-diff ${diffClass}">${pick.difficulty}</span>
       </div>
     </div>
   `;
