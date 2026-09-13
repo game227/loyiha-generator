@@ -232,6 +232,15 @@
   .again-btn:active{ transform: translateY(2px); }
   .again-btn:focus-visible{ outline:2px solid var(--query); outline-offset:3px; }
 
+  .cooldown-line{
+    display:table;
+    margin:24px auto 0;
+    font-family:"JetBrains Mono", monospace;
+    font-size:12.5px;
+    font-style:italic;
+    color: var(--ink-soft);
+  }
+
   @media (prefers-reduced-motion: reduce){
     .term-card{ animation:none; opacity:1; transform:none; }
     .card-row{ animation:none; }
@@ -313,12 +322,76 @@ const PROJECTS = [
   {name:"Mahalliy transport uchun real vaqtdagi bandlik ko'rsatkichi", difficulty:"Qiyin", desc:"Avtobus ichidagi bandlik darajasini sensorlar orqali aniqlab, navbatdagi bekatlarga oldindan xabar beruvchi tizim.", tags:["IoT","Public Transport","Realtime"]},
 ];
 
+const COOLDOWN_HOURS = { "Oson": 1.5, "O'rta": 2, "Qiyin": 3 };
+const LOCK_KEY = "loyiha-generator:lock";
+let countdownTimer = null;
+
 const stage = document.getElementById("stage");
 const topInfoEl = document.getElementById("topInfo");
 const belowCardEl = document.getElementById("belowCard");
 const globalField = document.getElementById("globalField");
 const DEFAULT_TOPINFO = "// Sahifada aylanib yurgan kartalardan birini bosing";
 topInfoEl.textContent = DEFAULT_TOPINFO;
+
+function loadLockRaw(){
+  try{
+    const raw = localStorage.getItem(LOCK_KEY);
+    if(!raw) return null;
+    const data = JSON.parse(raw);
+    if(!data || typeof data.unlockAt !== "number" || !data.pick) return null;
+    if(data.unlockAt <= Date.now()){
+      localStorage.removeItem(LOCK_KEY);
+      return null;
+    }
+    return data;
+  }catch(e){
+    return null;
+  }
+}
+
+function saveLockRaw(pick, unlockAt){
+  try{
+    localStorage.setItem(LOCK_KEY, JSON.stringify({ pick, unlockAt }));
+  }catch(e){
+    /* storage unavailable — break time just won't survive a reload */
+  }
+}
+
+function clearLockRaw(){
+  try{ localStorage.removeItem(LOCK_KEY); }catch(e){}
+}
+
+function formatCountdown(ms){
+  const totalSec = Math.max(0, Math.ceil(ms / 1000));
+  const h = Math.floor(totalSec / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
+  const pad = n => String(n).padStart(2, "0");
+  return pad(h) + ":" + pad(m) + ":" + pad(s);
+}
+
+function showCooldown(unlockAt){
+  const area = document.getElementById("againArea");
+  if(!area) return;
+  area.innerHTML = `<div class="cooldown-line" id="cooldownLine">// keyingi karta: 00:00:00</div>`;
+  if(countdownTimer) clearInterval(countdownTimer);
+  const tick = () => {
+    const remaining = unlockAt - Date.now();
+    if(remaining <= 0){
+      clearInterval(countdownTimer);
+      countdownTimer = null;
+      clearLockRaw();
+      topInfoEl.textContent = DEFAULT_TOPINFO;
+      belowCardEl.innerHTML = "";
+      renderIdleField();
+      return;
+    }
+    const el = document.getElementById("cooldownLine");
+    if(el) el.textContent = "// keyingi karta: " + formatCountdown(remaining);
+  };
+  tick();
+  countdownTimer = setInterval(tick, 1000);
+}
 
 function aiQueryFor(p){
   return `Men "${p.name}" nomli loyiha g'oyasini amalga oshirmoqchiman: ${p.desc} Buning uchun MVP qanday funksiyalardan iborat bo'lishi kerak, qaysi texnologik stekni tanlash maqsadga muvofiq va bosqichma-bosqich boshlash rejasini tuzib ber.`;
@@ -415,17 +488,16 @@ function renderPicked(pick){
         </div>
       </div>
     </div>
-    <button class="again-btn" type="button" id="againBtn">yana_tort()</button>
+    <div id="againArea"></div>
   `;
-  document.getElementById("againBtn").addEventListener("click", () => {
-    topInfoEl.textContent = DEFAULT_TOPINFO;
-    belowCardEl.innerHTML = "";
-    renderIdleField();
-  });
 }
 
 function landOnCard(pick){
   renderPicked(pick);
+  const hours = COOLDOWN_HOURS[pick.difficulty] || 1.5;
+  const unlockAt = Date.now() + hours * 60 * 60 * 1000;
+  saveLockRaw(pick, unlockAt);
+  showCooldown(unlockAt);
 }
 
 function copyText(text, btn){
@@ -481,7 +553,13 @@ document.addEventListener("click", (e) => {
   }
 });
 
-renderIdleField();
+const existingLock = loadLockRaw();
+if(existingLock){
+  renderPicked(existingLock.pick);
+  showCooldown(existingLock.unlockAt);
+} else {
+  renderIdleField();
+}
 </script>
 </body>
 </html>
