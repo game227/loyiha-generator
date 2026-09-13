@@ -676,25 +676,13 @@ function pickFromField(pick, clickedEl){
   });
   clickedEl.style.pointerEvents = "none";
   clickedEl.style.animation = "none";
-
-  const flickerNames = Array.from({ length: 4 }, () =>
-    PROJECTS[Math.floor(Math.random() * PROJECTS.length)].name.slice(0, 9)
-  );
-  let flickers = 0;
-  const flickerInterval = setInterval(() => {
-    clickedEl.textContent = flickerNames[flickers % flickerNames.length];
-    flickers++;
-    if(flickers >= 4){
-      clearInterval(flickerInterval);
-      clickedEl.style.transition = "opacity .25s ease, transform .25s ease";
-      clickedEl.style.opacity = "0";
-      clickedEl.style.transform = "scale(.7)";
-      setTimeout(() => {
-        globalField.innerHTML = "";
-        landOnCard(pick);
-      }, 220);
-    }
-  }, 90);
+  clickedEl.style.transition = "opacity .25s ease, transform .25s ease";
+  clickedEl.style.opacity = "0";
+  clickedEl.style.transform = "scale(.7)";
+  setTimeout(() => {
+    globalField.innerHTML = "";
+    landOnCard(pick);
+  }, 220);
 }
 
 /* ---- picked state: minimal foil card + info split above/below it ---- */
