@@ -22,6 +22,8 @@
     --exist-bg:rgba(31,122,92,.10);
     --idea:#b8460e;
     --idea-bg:rgba(184,70,14,.10);
+    --query:#a3195b;
+    --query-bg:rgba(163,25,91,.08);
     --stamp-shadow: 4px 4px 0 rgba(23,51,90,.10);
   }
   @media (prefers-color-scheme: dark){
@@ -39,6 +41,8 @@
       --exist-bg:rgba(95,214,172,.14);
       --idea:#ff9a5c;
       --idea-bg:rgba(255,154,92,.14);
+      --query:#ff6fa5;
+      --query-bg:rgba(255,111,165,.14);
       --stamp-shadow: 4px 4px 0 rgba(0,0,0,.35);
     }
   }
@@ -55,6 +59,8 @@
     --exist-bg:rgba(95,214,172,.14);
     --idea:#ff9a5c;
     --idea-bg:rgba(255,154,92,.14);
+    --query:#ff6fa5;
+    --query-bg:rgba(255,111,165,.14);
     --stamp-shadow: 4px 4px 0 rgba(0,0,0,.35);
   }
 
@@ -121,50 +127,41 @@
     margin: 0 0 28px;
   }
 
-  .layers{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-bottom: 22px;
+  .stage{ min-height: 320px; }
+
+  /* ---- spinning reel ---- */
+  .reel{
+    position: relative;
+    height: 130px;
+    overflow: hidden;
+    background: var(--sheet);
+    border: 1.5px dashed var(--sheet-border);
+    border-radius: 4px;
+    box-shadow: var(--stamp-shadow);
   }
-  .layer-toggle{
+  .reel-strip{ position:relative; }
+  .reel-item{
     display:flex;
     align-items:center;
-    gap:7px;
+    justify-content:center;
+    text-align:center;
+    padding: 0 22px;
     font-family:"IBM Plex Mono", monospace;
-    font-size: 12px;
-    letter-spacing: .04em;
-    text-transform: uppercase;
+    font-weight:600;
+    font-size:15px;
+    line-height:1.35;
     color: var(--ink-soft);
-    background: transparent;
-    border: 1.5px solid var(--line-strong);
-    padding: 7px 12px;
-    border-radius: 3px;
-    cursor:pointer;
   }
-  .layer-toggle .box{
-    width:11px; height:11px;
-    border: 1.5px solid var(--ink-soft);
-    border-radius: 2px;
-    flex: none;
-    position:relative;
-  }
-  .layer-toggle.active{
-    color: var(--ink);
-    border-color: var(--ink);
-  }
-  .layer-toggle.active .box{
-    border-color: var(--ink);
-    background: var(--ink);
-  }
-  .layer-toggle.active .box::after{
+  .reel::after{
     content:"";
-    position:absolute; inset: -1.5px;
-    border-radius: 2px;
+    position:absolute; inset:0;
+    pointer-events:none;
+    background:
+      linear-gradient(to bottom, var(--sheet), transparent 28%, transparent 72%, var(--sheet)),
+      linear-gradient(to right, var(--sheet), transparent 22%, transparent 78%, var(--sheet));
   }
 
-  .stage{ min-height: 380px; }
-
+  /* ---- result card ---- */
   .card{
     position: relative;
     background: var(--sheet);
@@ -177,14 +174,8 @@
     animation: settle .32s ease forwards;
   }
   @keyframes settle{ to{ opacity:1; transform:none; } }
-  .card.spinning{ animation: jiggle .22s ease-in-out infinite; }
-  @keyframes jiggle{
-    0%,100%{ transform: translateY(0) rotate(0); }
-    50%{ transform: translateY(-2px) rotate(-.3deg); }
-  }
   @media (prefers-reduced-motion: reduce){
     .card{ animation: none; opacity:1; transform:none; }
-    .card.spinning{ animation: none; }
   }
 
   .crop{ position:absolute; width:14px; height:14px; }
@@ -223,17 +214,16 @@
   }
   .tb-cell:last-child{ border-right:none; }
   .tb-cell.full{ grid-column: 1 / -1; border-right:none; border-top: 1.5px solid var(--line-strong); }
+  .tb-cell.full:first-child{ border-top:none; }
   .tb-label{
     font-family:"IBM Plex Mono", monospace;
     font-size: 10px;
     letter-spacing: .12em;
     text-transform: uppercase;
     color: var(--ink-soft);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
   .tb-value{ font-size: 14px; font-weight: 600; }
-  .tb-value.exist{ color: var(--exist); }
-  .tb-value.idea{ color: var(--idea); }
   .stamp{
     display:inline-block;
     font-family:"IBM Plex Mono", monospace;
@@ -257,6 +247,45 @@
     border: 1px solid var(--line-strong);
     padding: 3px 8px;
     border-radius: 3px;
+  }
+
+  .query-row{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    background: var(--query-bg);
+    border: 1px dashed var(--query);
+    border-radius: 4px;
+    padding: 10px 12px;
+  }
+  .query-text{
+    flex:1;
+    margin:0;
+    font-family:"IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .copy-btn{
+    flex:none;
+    font-family:"IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    color: var(--query);
+    background: transparent;
+    border: 1px solid var(--query);
+    padding: 6px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .copy-btn:hover{ background: var(--query-bg); }
+  .copy-btn.copied{ color: var(--exist); border-color: var(--exist); }
+  .copy-btn:focus-visible{ outline: 2px solid var(--idea); outline-offset: 2px; }
+  @media (max-width: 480px){
+    .query-row{ flex-direction:column; align-items:stretch; }
+    .copy-btn{ align-self:flex-end; }
   }
 
   .empty{
@@ -286,8 +315,8 @@
     transition: transform .1s ease;
   }
   .roll-btn:active{ transform: translate(2px, 2px); box-shadow: 2px 2px 0 rgba(0,0,0,.2); }
-  .roll-btn:focus-visible{ outline: 2px solid var(--idea); outline-offset: 3px; }
-  .layer-toggle:focus-visible{ outline: 2px solid var(--idea); outline-offset: 2px; }
+  .roll-btn:focus-visible{ outline: 2px solid var(--query); outline-offset: 3px; }
+  .roll-btn:disabled{ opacity:.6; cursor:default; }
 
   .counter{
     text-align:center;
@@ -313,29 +342,23 @@
 <div class="wrap">
 
   <div class="sheet-header">
-    <span class="sheet-id mono">LOYIHA-GEN &nbsp;/&nbsp; VARAQ 01</span>
+    <span class="sheet-id mono">LOYIHA-GEN &nbsp;/&nbsp; VARAQ 02</span>
     <span class="sheet-scale mono">MASSHTAB: 1:1</span>
   </div>
 
-  <h1>Loyiha Generatori <span class="lot">v1</span></h1>
-  <p class="subtitle">Dunyoda mavjud bo'lgan mashhur IT loyihalar va hali hech kim qilmagan yangi g'oyalar orasidan tasodifiy birini chizib beradi.</p>
-
-  <div class="layers">
-    <button class="layer-toggle active" data-filter="all"><span class="box"></span>Barchasi</button>
-    <button class="layer-toggle" data-filter="exist"><span class="box"></span>Mavjud loyihalar</button>
-    <button class="layer-toggle" data-filter="idea"><span class="box"></span>Yangi g'oyalar</button>
-  </div>
+  <h1>Loyiha Generatori <span class="lot">v2</span></h1>
+  <p class="subtitle">Dunyoda mavjud bo'lgan mashhur IT loyihalar va hali hech kim qilmagan yangi g'oyalar orasidan baraban aylanib tasodifiy birini tanlaydi — har biriga AI'dan va Google'dan to'liq ma'lumot so'rash uchun tayyor so'rov bilan.</p>
 
   <div class="stage" id="stage">
-    <div class="empty">Pastdagi tugmani bosing — birinchi loyiha shu yerda chiziladi ↓</div>
+    <div class="empty">Pastdagi tugmani bosing — baraban aylanadi va birinchi loyiha chiqadi ↓</div>
   </div>
 
   <div class="actions">
-    <button class="roll-btn" id="rollBtn">Tasodifiy chizish</button>
+    <button class="roll-btn" id="rollBtn">Barabanni aylantir</button>
   </div>
   <div class="counter" id="counter">REV. 000</div>
 
-  <footer class="mono">Har bosishda arxivdan tasodifiy bitta loyiha tanlanadi.</footer>
+  <footer class="mono">Har bosishda baraban boshqa tomonga aylanadi va arxivdan tasodifiy bitta loyiha tanlanadi.</footer>
 </div>
 
 <script>
@@ -366,6 +389,31 @@ const PROJECTS = [
   {name:"YouTube", type:"exist", difficulty:"Qiyin", desc:"Video yuklash, tomosha qilish va monetizatsiya qilish platformasi.", tags:["Video","CDN","Ads"]},
   {name:"PayPal", type:"exist", difficulty:"Qiyin", desc:"Onlayn to'lov va pul o'tkazish tizimi.", tags:["Fintech","Payments"]},
   {name:"Todoist", type:"exist", difficulty:"Oson", desc:"Shaxsiy va jamoaviy vazifalarni boshqarish ilovasi.", tags:["Productivity","Tasks"]},
+  {name:"Shopify", type:"exist", difficulty:"Qiyin", desc:"Savdogarlarga onlayn do'kon ochish va boshqarish imkonini beruvchi e-commerce platformasi.", tags:["E-commerce","SaaS","Payments"]},
+  {name:"Stripe", type:"exist", difficulty:"Qiyin", desc:"Internet-bizneslar uchun to'lovlarni qabul qilish infratuzilmasini API orqali taqdim etuvchi xizmat.", tags:["Fintech","API","Payments"]},
+  {name:"Canva", type:"exist", difficulty:"O'rta", desc:"Professional dizayn ko'nikmasi talab qilmaydigan, tayyor shablonlarga asoslangan onlayn grafik dizayn vositasi.", tags:["Design","Templates","SaaS"]},
+  {name:"Dropbox", type:"exist", difficulty:"Qiyin", desc:"Fayllarni bulutda saqlash va turli qurilmalar orasida avtomatik sinxronlash xizmati.", tags:["Cloud Storage","Sync"]},
+  {name:"Evernote", type:"exist", difficulty:"O'rta", desc:"Eslatmalar, hujjatlar va veb-sahifalarni bitta joyda saqlaydigan shaxsiy arxiv ilovasi.", tags:["Productivity","Notes"]},
+  {name:"Asana", type:"exist", difficulty:"O'rta", desc:"Jamoalar uchun vazifa va loyihalarni rejalashtirish hamda kuzatib borish platformasi.", tags:["Project Management","Teams"]},
+  {name:"Airtable", type:"exist", difficulty:"O'rta", desc:"Jadval va bazani birlashtirgan, kod yozmasdan moslashtirish mumkin bo'lgan ma'lumot boshqaruv vositasi.", tags:["Database","No-code","Spreadsheet"]},
+  {name:"Coursera", type:"exist", difficulty:"Qiyin", desc:"Dunyo universitetlaridan onlayn kurslar va sertifikatlar taqdim etuvchi ta'lim platformasi.", tags:["EdTech","Video","Certificates"]},
+  {name:"Khan Academy", type:"exist", difficulty:"O'rta", desc:"Bepul video darslar va mashqlar orqali turli fanlarni o'rgatuvchi notijorat ta'lim platformasi.", tags:["EdTech","Nonprofit","Video"]},
+  {name:"Booking.com", type:"exist", difficulty:"Qiyin", desc:"Mehmonxona va turar joylarni qidirish hamda onlayn bron qilish platformasi.", tags:["Travel","Booking"]},
+  {name:"Skyscanner", type:"exist", difficulty:"Qiyin", desc:"Aviachiptalar narxini turli aviakompaniyalar bo'yicha solishtiruvchi qidiruv tizimi.", tags:["Travel","Aggregator"]},
+  {name:"Waze", type:"exist", difficulty:"Qiyin", desc:"Haydovchilarning real vaqtdagi hisobotlari asosida ishlaydigan jamoaviy navigatsiya ilovasi.", tags:["Maps","Community","Realtime"]},
+  {name:"Snapchat", type:"exist", difficulty:"Qiyin", desc:"Vaqtinchalik, o'zi yo'qoluvchi foto va video xabarlar almashish ilovasi.", tags:["Social","AR","Messaging"]},
+  {name:"Tinder", type:"exist", difficulty:"O'rta", desc:"Joylashuv va qiziqishlar asosida ishlaydigan tanishuv ilovasi.", tags:["Dating","Geolocation"]},
+  {name:"Strava", type:"exist", difficulty:"O'rta", desc:"Sportchilar uchun mashg'ulotlarni kuzatib boruvchi va ijtimoiy tarmoq bilan bog'lovchi ilova.", tags:["Fitness","Social","GPS"]},
+  {name:"Headspace", type:"exist", difficulty:"Oson", desc:"Meditatsiya va ongli fikrlash amaliyotlarini o'rgatuvchi audio-ilova.", tags:["Wellness","Audio"]},
+  {name:"Robinhood", type:"exist", difficulty:"Qiyin", desc:"Vositachisiz va komissiyasiz aksiya hamda kriptovalyuta sotib olish ilovasi.", tags:["Fintech","Trading"]},
+  {name:"Venmo", type:"exist", difficulty:"O'rta", desc:"Do'stlar orasida pul o'tkazish va uni ijtimoiy oqimda ko'rsatuvchi to'lov ilovasi.", tags:["Fintech","Social Payments"]},
+  {name:"Zillow", type:"exist", difficulty:"Qiyin", desc:"Ko'chmas mulk narxlarini avtomatik baholovchi va e'lonlarni ko'rsatuvchi platforma.", tags:["PropTech","Listings"]},
+  {name:"DoorDash", type:"exist", difficulty:"Qiyin", desc:"Restoranlardan uyga ovqat yetkazib berishni tashkil qiluvchi logistika platformasi.", tags:["Delivery","Marketplace","Logistics"]},
+  {name:"Coinbase", type:"exist", difficulty:"Qiyin", desc:"Kriptovalyuta sotib olish, sotish va saqlash uchun onlayn birja.", tags:["Crypto","Fintech"]},
+  {name:"Medium", type:"exist", difficulty:"O'rta", desc:"Mualliflar maqola yozib, kitobxonlar bilan bevosita ulashadigan nashr platformasi.", tags:["Publishing","CMS"]},
+  {name:"WordPress", type:"exist", difficulty:"O'rta", desc:"Veb-sayt va blog yaratish uchun dunyoda eng ommabop kontent boshqaruv tizimi.", tags:["CMS","Open Source"]},
+  {name:"Shazam", type:"exist", difficulty:"Qiyin", desc:"Atrofda yangragan qo'shiqni bir necha soniyada ovozidan tanib oluvchi ilova.", tags:["Audio Recognition","Mobile"]},
+  {name:"Grammarly", type:"exist", difficulty:"Qiyin", desc:"Matndagi grammatik xato va uslub muammolarini AI yordamida real vaqtda tekshiruvchi yozuv yordamchisi.", tags:["AI","Writing","NLP"]},
 
   // ---- HALI MAVJUD BO'LMAGAN G'OYALAR ----
   {name:"Mahalliy dialektlarni tushunadigan ovozli yordamchi", type:"idea", difficulty:"Qiyin", desc:"O'zbek tilining turli mintaqaviy shevalarini tushunadigan va javob beradigan AI ovozli assistent.", tags:["AI","Speech Recognition","NLP"]},
@@ -393,18 +441,57 @@ const PROJECTS = [
   {name:"Tuman kesimida ko'chmas mulk tahlilchisi", type:"idea", difficulty:"O'rta", desc:"Ko'chmas mulk narxlari dinamikasini tuman/mahalla darajasida vizualizatsiya qiluvchi platforma.", tags:["PropTech","Data Viz"]},
   {name:"Dori qabul qilish va o'zaro ta'sir eslatuvchisi", type:"idea", difficulty:"Oson", desc:"Dori qabul qilish jadvalini eslatib, dorilar orasidagi xavfli o'zaro ta'sirlarni ogohlantiruvchi ilova.", tags:["HealthTech","Reminders"]},
   {name:"Jamoat transporti chiptalari agregatori", type:"idea", difficulty:"O'rta", desc:"Avtobus, poyezd va metro chiptalarini bitta ilovada qidirish va sotib olish imkonini beruvchi agregator.", tags:["Travel","Aggregator","Payments"]},
+  {name:"Soxta yangiliklarni aniqlovchi AI brauzer plagini", type:"idea", difficulty:"O'rta", desc:"Yangilik matnini tahlil qilib, uning ishonchlilik darajasini va manba tarixini ko'rsatuvchi brauzer kengaytmasi.", tags:["AI","NLP","Browser Extension"]},
+  {name:"Go'zallik salonlari uchun navbat va bron tizimi", type:"idea", difficulty:"Oson", desc:"Sartaroshxona va go'zallik salonlariga onlayn navbat olish hamda ustalar jadvalini boshqarish imkonini beruvchi platforma.", tags:["Booking","SaaS","Local Business"]},
+  {name:"Bepul narsalar almashish platformasi", type:"idea", difficulty:"Oson", desc:"Kerak bo'lmay qolgan buyumlarni sotish o'rniga mahalla ichida bepul berish va olish uchun mo'ljallangan platforma.", tags:["Community","Marketplace","Sustainability"]},
+  {name:"Stipendiya va grantlar agregatori", type:"idea", difficulty:"O'rta", desc:"Talabalar uchun mavjud barcha stipendiya, grant va almashinuv dasturlarini bitta joyda to'plab, muddatlarini eslatib turuvchi xizmat.", tags:["EdTech","Aggregator"]},
+  {name:"Mahalla ko'ngillilar tarmog'i", type:"idea", difficulty:"O'rta", desc:"Tabiiy ofat yoki favqulodda vaziyatlarda yordam so'ragan va yordam bera oladigan odamlarni tezda bog'laydigan mahalliy platforma.", tags:["Community","Emergency","Geolocation"]},
+  {name:"Kichik ustalarni chaqirish platformasi", type:"idea", difficulty:"O'rta", desc:"Santexnik, elektrik va boshqa maishiy ustalarni reyting va narx bo'yicha solishtirib, bir necha bosishda chaqirish mumkin bo'lgan xizmat.", tags:["Marketplace","Local Services"]},
+  {name:"Universitet ichidagi startap bozori", type:"idea", difficulty:"O'rta", desc:"Talabalar loyihalarini kurs ishi sifatida qolib ketmasligi uchun ularni bitiruvchilar va mahalliy investorlar bilan bog'lovchi platforma.", tags:["Startup","Networking"]},
+  {name:"Dasturlashni o'zbek tilida o'rgatuvchi AI repetitor", type:"idea", difficulty:"Qiyin", desc:"Kod yozishni endi boshlaganlar uchun tushuntirishlarni to'liq o'zbek tilida, misollar bilan beradigan suhbat asosidagi AI repetitor.", tags:["EdTech","AI","NLP"]},
+  {name:"Uy uchun elektr tejash monitoringi", type:"idea", difficulty:"Qiyin", desc:"Har bir maishiy asbobning elektr sarfini kuzatib, qaysi qurilma ko'p energiya yeyotganini va qanday tejash mumkinligini ko'rsatuvchi aqlli tizim.", tags:["IoT","Sustainability","Analytics"]},
+  {name:"Jamoat transporti uchun QR to'lov tizimi", type:"idea", difficulty:"O'rta", desc:"Avtobus va marshrutkalarda naqd pulsiz, faqat telefon kamerasi bilan QR kod orqali yo'l haqini to'lash tizimi.", tags:["Fintech","QR","Public Transport"]},
+  {name:"Ko'zi ojizlar uchun shahar ovozli yo'lboshchisi", type:"idea", difficulty:"Qiyin", desc:"Atrofdagi ko'cha, do'kon va to'siqlarni kamera orqali aniqlab, ovozli tarzda tasvirlab beruvchi mobil yordamchi.", tags:["AI","Accessibility","Computer Vision"]},
+  {name:"Talaba-amaliyot platformasi", type:"idea", difficulty:"O'rta", desc:"Talabalarni kompaniyalardagi amaliyot (stajirovka) o'rinlari bilan to'g'ridan-to'g'ri bog'lovchi, murakkab CV talab qilmaydigan sodda platforma.", tags:["HRTech","EdTech"]},
+  {name:"Fermer bozorlari xaritasi", type:"idea", difficulty:"Oson", desc:"Yaqin atrofdagi dehqon bozorlarini, ularda mavjud mahsulot va narxlarni xaritada ko'rsatuvchi ilova.", tags:["AgriTech","Maps"]},
+  {name:"Maktab-ota-ona aloqa platformasi", type:"idea", difficulty:"O'rta", desc:"Ota-onalar farzandining uy vazifalari, davomati va baholarini real vaqtda kuzatib borishi mumkin bo'lgan maktab platformasi.", tags:["EdTech","Communication"]},
+  {name:"Mahalliy tilda audiokitob yaratish platformasi", type:"idea", difficulty:"Qiyin", desc:"Matnni tabiiy ovozli sun'iy intellekt yordamida o'zbek tilida audiokitobga aylantiruvchi xizmat.", tags:["AI","Text-to-Speech","Media"]},
+  {name:"Til almashish uchun tandem ilovasi", type:"idea", difficulty:"O'rta", desc:"Sayohatchi va mahalliy aholini bir-biriga til o'rgatish maqsadida juftlashtiruvchi ilova.", tags:["EdTech","Social","Travel"]},
+  {name:"Qishloqlar uchun telemeditsina platformasi", type:"idea", difficulty:"Qiyin", desc:"Shifokorga borish qiyin bo'lgan chekka hududlardagi bemorlarni video orqali shahar shifokorlari bilan bog'lovchi xizmat.", tags:["HealthTech","Video Call"]},
+  {name:"AI yordamida CV va portfolio generatori", type:"idea", difficulty:"O'rta", desc:"Foydalanuvchi tajribasini savol-javob orqali yig'ib, undan avtomatik chiroyli CV va portfolio sayt yasab beruvchi vosita.", tags:["AI","Career","Generator"]},
+  {name:"Kichik ishlab chiqaruvchilar uchun eksport hujjat generatori", type:"idea", difficulty:"Qiyin", desc:"Mahsulotni chet elga sotish uchun kerakli sertifikat va hujjatlar ro'yxatini avtomatik tuzib beruvchi xizmat.", tags:["Trade","Automation","SME"]},
+  {name:"Uy hayvonlarini vaqtincha boqish platformasi", type:"idea", difficulty:"Oson", desc:"Sayohatga ketayotganlar uchun uy hayvonini vaqtincha boquvchi ishonchli odamlarni topib beruvchi platforma.", tags:["Marketplace","Pets"]},
+  {name:"Velosipedchilar uchun xavfsiz yo'l xaritasi", type:"idea", difficulty:"O'rta", desc:"Foydalanuvchilar hisobotlari asosida shahardagi eng xavfsiz va qulay velosiped yo'llarini ko'rsatuvchi xarita ilovasi.", tags:["Maps","Community","Cycling"]},
+  {name:"Isrofgarchilikka qarshi oshxona ilovasi", type:"idea", difficulty:"O'rta", desc:"Kun oxirida sotilmay qolgan taomlarni restoranlardan katta chegirma bilan sotib olish imkonini beruvchi ilova.", tags:["Sustainability","Marketplace","Food"]},
+  {name:"Talabalar uchun stress va imtihon monitoringi", type:"idea", difficulty:"Oson", desc:"Imtihon jadvalini kuzatib, talabaning stress darajasini so'rovnomalar orqali baholab, dam olish tavsiyalarini beruvchi ilova.", tags:["EdTech","Wellness"]},
+  {name:"Hunarmandlar uchun onlayn sertifikatlash", type:"idea", difficulty:"O'rta", desc:"An'anaviy hunar ustalarining mahoratini video-imtihon orqali baholab, raqamli sertifikat beruvchi platforma.", tags:["EdTech","Certification"]},
+  {name:"Ijara shartnomalarini tekshiruvchi tizim", type:"idea", difficulty:"Qiyin", desc:"Ko'chmas mulk ijarasidan oldin mulk hujjatlari va egasining haqiqiyligini tekshirib, firibgarlik xavfini kamaytiruvchi xizmat.", tags:["PropTech","Verification"]},
 ];
 
-let currentFilter = "all";
+const DIRS = {
+  down:  { axis: "y", sign: "pos" },   // tepadan pastga
+  up:    { axis: "y", sign: "neg" },   // pastdan tepaga
+  left:  { axis: "x", sign: "neg" },   // o'ngdan chapga
+  right: { axis: "x", sign: "pos" },   // chapdan o'ngga
+};
+
 let count = 0;
 const stage = document.getElementById("stage");
 const rollBtn = document.getElementById("rollBtn");
 const counterEl = document.getElementById("counter");
-const layerBtns = document.querySelectorAll(".layer-toggle");
 
-function filteredPool(){
-  if(currentFilter === "all") return PROJECTS;
-  return PROJECTS.filter(p => p.type === currentFilter);
+function aiQueryFor(p){
+  if(p.type === "exist"){
+    return `"${p.name}" xizmati qanday ishlaydi? Uning texnik arxitekturasini, ma'lumotlar bazasi tuzilishini, asosiy algoritmlarini va monetizatsiya modelini batafsil, misollar bilan tushuntirib ber.`;
+  }
+  return `Men "${p.name}" nomli loyiha g'oyasini amalga oshirmoqchiman: ${p.desc} Buning uchun MVP qanday funksiyalardan iborat bo'lishi kerak, qaysi texnologik stekni tanlash maqsadga muvofiq va bosqichma-bosqich boshlash rejasini tuzib ber.`;
+}
+
+function googleQueryFor(p){
+  if(p.type === "exist"){
+    return `${p.name} how it works technical architecture tech stack`;
+  }
+  return `${p.name} - mavjud yechimlar va raqobatchilar tahlili`;
 }
 
 function cropMarks(){
@@ -415,6 +502,8 @@ function renderCard(p){
   const isExist = p.type === "exist";
   const stampClass = isExist ? "exist" : "idea";
   const stampLabel = isExist ? "MAVJUD" : "YANGI G'OYA";
+  const aiQuery = aiQueryFor(p);
+  const googleQuery = googleQueryFor(p);
   stage.innerHTML = `
     <div class="card" id="cardEl">
       ${cropMarks()}
@@ -433,39 +522,130 @@ function renderCard(p){
           <div class="tb-label">Texnologik stek</div>
           <div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
         </div>
+        <div class="tb-cell full">
+          <div class="tb-label">AI'dan so'rash uchun so'rov</div>
+          <div class="query-row">
+            <p class="query-text">${aiQuery}</p>
+            <button class="copy-btn" type="button">Nusxalash</button>
+          </div>
+        </div>
+        <div class="tb-cell full">
+          <div class="tb-label">Google qidiruvi</div>
+          <div class="query-row">
+            <p class="query-text">${googleQuery}</p>
+            <button class="copy-btn" type="button">Nusxalash</button>
+          </div>
+        </div>
       </div>
     </div>
   `;
 }
 
-function roll(){
-  const pool = filteredPool();
-  if(pool.length === 0){
-    stage.innerHTML = `<div class="empty">Bu toifada loyiha topilmadi.</div>`;
+function landOnCard(pick){
+  count++;
+  counterEl.textContent = "REV. " + String(count).padStart(3, "0");
+  renderCard(pick);
+  rollBtn.disabled = false;
+}
+
+function spin(dirKey, finalProject){
+  rollBtn.disabled = true;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduceMotion){
+    landOnCard(finalProject);
     return;
   }
-  const card = document.getElementById("cardEl");
-  if(card) card.classList.add("spinning");
 
-  rollBtn.disabled = true;
-  setTimeout(() => {
-    const pick = pool[Math.floor(Math.random() * pool.length)];
-    renderCard(pick);
-    count++;
-    counterEl.textContent = "REV. " + String(count).padStart(3, "0");
-    rollBtn.disabled = false;
-  }, 240);
+  const { axis, sign } = DIRS[dirKey];
+  const isX = axis === "x";
+  const N = 16;
+  const randoms = Array.from({ length: N - 1 }, () => PROJECTS[Math.floor(Math.random() * PROJECTS.length)]);
+  const items = sign === "neg" ? [...randoms, finalProject] : [finalProject, ...randoms];
+
+  stage.innerHTML = `<div class="reel" id="reelBox">${cropMarks()}<div class="reel-strip" id="reelStrip"></div></div>`;
+  const reelBox = document.getElementById("reelBox");
+  const reelStrip = document.getElementById("reelStrip");
+  const rect = reelBox.getBoundingClientRect();
+  const w = rect.width, h = rect.height;
+
+  reelStrip.style.display = "flex";
+  reelStrip.style.flexDirection = isX ? "row" : "column";
+  reelStrip.style.width = isX ? (items.length * w) + "px" : w + "px";
+  reelStrip.style.height = isX ? h + "px" : (items.length * h) + "px";
+
+  reelStrip.innerHTML = items.map(p =>
+    `<div class="reel-item" style="${isX ? "width:" + w + "px;height:100%;" : "width:100%;height:" + h + "px;"}">${p.name}</div>`
+  ).join("");
+
+  const travel = (items.length - 1) * (isX ? w : h);
+  const startPx = sign === "neg" ? 0 : -travel;
+  const endPx = sign === "neg" ? -travel : 0;
+
+  reelStrip.style.transition = "none";
+  reelStrip.style.transform = isX ? `translateX(${startPx}px)` : `translateY(${startPx}px)`;
+  void reelStrip.offsetWidth;
+  reelStrip.style.transition = "transform 1.1s cubic-bezier(.1,.85,.2,1)";
+  requestAnimationFrame(() => {
+    reelStrip.style.transform = isX ? `translateX(${endPx}px)` : `translateY(${endPx}px)`;
+  });
+
+  reelStrip.addEventListener("transitionend", function done(){
+    reelStrip.removeEventListener("transitionend", done);
+    landOnCard(finalProject);
+  }, { once: true });
+}
+
+function roll(){
+  const pick = PROJECTS[Math.floor(Math.random() * PROJECTS.length)];
+  const dirKeys = Object.keys(DIRS);
+  const dir = dirKeys[Math.floor(Math.random() * dirKeys.length)];
+  spin(dir, pick);
+}
+
+function copyText(text, btn){
+  const original = btn.textContent;
+  const finish = (ok) => {
+    btn.textContent = ok ? "Nusxalandi!" : "Nusxalab bo'lmadi";
+    btn.classList.toggle("copied", ok);
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.classList.remove("copied");
+    }, 1600);
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(() => finish(true)).catch(() => fallbackCopy(text, finish));
+  } else {
+    fallbackCopy(text, finish);
+  }
+}
+
+function fallbackCopy(text, finish){
+  try{
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    finish(ok);
+  }catch(err){
+    finish(false);
+  }
 }
 
 rollBtn.addEventListener("click", roll);
 
-layerBtns.forEach(btn => {
-  btn.addEventListener("click", () => {
-    layerBtns.forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    currentFilter = btn.dataset.filter;
-    roll();
-  });
+stage.addEventListener("click", (e) => {
+  const btn = e.target.closest(".copy-btn");
+  if(!btn) return;
+  const row = btn.closest(".query-row");
+  const textEl = row && row.querySelector(".query-text");
+  if(!textEl) return;
+  copyText(textEl.textContent, btn);
 });
 </script>
 </body>
