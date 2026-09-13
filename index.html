@@ -212,28 +212,25 @@
     margin:0;
     text-wrap:balance;
   }
-  .card-timer{ margin-top:16px; }
-  .card-timer .lock-label{
-    display:block;
-    font-family:"Baloo 2", sans-serif;
-    font-weight:700;
-    font-size:11px;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    color: var(--ink-soft);
-    margin-bottom:4px;
-  }
-  .card-timer .lock-time{
-    display:block;
+  /* ---- below-card: keys + draw again ---- */
+  .below-card{ margin-top:18px; }
+  .again-btn{
+    display:table;
+    margin:20px auto 0;
     font-family:"Baloo 2", sans-serif;
     font-weight:800;
-    font-size:30px;
-    color: var(--red);
+    font-size:15px;
+    color:#fff;
+    background: var(--red);
+    border:3px solid var(--ink);
+    border-radius:999px;
+    padding:14px 28px;
+    cursor:pointer;
+    box-shadow:5px 5px 0 var(--ink);
+    transition: transform .08s ease, box-shadow .08s ease;
   }
-
-  /* ---- below-card: reason + keys ---- */
-  .below-card{ margin-top:18px; }
-  .reason-text{ color: var(--ink-soft); font-size:14px; line-height:1.6; margin:0 0 16px; }
+  .again-btn:active{ transform: translate(4px,4px); box-shadow:1px 1px 0 var(--ink); }
+  .again-btn:focus-visible{ outline:3px solid var(--blue); outline-offset:3px; }
 
   .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
   .tag{
@@ -411,7 +408,7 @@
   <div class="below-card" id="belowCard"></div>
 
   <div class="counter-badge" id="counter">TORTILGAN 000</div>
-  <div class="footer-plate">Har safar kartani ochganingizda yangi loyiha va unga mos kutish vaqti beriladi.</div>
+  <div class="footer-plate">Har safar kartani ochganingizda yangi loyiha chiqadi — istagan vaqtingizda yana tortishingiz mumkin.</div>
 </div>
 
 <div class="onboard-overlay" id="onboardOverlay">
@@ -526,59 +523,13 @@ const PROJECTS = [
 ];
 
 const DIFF_LEVEL = { "Oson": 1, "O'rta": 2, "Qiyin": 3 };
-const COOLDOWN_HOURS = { "Oson": 4, "O'rta": 8, "Qiyin": 24 };
-const COOLDOWN_REASON = {
-  "Oson": "Bu — OSON karta: uni boshlash uchun katta tayyorgarlik shart emas, shuning uchun navbatingiz atigi 4 soatdan keyin keladi.",
-  "O'rta": "Bu — O'RTA murakkablikdagi karta: biroz reja va tadqiqot kerak, shuning uchun navbatingiz 8 soatdan keyin keladi.",
-  "Qiyin": "Bu — QIYIN karta: arxitekturasini jiddiy o'ylab rejalashtirish kerak, shuning uchun navbatingiz 24 soatdan (1 kundan) keyin keladi.",
-};
 
 let count = 0;
-let countdownTimer = null;
 const stage = document.getElementById("stage");
 const counterEl = document.getElementById("counter");
 const topInfoEl = document.getElementById("topInfo");
 const belowCardEl = document.getElementById("belowCard");
 const DEFAULT_TOPINFO_HTML = topInfoEl.innerHTML;
-
-const LOCK_KEY = "loyiha-generator:lock";
-
-function loadLockRaw(){
-  try{
-    const raw = localStorage.getItem(LOCK_KEY);
-    if(!raw) return null;
-    const data = JSON.parse(raw);
-    if(!data || typeof data.unlockAt !== "number" || !data.pick) return null;
-    if(data.unlockAt <= Date.now()){
-      localStorage.removeItem(LOCK_KEY);
-      return null;
-    }
-    return data;
-  }catch(e){
-    return null;
-  }
-}
-
-function saveLockRaw(pick, unlockAt){
-  try{
-    localStorage.setItem(LOCK_KEY, JSON.stringify({ pick, unlockAt }));
-  }catch(e){
-    /* storage unavailable — cooldown just won't survive a reload */
-  }
-}
-
-function clearLockRaw(){
-  try{ localStorage.removeItem(LOCK_KEY); }catch(e){}
-}
-
-function formatCountdown(ms){
-  const totalSec = Math.max(0, Math.ceil(ms / 1000));
-  const h = Math.floor(totalSec / 3600);
-  const m = Math.floor((totalSec % 3600) / 60);
-  const s = totalSec % 60;
-  const pad = n => String(n).padStart(2, "0");
-  return pad(h) + ":" + pad(m) + ":" + pad(s);
-}
 
 function buildDeckMarquee(){
   const wrap = document.getElementById("marqueeWrap");
@@ -648,7 +599,6 @@ function renderIdleField(){
 
   stage.querySelectorAll(".face-card").forEach(el => {
     el.addEventListener("click", () => {
-      if(loadLockRaw()) return;
       const pick = PROJECTS[Math.floor(Math.random() * PROJECTS.length)];
       pickFromField(pick, el);
     }, { once: true });
@@ -699,20 +649,14 @@ function renderPicked(pick){
       <div class="card-banner"></div>
       <div class="card-body">
         <h2>${pick.name}</h2>
-        <div class="card-timer">
-          <span class="lock-label">Keyingi navbatgacha</span>
-          <span class="lock-time" id="cardTimer">00:00:00</span>
-        </div>
       </div>
     </div>
   `;
 
   const aiQuery = aiQueryFor(pick);
   const googleQuery = googleQueryFor(pick);
-  const reason = COOLDOWN_REASON[pick.difficulty] || COOLDOWN_REASON["Oson"];
 
   belowCardEl.innerHTML = `
-    <p class="reason-text">${reason}</p>
     <div class="sec-label">Kerakli asboblar</div>
     <div class="tags">${pick.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
     <div class="sec-label">Kalitlar</div>
@@ -732,36 +676,19 @@ function renderPicked(pick){
         </div>
       </div>
     </div>
+    <button class="again-btn" type="button" id="againBtn">Yana karta tort</button>
   `;
-}
-
-function startCountdown(unlockAt, difficulty){
-  if(countdownTimer) clearInterval(countdownTimer);
-  const tick = () => {
-    const remaining = unlockAt - Date.now();
-    if(remaining <= 0){
-      clearInterval(countdownTimer);
-      countdownTimer = null;
-      clearLockRaw();
-      topInfoEl.innerHTML = DEFAULT_TOPINFO_HTML;
-      renderIdleField();
-      return;
-    }
-    const timerEl = document.getElementById("cardTimer");
-    if(timerEl) timerEl.textContent = formatCountdown(remaining);
-  };
-  tick();
-  countdownTimer = setInterval(tick, 1000);
+  document.getElementById("againBtn").addEventListener("click", () => {
+    topInfoEl.innerHTML = DEFAULT_TOPINFO_HTML;
+    belowCardEl.innerHTML = "";
+    renderIdleField();
+  });
 }
 
 function landOnCard(pick){
   count++;
   counterEl.textContent = "TORTILGAN " + String(count).padStart(3, "0");
-  const hours = COOLDOWN_HOURS[pick.difficulty] || 4;
-  const unlockAt = Date.now() + hours * 60 * 60 * 1000;
-  saveLockRaw(pick, unlockAt);
   renderPicked(pick);
-  startCountdown(unlockAt, pick.difficulty);
 }
 
 function copyText(text, btn){
@@ -817,13 +744,7 @@ document.addEventListener("click", (e) => {
   }
 });
 
-const existingLock = loadLockRaw();
-if(existingLock){
-  renderPicked(existingLock.pick);
-  startCountdown(existingLock.unlockAt, existingLock.pick.difficulty);
-} else {
-  renderIdleField();
-}
+renderIdleField();
 
 /* ---- onboarding: shown every visit; branches only for "Tushunmadim" ---- */
 const onboardOverlay = document.getElementById("onboardOverlay");
@@ -836,7 +757,7 @@ function closeOnboard(){
 function renderOnboardStep1(){
   onboardModal.innerHTML = `
     <h2 class="onboard-title">Xush kelibsiz!</h2>
-    <p class="onboard-text">Bu — tasodifiy IT loyiha g'oyalari beruvchi karta o'yini. Yopiq kartalardan birini tanlang — u sizga tasodifiy loyiha (mavjud yoki hali yaratilmagan g'oya) ochib beradi. Har kartaning o'z qiyinligi bor va tanlagandan keyin keyingi kartani ochish uchun 4, 8 yoki 24 soat kutishingiz kerak bo'ladi. Karta ochilgach, pastdagi "Kalitlar" orqali AI va Google'dan to'liq ma'lumot so'rash uchun tayyor savollarni topasiz.</p>
+    <p class="onboard-text">Bu — tasodifiy IT loyiha g'oyalari beruvchi karta o'yini. Yopiq kartalardan birini tanlang — u sizga tasodifiy loyiha (mavjud yoki hali yaratilmagan g'oya) ochib beradi. Karta ochilgach, pastdagi tavsif, kerakli texnologiyalar va "Kalitlar" orqali AI va Google'dan to'liq ma'lumot so'rashingiz mumkin. Istalgan vaqtda "Yana karta tort" tugmasi bilan yangisini tanlaysiz.</p>
     <div class="onboard-actions">
       <button class="onboard-btn primary" id="understandBtn" type="button">Tushundim</button>
       <button class="onboard-btn secondary" id="dontUnderstandBtn" type="button">Tushunmadim</button>
@@ -851,9 +772,9 @@ function renderOnboardStep2(){
     <h2 class="onboard-title">Qanday ishlatiladi?</h2>
     <ol class="onboard-steps">
       <li>Yopiq kartalardan birini tanlang.</li>
-      <li>Karta ochiladi — loyiha nomi va unga berilgan kutish vaqti ko'rinadi.</li>
+      <li>Karta ochiladi — loyiha nomi ko'rinadi.</li>
       <li>Pastda tavsif, kerakli texnologiyalar va "Kalitlar" (AI/Google so'rovlari) chiqadi — ularni bosib to'liq ma'lumot oling.</li>
-      <li>Berilgan vaqt tugagach, yangi karta tanlash yana mumkin bo'ladi.</li>
+      <li>"Yana karta tort" tugmasi bilan istalgan vaqtda yangi loyiha tanlaysiz.</li>
     </ol>
     <p class="onboard-try-label">Hoziroq sinab ko'ring</p>
     <div class="onboard-demo">
